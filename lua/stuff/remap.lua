@@ -10,5 +10,12 @@ end)
 vim.keymap.set("i", "<C-m>", function()
     vim.cmd('stopinsert')
 end)
+
+-- somehow i accidentally broke the enter key but control enter still worked
+-- so i just made it so that enter is control enter
+-- idk wtf happened
+vim.keymap.set("i", "<CR>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-CR>", true, true, true), "i", true)
+end)
 -- AUTOFORMAT!!!!!
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
