@@ -130,6 +130,11 @@ _G.packer_plugins = {
     path = "/home/cw/.local/share/nvim/site/pack/packer/start/material.nvim",
     url = "https://github.com/marko-cerovac/material.nvim"
   },
+  moonfly = {
+    loaded = true,
+    path = "/home/cw/.local/share/nvim/site/pack/packer/start/moonfly",
+    url = "https://github.com/bluz71/vim-moonfly-colors"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/home/cw/.local/share/nvim/site/pack/packer/start/nvim-cmp",
@@ -169,6 +174,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cw/.local/share/nvim/site/pack/packer/start/undotree",
     url = "https://github.com/mbbill/undotree"
+  },
+  ["vim-be-good"] = {
+    loaded = true,
+    path = "/home/cw/.local/share/nvim/site/pack/packer/start/vim-be-good",
+    url = "https://github.com/ThePrimeagen/vim-be-good"
   },
   ["vim-fugitive"] = {
     loaded = true,

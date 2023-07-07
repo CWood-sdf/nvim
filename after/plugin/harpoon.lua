@@ -10,6 +10,10 @@ end)
 vim.keymap.set("n", "<C-u>", function()
     ui.nav_file(2)
 end)
--- vim.keymap.set("n", "<C-b>", function()
---     ui.nav_file(3)
--- end)
+vim.keymap.set("n", "<leader>m", function()
+    if (vim.v.count == nil or vim.v.count == 0) then
+        print("No count provided for epic harpoon nav")
+    else
+        ui.nav_file(vim.v.count)
+    end
+end)

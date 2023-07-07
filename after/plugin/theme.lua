@@ -1,2 +1,3 @@
-vim.cmd 'colorscheme material'
-vim.g.material_style = "oceanic";
+-- yo
+
+vim.cmd 'colorscheme moonfly'

@@ -4,6 +4,7 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
+    use 'ThePrimeagen/vim-be-good'
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use {
@@ -58,10 +59,15 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' }, -- Required
             { 'rafamadriz/friendly-snippets' }
         },
-        use 'github/copilot.vim',
         -- use {
         --     requires = { "nvim-treesitter/nvim-treesitter" },
         --     "Badhi/nvim-treesitter-cpp-tools",
         -- }
+        --
     }
+
+
+    use 'github/copilot.vim'
+
+    use { "bluz71/vim-moonfly-colors", as = "moonfly" }
 end)
