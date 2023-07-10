@@ -1,3 +1,3 @@
 -- yo
 
-vim.cmd 'colorscheme moonfly'
+vim.cmd 'colorscheme carbonfox'
