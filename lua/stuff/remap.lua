@@ -11,6 +11,26 @@ vim.keymap.set("i", "<C-m>", function()
     vim.cmd('stopinsert')
 end)
 
+vim.keymap.set("n", "<F5>", function()
+    vim.cmd('DapContinue')
+end)
+
+vim.keymap.set("n", "<F10>", function()
+    vim.cmd('DapStepOver')
+end)
+
+vim.keymap.set("n", "<F11>", function()
+    vim.cmd('DapStepInto')
+end)
+
+vim.keymap.set("n", "<F12>", function()
+    vim.cmd('DapStepOut')
+end)
+
+vim.keymap.set("n", "<leader>db", function()
+    vim.cmd('DapToggleBreakpoint')
+end)
+
 -- somehow i accidentally broke the enter key but control enter still worked
 -- so i just made it so that enter is control enter
 -- idk wtf happened
