@@ -28,6 +28,7 @@ vim.keymap.set('i', '<C-z>', function()
         count = vim.v.count
     end
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "g-", true, true, true), "x!", false)
+    vim.cmd('startinsert')
 end)
 
 vim.keymap.set('i', '<C-y>', function()
@@ -37,5 +38,6 @@ vim.keymap.set('i', '<C-y>', function()
     else
         count = vim.v.count
     end
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "g+", true, true, true), "n", false)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "g+", true, true, true), "x!", false)
+    vim.cmd('startinsert')
 end)
