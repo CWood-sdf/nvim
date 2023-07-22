@@ -11,6 +11,15 @@ local currentGroupMode = "";
 local remap = function(key, desc, func, opts)
     local keys = currentGroup .. key
     M.remaps[currentGroupMode][keys] = { func, desc, opts }
+    -- if there's a '(...)' in the desc, then remap that key to the func too
+    if (desc:find('%(') ~= nil) then
+        local desc2 = desc:gsub('%(.*%)', '')
+        -- strip [ and ] from desc2
+        desc2 = desc2:gsub('%[', '')
+        desc2 = desc2:gsub('%]', '')
+        local newKey = desc:match('%((.-)%)')
+        M.remapNoGroup(currentGroupMode, newKey, desc2, func, opts)
+    end
 end
 
 M.makeGroup = function(mode, key, desc, makeRemaps)
