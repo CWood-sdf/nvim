@@ -1,4 +1,5 @@
-vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+local wk = require("stuff.wkutils")
+wk.remapNoGroup('n', '<leader>u', "Toggle Undotree", vim.cmd.UndotreeToggle)
 local undo = function(count)
     if (count == nil) then
         count = 1
@@ -28,3 +29,4 @@ vim.keymap.set('i', '<C-y>', function()
     vim.cmd('stopinsert')
     redo(1)
 end)
+wk.writeBuf()
