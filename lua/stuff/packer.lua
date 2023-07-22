@@ -5,6 +5,33 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    }
+
+    use 'nvim-tree/nvim-web-devicons'
+
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
+
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+    use {
         "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
         config = function()
@@ -22,19 +49,24 @@ return require('packer').startup(function(use)
             end
         end,
     }
+
     use {
         "jay-babu/mason-nvim-dap.nvim",
         requires = {
             "mfussenegger/nvim-dap",
             'williamboman/mason.nvim', },
     }
+
     use {
         "mfussenegger/nvim-dap",
     }
+
     use 'EdenEast/nightfox.nvim'
+
     use 'ThePrimeagen/vim-be-good'
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
@@ -63,6 +95,7 @@ return require('packer').startup(function(use)
     }
 
     use 'mbbill/undotree'
+
     use 'tpope/vim-fugitive'
 
     use {
