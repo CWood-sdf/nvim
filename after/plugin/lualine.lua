@@ -1,6 +1,7 @@
 -- Eviline config for lualine
 -- Author: shadmansaleh
 -- Credit: glepnir
+-- CWood-sdf additions: Copilot status, formatting name, debug name
 local lualine = require('lualine')
 
 -- Color table for highlights
@@ -89,7 +90,7 @@ ins_left {
 ins_left {
     -- mode component
     function()
-        return ''
+        return ''
     end,
     color = function()
         -- auto change color according to neovims mode
@@ -173,6 +174,23 @@ ins_left {
     icon = ' LSP:',
     color = { fg = '#ffffff', gui = 'bold' },
 }
+-- ins_left {
+--     function()
+--         return 'sdf'
+--     end,
+--     icon = "",
+--     color = {fg = "#ffffff", gui = "bold"},
+-- }
+--
+-- ins_left {
+--     function()
+--         return 'sdf'
+--     end,
+--     icon = "",
+--     color = { fg = "#ffffff", gui = "bold" },
+-- }
+
+
 ins_right {
     function()
         local output = vim.api.nvim_command_output("Copilot status")
