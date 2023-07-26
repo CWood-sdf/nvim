@@ -84,41 +84,41 @@ ins_left {
         return '▊'
     end,
     color = { fg = colors.blue },      -- Sets highlighting of component
-    padding = { left = 0, right = 1 }, -- We don't need space before this
+    padding = { left = 0, right = 0 }, -- We don't need space before this
 }
 
-ins_left {
-    -- mode component
-    function()
-        return ''
-    end,
-    color = function()
-        -- auto change color according to neovims mode
-        local mode_color = {
-            n = colors.red,
-            i = colors.green,
-            v = colors.blue,
-            [''] = colors.blue,
-            V = colors.blue,
-            c = colors.magenta,
-            no = colors.red,
-            s = colors.orange,
-            S = colors.orange,
-            ic = colors.yellow,
-            R = colors.violet,
-            Rv = colors.violet,
-            cv = colors.red,
-            ce = colors.red,
-            r = colors.cyan,
-            rm = colors.cyan,
-            ['r?'] = colors.cyan,
-            ['!'] = colors.red,
-            t = colors.red,
-        }
-        return { fg = mode_color[vim.fn.mode()] }
-    end,
-    padding = { right = 1 },
-}
+-- ins_left {
+--     -- mode component
+--     function()
+--         return ''
+--     end,
+--     color = function()
+--         -- auto change color according to neovims mode
+--         local mode_color = {
+--             n = colors.red,
+--             i = colors.green,
+--             v = colors.blue,
+--             [''] = colors.blue,
+--             V = colors.blue,
+--             c = colors.magenta,
+--             no = colors.red,
+--             s = colors.orange,
+--             S = colors.orange,
+--             ic = colors.yellow,
+--             R = colors.violet,
+--             Rv = colors.violet,
+--             cv = colors.red,
+--             ce = colors.red,
+--             r = colors.cyan,
+--             rm = colors.cyan,
+--             ['r?'] = colors.cyan,
+--             ['!'] = colors.red,
+--             t = colors.red,
+--         }
+--         return { fg = mode_color[vim.fn.mode()] }
+--     end,
+--     padding = { right = 1 },
+-- }
 
 ins_left {
     -- filesize component
@@ -133,7 +133,20 @@ ins_left {
 
 ins_left { 'location' }
 
-ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
+ins_left {
+    'o:encoding',       -- option component same as &encoding in viml
+    fmt = string.upper, -- I'm not sure why it's upper case either ;)
+    cond = conditions.hide_in_width,
+    color = { fg = colors.green, gui = 'bold' },
+}
+
+ins_left {
+    'fileformat',
+    fmt = string.upper,
+    icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+    color = { fg = colors.green, gui = 'bold' },
+}
+-- ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
 
 ins_left {
     'diagnostics',
@@ -210,19 +223,6 @@ ins_right {
     }
 }
 -- Add components to right sections
-ins_right {
-    'o:encoding',       -- option component same as &encoding in viml
-    fmt = string.upper, -- I'm not sure why it's upper case either ;)
-    cond = conditions.hide_in_width,
-    color = { fg = colors.green, gui = 'bold' },
-}
-
-ins_right {
-    'fileformat',
-    fmt = string.upper,
-    icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
-    color = { fg = colors.green, gui = 'bold' },
-}
 ins_right {
     'filetype',
     icon_only = false,

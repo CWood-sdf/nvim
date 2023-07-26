@@ -85,25 +85,5 @@ wk.remapNoGroup("o", "P", "Paste reg x", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp", true, true, true), "o", true)
 end)
 
-function Format()
-    vim.lsp.buf.format({
-        -- filter = function(client)
-        --     local s = ""
-        --     local i = 0
-        --     vim.print(client.server_capabilities.documentRangeFormattingProvider)
-        --     for v, _ in pairs(client.server_capabilities) do
-        --         if (i > 6) then
-        --             s = s .. v .. " "
-        --         end
-        --         i = i + 1
-        --     end
-        --     print(s)
-        --     return true
-        -- end
-    })
-end
-
--- AUTOFORMAT!!!!!
-vim.cmd [[autocmd BufWritePost * lua Format()]]
 
 wk.writeBuf()
