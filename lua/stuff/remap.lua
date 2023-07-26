@@ -1,5 +1,15 @@
+local wk = require("stuff.wkutils")
+
 vim.g.mapleader = " ";
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex);
+wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)
+    remap("n", "[N]umber", function()
+        print(vim.api.nvim_get_current_buf())
+    end)
+end)
+wk.makeGroup("n", "<leader>p", '[P]roject', function(remap)
+    remap('v', '[V]iew', vim.cmd.Ex)
+end)
+
 vim.keymap.set("i", "<C-s>", function()
     vim.cmd('stopinsert')
     vim.api.nvim_command('write');
@@ -10,6 +20,14 @@ end)
 vim.keymap.set("i", "<C-m>", function()
     vim.cmd('stopinsert')
 end)
+wk.makeGroup('n', '<leader>d', '[D]ebug', function(remap)
+    remap('b', '[B]reakpoint', vim.cmd.DapToggleBreakpoint)
+    remap('c', '[C]ontinue (<F5>)', vim.cmd.DapContinue)
+    remap('i', 'Step [I]nto (<F11>)', vim.cmd.DapStepInto)
+    remap('o', 'Step [O]ut (<F12>)', vim.cmd.DapStepOut)
+    remap('s', '[S]tep Over (<F10>)', vim.cmd.DapStepOver)
+end)
+
 
 -- somehow i accidentally broke the enter key but control enter still worked
 -- so i just made it so that enter is control enter
@@ -17,8 +35,8 @@ end)
 vim.keymap.set("i", "<CR>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-CR>", true, true, true), "i", true)
 end)
-vim.keymap.set("v", "<leader>k", function()
-    --move selected stuff down
+
+wk.remapNoGroup('v', '<leader>k', 'Move selected up', function()
     local count = 0
     if (vim.v.count ~= nil) then
         count = vim.v.count
@@ -29,8 +47,7 @@ vim.keymap.set("v", "<leader>k", function()
     count = count + 1
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":m '>-" .. count .. "<CR>", true, true, true), "v", true)
 end)
-vim.keymap.set("v", "<leader>j", function()
-    --move selected stuff up
+wk.remapNoGroup('v', '<leader>j', 'Move selected down', function()
     local count = 0
     if (vim.v.count ~= nil) then
         count = vim.v.count
@@ -40,36 +57,35 @@ vim.keymap.set("v", "<leader>j", function()
     end
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":m '>+" .. count .. "<CR>", true, true, true), "v", true)
 end)
-vim.keymap.set("v", "D", function()
-    vim.prin("v")
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d<CR>", true, true, true), "v", true)
+wk.remapNoGroup("v", "D", "Void delete", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d", true, true, true), "v", true)
 end)
-vim.keymap.set("v", "Y", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy<CR>", true, true, true), "v", true)
+wk.remapNoGroup("v", "Y", "Yank reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy", true, true, true), "v", true)
 end)
-vim.keymap.set("o", "Y", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy<CR>", true, true, true), "o", true)
+wk.remapNoGroup("o", "Y", "Yank reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy", true, true, true), "o", true)
 end)
-vim.keymap.set("x", "Y", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy<CR>", true, true, true), "x", true)
+wk.remapNoGroup("x", "Y", "Yank reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xy", true, true, true), "x", true)
 end)
-vim.keymap.set("v", "P", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp<CR>", true, true, true), "v", true)
+wk.remapNoGroup("v", "P", "Paste reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp", true, true, true), "v", true)
 end)
-vim.keymap.set("x", "D", function()
-    vim.print("x")
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d<CR>", true, true, true), "x", true)
+wk.remapNoGroup("x", "D", "Void delete", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d", true, true, true), "x", true)
 end)
-vim.keymap.set("x", "P", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp<CR>", true, true, true), "x", true)
+wk.remapNoGroup("x", "P", "Paste reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp", true, true, true), "x", true)
 end)
-vim.keymap.set("o", "D", function()
-    vim.print("o")
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d<CR>", true, true, true), "o", true)
+wk.remapNoGroup("o", "D", "Void delete", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"_d", true, true, true), "o", true)
 end)
-vim.keymap.set("o", "P", function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp<CR>", true, true, true), "o", true)
+wk.remapNoGroup("o", "P", "Paste reg x", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp", true, true, true), "o", true)
 end)
 
 -- AUTOFORMAT!!!!!
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+
+wk.writeBuf()

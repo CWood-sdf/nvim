@@ -1,5 +1,5 @@
 local lsp = require("lsp-zero")
-
+local wk = require("stuff.wkutils")
 lsp.preset("recommended")
 
 lsp.ensure_installed({
@@ -31,7 +31,7 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
+    suggest_lsp_servers = true,
     sign_icons = {
         error = 'E',
         warn = 'W',
@@ -41,21 +41,30 @@ lsp.set_preferences({
 })
 
 lsp.on_attach(function(client, bufnr)
-    local opts = { buffer = bufnr, remap = false }
-
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    --vim.lsp.buf.inlay_hint(bufnr, true)
+    -- vim.diagnostic.enable(bufnr)
+    -- vim.diagnostic.show(nil, bufnr, nil, {
+    --     virtual_text = true
+    -- })
+    local opts = { buffer = bufnr, noremap = false }
+    wk.remapNoGroup("n", "K", "Hover", function() vim.lsp.buf.hover() end, opts)
+    wk.makeGroup("n", "<leader>v", "LSP", function(remap)
+        remap("d", "[D]iagnostic float", function() vim.diagnostic.open_float() end, opts)
+        remap("h", "[H]over (K)", function() vim.lsp.buf.hover() end, opts)
+        remap("r", "[R]eferences", function() vim.lsp.buf.references() end, opts)
+        remap("a", "[A]ction", function() vim.lsp.buf.code_action() end, opts)
+        remap("N", "[N]ext diagnostic ([d)", function() vim.diagnostic.goto_next() end, opts)
+        remap("P", "[P]revious diagnostic (]d)", function() vim.diagnostic.goto_prev() end, opts)
+        remap("s", "[S]ignature help (<C-h>)", function() vim.lsp.buf.signature_help() end, opts)
+        remap("n", "Re[n]ame", function() vim.lsp.buf.rename() end, opts)
+    end)
+    wk.makeGroup("n", "<leader>vw", "LSP Workspace", function(remap)
+        remap("s", "Symbols", function() vim.lsp.buf.workspace_symbol() end, opts)
+    end)
+    wk.writeBuf()
 end)
-
 lsp.setup()
+
 
 vim.diagnostic.config({
     virtual_text = true

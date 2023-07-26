@@ -4,29 +4,69 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
-    -- use {
-    --     "mfussenegger/nvim-dap",
-    --     opt = true,
-    --     event = "BufReadPre",
-    --     module = { "dap" },
-    --     wants = { "nvim-dap-virtual-text", "DAPInstall.nvim", "nvim-dap-ui", "nvim-dap-python", "which-key.nvim" },
-    --     requires = {
-    --         "Pocco81/DAPInstall.nvim",
-    --         "theHamsta/nvim-dap-virtual-text",
-    --         "rcarriga/nvim-dap-ui",
-    --         "mfussenegger/nvim-dap-python",
-    --         "nvim-telescope/telescope-dap.nvim",
-    --         { "leoluz/nvim-dap-go",                module = "dap-go" },
-    --         { "jbyuki/one-small-step-for-vimkind", module = "osv" },
-    --     },
-    --     config = function()
-    --         require("config.dap").setup()
-    --     end,
-    -- }
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    }
+
+    use 'nvim-tree/nvim-web-devicons'
+
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
+
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+    use {
+        "rcarriga/nvim-dap-ui",
+        requires = { "mfussenegger/nvim-dap" },
+        config = function()
+            local dap = require('dap')
+            local dapui = require("dapui")
+            dapui.setup()
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close()
+            end
+        end,
+    }
+
+    use {
+        "jay-babu/mason-nvim-dap.nvim",
+        requires = {
+            "mfussenegger/nvim-dap",
+            'williamboman/mason.nvim', },
+    }
+
+    use {
+        "mfussenegger/nvim-dap",
+    }
+
     use 'EdenEast/nightfox.nvim'
+
     use 'ThePrimeagen/vim-be-good'
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
@@ -55,6 +95,7 @@ return require('packer').startup(function(use)
     }
 
     use 'mbbill/undotree'
+
     use 'tpope/vim-fugitive'
 
     use {
