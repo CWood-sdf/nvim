@@ -85,7 +85,5 @@ wk.remapNoGroup("o", "P", "Paste reg x", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("\"xp", true, true, true), "o", true)
 end)
 
--- AUTOFORMAT!!!!!
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
 
 wk.writeBuf()
