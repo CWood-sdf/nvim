@@ -6,6 +6,12 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     use { 'mhartington/formatter.nvim' }
     use {
+        'folke/tokyonight.nvim',
+        config = function()
+            require('tokyonight').setup()
+        end
+    }
+    use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true },
     }
