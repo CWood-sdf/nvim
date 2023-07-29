@@ -134,8 +134,7 @@ ins_left {
 ins_left { 'location' }
 
 ins_left {
-    'o:encoding',       -- option component same as &encoding in viml
-    fmt = string.upper, -- I'm not sure why it's upper case either ;)
+    'o:encoding', -- option component same as &encoding in viml
     cond = conditions.hide_in_width,
     color = { fg = colors.green, gui = 'bold' },
 }
