@@ -1,15 +1,5 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
-
--- Auto compile when there are changes in packer.lua
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost packer.lua source <afile> | PackerCompile
-  augroup end
-]])
 local ensure_packer = function()
     local fn = vim.fn
     local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -22,6 +12,16 @@ local ensure_packer = function()
 end
 
 local packer_bootstrap = ensure_packer()
+-- Only required if you have packer configured as `opt`
+vim.cmd [[packadd packer.nvim]]
+
+-- Auto compile when there are changes in packer.lua
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost packer.lua source <afile> | PackerCompile
+  augroup end
+]])
 return require('packer').startup(function(use)
     use { 'mhartington/formatter.nvim' }
     use {
