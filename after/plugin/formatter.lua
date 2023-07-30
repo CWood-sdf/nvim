@@ -6,7 +6,7 @@
 local UseMasonFormatter = function(type, name)
     return require("formatter.filetypes." .. type)[name]
 end
-
+MasonFormatterOverrides = { "typescript" }
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup({
     -- Enable or disable logging
