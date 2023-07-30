@@ -10,7 +10,11 @@ vim.opt.smartindent = true;
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = "C:/Users/cwood/AppData/Local/.vim/undodir"
+if (jit.os == "Windows") then
+    vim.opt.undodir = "C:\\Users\\cwood\\AppData\\Local\\.vim\\undodir"
+else
+    vim.opt.undodir = "~/.local/nvim"
+end
 vim.opt.undofile = true
 
 vim.opt.hlsearch = false
