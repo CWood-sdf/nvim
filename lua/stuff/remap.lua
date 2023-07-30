@@ -32,9 +32,9 @@ end)
 -- somehow i accidentally broke the enter key but control enter still worked
 -- so i just made it so that enter is control enter
 -- idk wtf happened
--- vim.keymap.set("i", "<CR>", function()
---     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-CR>", true, true, true), "i", true)
--- end)
+vim.keymap.set("i", "<CR>", function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-CR>", true, true, true), "i", true)
+end)
 
 wk.remapNoGroup('v', '<leader>k', 'Move selected up', function()
     local count = 0
