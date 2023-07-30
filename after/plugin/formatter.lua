@@ -15,6 +15,9 @@ require("formatter").setup({
     log_level = vim.log.levels.WARN,
     -- All formatter configurations are opt-in
     filetype = {
+        typescript = {
+            UseMasonFormatter("typescript", "prettier"),
+        },
         -- Formatter configurations for filetype "lua" go here
         -- and will be executed in order
         -- lua = {
