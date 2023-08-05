@@ -12,5 +12,5 @@ wk.makeGroup("n", "<leader>f", "[F]ile", function(remap)
     remap("r", "[R]ecent", builtin.oldfiles);
     remap("g", "[G]it files (C-p)", builtin.git_files);
 end)
+wk.remapNoGroup('n', '<C-p>', 'Project search', builtin.git_files, {})
 wk.writeBuf()
-vim.keymap.set('n', '<C-p>', builtin.git_files, {})

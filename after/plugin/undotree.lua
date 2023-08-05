@@ -12,20 +12,20 @@ local redo = function(count)
     end
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "<C-r>", true, true, true), "n", false)
 end
-vim.keymap.set('n', '<C-z>', function()
+wk.remapNoGroup('n', '<C-z>', 'Undo', function()
     undo(vim.v.count)
 end)
 
-vim.keymap.set('n', '<C-y>', function()
+wk.remapNoGroup('n', '<C-y>', 'Redo', function()
     redo(vim.v.count)
 end)
 
-vim.keymap.set('i', '<C-z>', function()
+wk.remapNoGroup('i', '<C-z>', 'Undo', function()
     vim.cmd('stopinsert')
     undo(1)
 end)
 
-vim.keymap.set('i', '<C-y>', function()
+wk.remapNoGroup('i', '<C-y>', 'Redo', function()
     vim.cmd('stopinsert')
     redo(1)
 end)

@@ -18,6 +18,9 @@ require("formatter").setup({
         typescript = {
             UseMasonFormatter("typescript", "prettier"),
         },
+        css = {
+            UseMasonFormatter("css", "prettier")
+        },
         -- Formatter configurations for filetype "lua" go here
         -- and will be executed in order
         -- lua = {
@@ -65,7 +68,7 @@ function Format()
     lspFormat()
     if (lspFormatSuccess) then
         return
-    elseif ((require("formatter")[vim.bo.filetype]) ~= nil) then
+    elseif ((require("formatter.config").values.filetype[vim.bo.filetype]) ~= nil) then
         vim.cmd("Format")
         return true
     else
