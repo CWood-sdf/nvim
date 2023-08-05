@@ -36,7 +36,9 @@ local conditions = {
 
 -- Config
 local config = {
+    globalstatus = true,
     options = {
+        globalstatus = true,
         -- Disable sections and component separators
         component_separators = '',
         section_separators = '',
