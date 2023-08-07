@@ -109,22 +109,22 @@ ins_left {
             rm = colors.cyan,
             ['r?'] = colors.cyan,
             ['!'] = colors.red,
-            t = colors.red,
+            t = colors.green,
         }
         return { fg = mode_color[vim.fn.mode()] }
     end,
     padding = { right = 1, left = 1 },
 }
 
-ins_left {
-    -- filesize component
-    'filesize',
-    cond = conditions.buffer_not_empty,
-}
+-- ins_left {
+--     -- filesize component
+--     'filesize',
+--     cond = conditions.buffer_not_empty,
+-- }
 ins_left {
     'filename',
     cond = conditions.buffer_not_empty,
-    color = { fg = colors.magenta, gui = 'bold' },
+    color = { fg = "#aaaaff", gui = 'bold' },
 }
 
 ins_left { 'location' }
@@ -138,7 +138,7 @@ ins_left {
 ins_left {
     'fileformat',
     fmt = string.upper,
-    icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+    icons_enabled = true,
     color = { fg = colors.green, gui = 'bold' },
 }
 -- ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
@@ -165,7 +165,7 @@ ins_left {
 ins_left {
     -- Lsp server name .
     function()
-        local msg = 'No Active Lsp'
+        local msg = ''
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
@@ -237,7 +237,7 @@ ins_right {
     symbols = { added = ' ', modified = ' ', removed = ' ' },
     diff_color = {
         added = { fg = colors.green },
-        modified = { fg = colors.orange },
+        modified = { fg = "#ffbb00" },
         removed = { fg = colors.red },
     },
     cond = conditions.hide_in_width,
