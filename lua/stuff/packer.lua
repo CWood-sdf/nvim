@@ -57,15 +57,8 @@ return require('packer').startup(function(use)
             }
         end
     }
-    local woodcDir = ""
-    if (jit.os == "Linux") then
-        woodcDir = "/mnt/c/Users/woodc/"
-    elseif (jit.os == "Windows") then
-        woodcDir = "C:\\Users\\woodc\\"
-    end
     use {
-        -- "rcarriga/nvim-dap-ui",
-        woodcDir .. "nvim-dap-ui",
+        "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
     }
 
