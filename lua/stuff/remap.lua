@@ -10,15 +10,12 @@ wk.makeGroup("n", "<leader>p", '[P]roject', function(remap)
     remap('v', '[V]iew', vim.cmd.Ex)
 end)
 
-vim.keymap.set("i", "<C-s>", function()
+wk.remapNoGroup("i", "<C-s>", "Save file", function()
     vim.cmd('stopinsert')
     vim.api.nvim_command('write');
 end)
-vim.keymap.set("n", "<C-s>", function()
+wk.remapNoGroup("n", "<C-s>", "Save file", function()
     vim.api.nvim_command('write');
-end)
-vim.keymap.set("i", "<C-m>", function()
-    vim.cmd('stopinsert')
 end)
 wk.makeGroup('n', '<leader>d', '[D]ebug', function(remap)
     remap('b', '[B]reakpoint', vim.cmd.DapToggleBreakpoint)

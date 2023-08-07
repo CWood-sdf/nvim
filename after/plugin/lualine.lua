@@ -36,7 +36,9 @@ local conditions = {
 
 -- Config
 local config = {
+    globalstatus = true,
     options = {
+        globalstatus = true,
         -- Disable sections and component separators
         component_separators = '',
         section_separators = '',
@@ -81,48 +83,48 @@ ins_left {
     padding = { left = 0, right = 0 }, -- We don't need space before this
 }
 
--- ins_left {
---     -- mode component
---     function()
---         return ''
---     end,
---     color = function()
---         -- auto change color according to neovims mode
---         local mode_color = {
---             n = colors.red,
---             i = colors.green,
---             v = colors.blue,
---             [''] = colors.blue,
---             V = colors.blue,
---             c = colors.magenta,
---             no = colors.red,
---             s = colors.orange,
---             S = colors.orange,
---             ic = colors.yellow,
---             R = colors.violet,
---             Rv = colors.violet,
---             cv = colors.red,
---             ce = colors.red,
---             r = colors.cyan,
---             rm = colors.cyan,
---             ['r?'] = colors.cyan,
---             ['!'] = colors.red,
---             t = colors.red,
---         }
---         return { fg = mode_color[vim.fn.mode()] }
---     end,
---     padding = { right = 1 },
--- }
-
 ins_left {
-    -- filesize component
-    'filesize',
-    cond = conditions.buffer_not_empty,
+    -- mode component
+    function()
+        return ''
+    end,
+    color = function()
+        -- auto change color according to neovims mode
+        local mode_color = {
+            n = colors.red,
+            i = colors.green,
+            v = colors.blue,
+            [''] = colors.blue,
+            V = colors.blue,
+            c = colors.magenta,
+            no = colors.red,
+            s = colors.orange,
+            S = colors.orange,
+            ic = colors.yellow,
+            R = colors.violet,
+            Rv = colors.violet,
+            cv = colors.red,
+            ce = colors.red,
+            r = colors.cyan,
+            rm = colors.cyan,
+            ['r?'] = colors.cyan,
+            ['!'] = colors.red,
+            t = colors.green,
+        }
+        return { fg = mode_color[vim.fn.mode()] }
+    end,
+    padding = { right = 1, left = 1 },
 }
+
+-- ins_left {
+--     -- filesize component
+--     'filesize',
+--     cond = conditions.buffer_not_empty,
+-- }
 ins_left {
     'filename',
     cond = conditions.buffer_not_empty,
-    color = { fg = colors.magenta, gui = 'bold' },
+    color = { fg = "#aaaaff", gui = 'bold' },
 }
 
 ins_left { 'location' }
@@ -136,7 +138,7 @@ ins_left {
 ins_left {
     'fileformat',
     fmt = string.upper,
-    icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+    icons_enabled = true,
     color = { fg = colors.green, gui = 'bold' },
 }
 -- ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
@@ -163,7 +165,7 @@ ins_left {
 ins_left {
     -- Lsp server name .
     function()
-        local msg = 'No Active Lsp'
+        local msg = ''
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
@@ -235,7 +237,7 @@ ins_right {
     symbols = { added = ' ', modified = ' ', removed = ' ' },
     diff_color = {
         added = { fg = colors.green },
-        modified = { fg = colors.orange },
+        modified = { fg = "#ffbb00" },
         removed = { fg = colors.red },
     },
     cond = conditions.hide_in_width,

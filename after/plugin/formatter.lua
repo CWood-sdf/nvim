@@ -6,7 +6,7 @@
 local UseMasonFormatter = function(type, name)
     return require("formatter.filetypes." .. type)[name]
 end
-
+MasonFormatterOverrides = { "typescript" }
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup({
     -- Enable or disable logging
@@ -15,6 +15,15 @@ require("formatter").setup({
     log_level = vim.log.levels.WARN,
     -- All formatter configurations are opt-in
     filetype = {
+        typescript = {
+            UseMasonFormatter("typescript", "prettier"),
+        },
+        css = {
+            UseMasonFormatter("css", "prettier")
+        },
+        cpp = {
+            UseMasonFormatter("cpp", "clangformat")
+        },
         -- Formatter configurations for filetype "lua" go here
         -- and will be executed in order
         -- lua = {
@@ -59,12 +68,13 @@ function Format()
             end,
         })
     end
+    if ((require("formatter.config").values.filetype[vim.bo.filetype]) ~= nil) then
+        vim.cmd("Format")
+        return true
+    end
     lspFormat()
     if (lspFormatSuccess) then
         return
-    elseif ((require("formatter")[vim.bo.filetype]) ~= nil) then
-        vim.cmd("Format")
-        return true
     else
         formatSuccess = false
     end

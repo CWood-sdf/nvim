@@ -57,24 +57,16 @@ return require('packer').startup(function(use)
             }
         end
     }
-
+    local woodcDir = ""
+    if (jit.os == "Linux") then
+        woodcDir = "/mnt/c/Users/woodc/"
+    elseif (jit.os == "Windows") then
+        woodcDir = "C:\\Users\\woodc\\"
+    end
     use {
-        "rcarriga/nvim-dap-ui",
+        -- "rcarriga/nvim-dap-ui",
+        woodcDir .. "nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
-        config = function()
-            local dap = require('dap')
-            local dapui = require("dapui")
-            dapui.setup()
-            dap.listeners.after.event_initialized["dapui_config"] = function()
-                dapui.open()
-            end
-            dap.listeners.before.event_terminated["dapui_config"] = function()
-                dapui.close()
-            end
-            dap.listeners.before.event_exited["dapui_config"] = function()
-                dapui.close()
-            end
-        end,
     }
 
     use {
@@ -88,9 +80,6 @@ return require('packer').startup(function(use)
         "mfussenegger/nvim-dap",
     }
 
-    use 'EdenEast/nightfox.nvim'
-
-    use 'ThePrimeagen/vim-be-good'
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
@@ -98,14 +87,6 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } }
-    }
-
-    use {
-        'marko-cerovac/material.nvim',
-        config = function()
-            vim.g.material_style = "deep ocean";
-            vim.cmd 'colorscheme material'
-        end
     }
 
     use {
@@ -157,7 +138,6 @@ return require('packer').startup(function(use)
 
     use 'github/copilot.vim'
 
-    use { "bluz71/vim-moonfly-colors", as = "moonfly" }
     if packer_bootstrap then
         require('packer').sync()
     end
