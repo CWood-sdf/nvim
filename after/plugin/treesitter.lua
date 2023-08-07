@@ -1,3 +1,5 @@
+require 'nvim-treesitter.install'.compilers = { 'zig', 'clang' }
+
 require 'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "c", "javascript", "typescript", "lua", "vim", "vimdoc", "query" },
@@ -19,5 +21,3 @@ require 'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = false,
     },
 }
-
-require 'nvim-treesitter.install'.compilers = { 'zig', 'clang' }
