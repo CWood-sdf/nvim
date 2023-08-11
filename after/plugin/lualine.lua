@@ -4,12 +4,15 @@
 -- CWood-sdf additions: Copilot status, formatting name, debug name
 local lualine = require('lualine')
 --needed bc lualine with bold in gui is rlly ugly
-local boldSetting = (function()
-    if vim.fn.exists('GuiFont') == 1 then
-        return ''
-    end
-    return 'bold'
-end)()
+local boldSetting = ''
+vim.defer_fn(function()
+    boldSetting = (function()
+        if vim.fn.exists('GuiFont') == 1 then
+            return ''
+        end
+        return 'bold'
+    end)()
+end, 500)
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
