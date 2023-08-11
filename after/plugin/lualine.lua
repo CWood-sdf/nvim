@@ -124,7 +124,7 @@ ins_left {
 ins_left {
     'filename',
     cond = conditions.buffer_not_empty,
-    color = { fg = "#aaaaff", gui = 'bold' },
+    color = { fg = "#aaaaff", gui = '' },
 }
 
 ins_left { 'location' }
@@ -132,14 +132,14 @@ ins_left { 'location' }
 ins_left {
     'o:encoding', -- option component same as &encoding in viml
     cond = conditions.hide_in_width,
-    color = { fg = colors.green, gui = 'bold' },
+    color = { fg = colors.green, gui = '' },
 }
 
 ins_left {
     'fileformat',
     fmt = string.upper,
     icons_enabled = true,
-    color = { fg = colors.green, gui = 'bold' },
+    color = { fg = colors.green, gui = '' },
 }
 -- ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
 
@@ -169,21 +169,21 @@ ins_left {
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
-            msg = ': ' .. msg
+            msg = ' : ' .. msg
             return msg
         end
         for _, client in ipairs(clients) do
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                 msg = client.name
-                msg = ': ' .. msg
+                msg = ' : ' .. msg
                 return msg
             end
         end
-        msg = ': ' .. msg
+        msg = ' : ' .. msg
         return msg
     end,
-    color = { fg = '#ffffff', gui = 'bold' },
+    color = { fg = '#ffffff', gui = '' },
 }
 -- ins_left {
 --     function()
@@ -217,7 +217,7 @@ ins_right {
     end,
     color = {
         fg = "#dddddd",
-        gui = "bold"
+        gui = ""
     }
 }
 -- Add components to right sections
@@ -231,7 +231,7 @@ ins_right {
 ins_right {
     'branch',
     icon = '',
-    color = { fg = colors.violet, gui = 'bold' },
+    color = { fg = colors.violet, gui = '' },
 }
 
 ins_right {
