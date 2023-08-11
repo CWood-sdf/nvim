@@ -30,9 +30,6 @@ require("formatter").setup({
         css = {
             UseMasonFormatter("css", "prettier")
         },
-        cpp = {
-            UseMasonFormatter("cpp", "clangformat")
-        },
         -- Formatter configurations for filetype "lua" go here
         -- and will be executed in order
         -- lua = {
