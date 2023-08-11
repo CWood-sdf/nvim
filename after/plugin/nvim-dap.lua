@@ -1,7 +1,7 @@
 local wk = require("stuff.wkutils")
 require("mason").setup()
 require("mason-nvim-dap").setup({
-    ensure_installed = {},
+    ensure_installed = { 'codelldb' },
     handlers = {}, -- sets up dap in the predefined manner
 })
 

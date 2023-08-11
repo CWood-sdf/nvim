@@ -1,12 +1,18 @@
 -- Utilities for creating configurations
 -- }
 -- local util = require("formatter.util")
-
+local masonRegistry = require 'mason-registry'
 ---@diagnostic disable-next-line: unused-local, unused-function
 local UseMasonFormatter = function(type, name)
-    return require("formatter.filetypes." .. type)[name]
+    local fmt = require("formatter.filetypes." .. type)[name]
+    if (fmt == nil) then
+        error("can't find formatter default for " .. name, 1)
+    end
+    if (masonRegistry.is_installed(fmt().exe) == false) then
+        print("Mason formatter " .. fmt().exe .. " not installed")
+    end
+    return fmt
 end
-MasonFormatterOverrides = { "typescript" }
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup({
     -- Enable or disable logging
@@ -71,7 +77,8 @@ function Format()
             end,
         })
     end
-    if ((require("formatter.config").values.filetype[vim.bo.filetype]) ~= nil) then
+    local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
+    if (formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe)) then
         vim.cmd("Format")
         return true
     end
@@ -85,7 +92,7 @@ end
 
 function FormatPost()
     if not formatSuccess then
-        print("Formatting failed for filetype: " .. vim.bo.filetype .. " through lsp and lack of configured formatter")
+        print("Formatting failed for filetype " .. vim.bo.filetype .. " through lsp and lack of configured formatter")
     end
 end
 
