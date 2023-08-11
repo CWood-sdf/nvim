@@ -18,6 +18,9 @@ require("formatter").setup({
         typescript = {
             UseMasonFormatter("typescript", "prettier"),
         },
+        javascript = {
+            UseMasonFormatter("javascript", "prettier"),
+        },
         css = {
             UseMasonFormatter("css", "prettier")
         },
