@@ -10,7 +10,6 @@ wk.makeGroup("n", "<leader>f", "[F]ile", function(remap)
     remap("c", "[C]ommands", builtin.commands);
     remap("t", "[T]ags", builtin.tags);
     remap("r", "[R]ecent", builtin.oldfiles);
-    remap("g", "[G]it files (C-p)", builtin.git_files);
+    remap("g", "[G]it files (<C-p>)", builtin.git_files);
 end)
-wk.remapNoGroup('n', '<C-p>', 'Project search', builtin.git_files, {})
 wk.writeBuf()
