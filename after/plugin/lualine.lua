@@ -3,7 +3,13 @@
 -- Credit: glepnir
 -- CWood-sdf additions: Copilot status, formatting name, debug name
 local lualine = require('lualine')
-
+--needed bc lualine with bold in gui is rlly ugly
+local boldSetting = (function()
+    if vim.fn.exists('GuiFont') == 1 then
+        return ''
+    end
+    return 'bold'
+end)()
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
@@ -124,7 +130,7 @@ ins_left {
 ins_left {
     'filename',
     cond = conditions.buffer_not_empty,
-    color = { fg = "#aaaaff", gui = '' },
+    color = { fg = "#aaaaff", gui = boldSetting },
 }
 
 ins_left { 'location' }
@@ -132,16 +138,16 @@ ins_left { 'location' }
 ins_left {
     'o:encoding', -- option component same as &encoding in viml
     cond = conditions.hide_in_width,
-    color = { fg = colors.green, gui = '' },
+    color = { fg = colors.green, gui = boldSetting },
 }
 
 ins_left {
     'fileformat',
     fmt = string.upper,
     icons_enabled = true,
-    color = { fg = colors.green, gui = '' },
+    color = { fg = colors.green, gui = boldSetting },
 }
--- ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
+-- ins_left { 'progress', color = { fg = colors.fg, gui = boldSetting } }
 
 ins_left {
     'diagnostics',
@@ -166,31 +172,36 @@ ins_left {
     -- Lsp server name .
     function()
         local msg = ''
+        local sign = ''
+        if vim.fn.exists('GuiFont') ~= 0 then
+            sign = sign .. ' '
+        end
+        sign = sign .. ': '
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
-            msg = ' : ' .. msg
+            msg = sign .. msg
             return msg
         end
         for _, client in ipairs(clients) do
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                 msg = client.name
-                msg = ' : ' .. msg
+                msg = sign .. msg
                 return msg
             end
         end
-        msg = ' : ' .. msg
+        msg = sign .. msg
         return msg
     end,
-    color = { fg = '#ffffff', gui = '' },
+    color = { fg = '#ffffff', gui = boldSetting },
 }
 -- ins_left {
 --     function()
 --         return 'sdf'
 --     end,
 --     icon = "",
---     color = { fg = "#ffffff", gui = "bold" },
+--     color = { fg = "#ffffff", gui = boldSetting },
 -- }
 --
 -- ins_left {
@@ -198,7 +209,7 @@ ins_left {
 --         return 'sdf'
 --     end,
 --     icon = "",
---     color = { fg = "#ffffff", gui = "bold" },
+--     color = { fg = "#ffffff", gui = boldSetting },
 -- }
 
 
@@ -217,7 +228,7 @@ ins_right {
     end,
     color = {
         fg = "#dddddd",
-        gui = ""
+        gui = boldSetting
     }
 }
 -- Add components to right sections
@@ -231,7 +242,7 @@ ins_right {
 ins_right {
     'branch',
     icon = '',
-    color = { fg = colors.violet, gui = '' },
+    color = { fg = colors.violet, gui = boldSetting },
 }
 
 ins_right {
