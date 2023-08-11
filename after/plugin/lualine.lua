@@ -8,7 +8,7 @@ local boldSetting = ''
 vim.defer_fn(function()
     boldSetting = (function()
         if vim.fn.exists('GuiFont') == 1 then
-            return ''
+            return 'bold'
         end
         return 'bold'
     end)()
