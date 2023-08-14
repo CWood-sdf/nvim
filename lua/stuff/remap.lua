@@ -9,6 +9,8 @@ end)
 wk.makeGroup("n", "<leader>p", '[P]roject', function(remap)
     remap('v', '[V]iew', vim.cmd.Ex)
 end)
+wk.remapNoGroup("x", "<C-c>", "Copy", [["+y]], { noremap = true })
+wk.remapNoGroup("n", "<C-c>", "Copy", [["+y]], { noremap = true })
 
 wk.remapNoGroup("i", "<C-s>", "Save file", function()
     vim.cmd('stopinsert')
