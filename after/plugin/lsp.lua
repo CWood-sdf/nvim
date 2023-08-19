@@ -24,7 +24,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-CR>'] = cmp.mapping.confirm({ select = true }),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-Space>"] = cmp.mapping.confirm({ select = true }),
 })
 
 cmp_mappings['<Tab>'] = nil
@@ -44,12 +44,8 @@ lsp.set_preferences({
     }
 })
 
+---@diagnostic disable-next-line: unused-local
 lsp.on_attach(function(client, bufnr)
-    --vim.lsp.buf.inlay_hint(bufnr, true)
-    -- vim.diagnostic.enable(bufnr)
-    -- vim.diagnostic.show(nil, bufnr, nil, {
-    --     virtual_text = true
-    -- })
     local opts = { buffer = bufnr, noremap = false }
     wk.remapNoGroup("n", "K", "Hover", function() vim.lsp.buf.hover() end, opts)
     wk.makeGroup("n", "<leader>v", "LSP", function(remap)
@@ -64,7 +60,7 @@ lsp.on_attach(function(client, bufnr)
         remap("r", "[R]eferences", function() vim.lsp.buf.references() end, opts)
         remap("n", "Re[n]ame", function() vim.lsp.buf.rename() end, opts)
     end)
-    wk.makeGroup("n", "<leader>vw", "LSP Workspace", function(remap)
+    wk.makeGroup("n", "<leader>vw", "Workspace", function(remap)
         remap("s", "Symbols", function() vim.lsp.buf.workspace_symbol() end, opts)
     end)
     wk.writeBuf()
