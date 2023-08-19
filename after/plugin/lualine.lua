@@ -36,6 +36,7 @@ local function getModeColor()
         v = colors.blue,
         [''] = colors.blue,
         V = colors.blue,
+        [''] = colors.blue,
         c = colors.magenta,
         no = colors.red,
         s = colors.orange,
