@@ -203,6 +203,7 @@ ins_left {
 -- }
 
 
+-- Add components to right sections
 ins_right {
     function()
         local output = vim.api.nvim_command_output("Copilot status")
@@ -221,7 +222,6 @@ ins_right {
         gui = boldSetting
     }
 }
--- Add components to right sections
 ins_right {
     'filetype',
     icon_only = false,
