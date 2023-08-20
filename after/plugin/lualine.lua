@@ -2,15 +2,16 @@
 -- Author: shadmansaleh
 -- Credit: glepnir
 -- CWood-sdf additions: Copilot status, formatting name, debug name
-local lualine = require('lualine')
+local lualine = require("lualine")
+local masonRegistry = require("mason-registry")
 --needed bc lualine with bold in gui is rlly ugly
-local boldSetting = ''
+local boldSetting = ""
 vim.defer_fn(function()
     boldSetting = (function()
-        if vim.fn.exists('GuiFont') == 1 then
-            return 'bold'
+        if vim.fn.exists("GuiFont") == 1 then
+            return "bold"
         end
-        return 'bold'
+        return "bold"
     end)()
 end, 500)
 -- Color table for highlights
@@ -34,9 +35,9 @@ local function getModeColor()
         n = colors.red,
         i = colors.green,
         v = colors.blue,
-        [''] = colors.blue,
+        [""] = colors.blue,
         V = colors.blue,
-        [''] = colors.blue,
+        [""] = colors.blue,
         c = colors.magenta,
         no = colors.red,
         s = colors.orange,
@@ -48,8 +49,8 @@ local function getModeColor()
         ce = colors.red,
         r = colors.cyan,
         rm = colors.cyan,
-        ['r?'] = colors.cyan,
-        ['!'] = colors.red,
+        ["r?"] = colors.cyan,
+        ["!"] = colors.red,
         t = colors.green,
     }
     return { fg = mode_color[vim.fn.mode()] }
@@ -57,14 +58,14 @@ end
 
 local conditions = {
     buffer_not_empty = function()
-        return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
     end,
     hide_in_width = function()
         return vim.fn.winwidth(0) > 80
     end,
     check_git_workspace = function()
-        local filepath = vim.fn.expand('%:p:h')
-        local gitdir = vim.fn.finddir('.git', filepath .. ';')
+        local filepath = vim.fn.expand("%:p:h")
+        local gitdir = vim.fn.finddir(".git", filepath .. ";")
         return gitdir and #gitdir > 0 and #gitdir < #filepath
     end,
 }
@@ -75,9 +76,9 @@ local config = {
     options = {
         globalstatus = true,
         -- Disable sections and component separators
-        component_separators = '',
-        section_separators = '',
-        theme = 'tokyonight',
+        component_separators = "",
+        section_separators = "",
+        theme = "tokyonight",
     },
     sections = {
         -- these are to remove the defaults
@@ -110,70 +111,75 @@ local function ins_right(component)
     table.insert(config.sections.lualine_x, component)
 end
 
-ins_left {
+ins_left({
     function()
-        return '▊'
+        return "▊"
     end,
     color = getModeColor,
     padding = { left = 0, right = 0 }, -- We don't need space before this
-}
-ins_left {
-    'filename',
+})
+ins_left({
+    "filename",
     cond = conditions.buffer_not_empty,
     color = { fg = "#aaaaff", gui = boldSetting },
-}
+})
 
-ins_left { 'location' }
+ins_left({ "location" })
 
-ins_left {
-    'o:encoding', -- option component same as &encoding in viml
+ins_left({
+    "o:encoding", -- option component same as &encoding in viml
     cond = conditions.hide_in_width,
     color = { fg = colors.green, gui = boldSetting },
-}
+})
 
-ins_left {
-    'fileformat',
+ins_left({
+    "fileformat",
     fmt = string.upper,
     icons_enabled = true,
     color = { fg = colors.green, gui = boldSetting },
-}
+})
 -- ins_left { 'progress', color = { fg = colors.fg, gui = boldSetting } }
 
-ins_left {
-    'diagnostics',
-    sources = { 'nvim_diagnostic' },
-    symbols = { error = ' ', warn = ' ', info = ' ' },
+ins_left({
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    symbols = { error = " ", warn = " ", info = " " },
     diagnostics_color = {
         color_error = { fg = colors.red },
         color_warn = { fg = colors.yellow },
         color_info = { fg = colors.cyan },
     },
-}
+})
 
 -- Insert mid section. You can make any number of sections in neovim :)
 -- for lualine it's any number greater then 2
-ins_left {
+ins_left({
     function()
-        return '%='
+        return "%="
     end,
-}
+})
 
-ins_left {
+ins_left({
     -- Lsp server name .
     function()
-        local msg = ''
-        local sign = ''
-        if vim.fn.exists('GuiFont') ~= 0 then
-            sign = sign .. ' '
-        end
-        sign = sign .. ': '
-        local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+        local msg = ""
+        local sign = " "
+        local format_sign = " "
+        local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
-            msg = sign .. msg
-            return msg
+            return ""
         end
         for _, client in ipairs(clients) do
+            local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
+            if
+                (formatter == nil or not masonRegistry.is_installed(formatter[1]().exe))
+                and client.server_capabilities.documentFormattingProvider
+            then
+                -- remove last two chars of sign
+                sign = sign .. format_sign
+                format_sign = ""
+            end
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                 msg = client.name
@@ -182,36 +188,45 @@ ins_left {
             end
         end
         msg = sign .. msg
-        return msg
+        return ""
     end,
-    color = { fg = '#ffffff', gui = boldSetting },
-}
--- ins_left {
---     function()
---         return 'sdf'
---     end,
---     icon = "",
---     color = { fg = "#ffffff", gui = boldSetting },
--- }
---
--- ins_left {
---     function()
---         return 'sdf'
---     end,
---     icon = "",
---     color = { fg = "#ffffff", gui = boldSetting },
--- }
+    color = { fg = "#ffffff", gui = boldSetting },
+})
+ins_left({
+    function()
+        local sign = " "
+        local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
+        if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
+            return sign .. formatter[1]().exe
+        end
+        return ""
+    end,
+    color = { fg = "#ffffff", gui = boldSetting },
+})
 
+ins_left {
+    function()
+        local dap = require 'dap'
+        local has_dap = dap.configurations[vim.bo.filetype] ~= nil
+        if has_dap == false then
+            return ""
+        end
+
+        local dap_name = dap.configurations[vim.bo.filetype][1].type
+        return " " .. dap_name
+    end,
+    color = { fg = "#ffffff", gui = boldSetting },
+}
 
 -- Add components to right sections
-ins_right {
+ins_right({
     function()
         local output = vim.api.nvim_command_output("Copilot status")
-        if (output:find("Not logged in")) then
+        if output:find("Not logged in") then
             return ""
-        elseif (output:find("Enabled")) then
+        elseif output:find("Enabled") then
             return ""
-        elseif (output:find("Disabled")) then
+        elseif output:find("Disabled") then
             return ""
         else
             return ""
@@ -219,41 +234,41 @@ ins_right {
     end,
     color = {
         fg = "#dddddd",
-        gui = boldSetting
-    }
-}
-ins_right {
-    'filetype',
+        gui = boldSetting,
+    },
+})
+ins_right({
+    "filetype",
     icon_only = false,
     icon = {
-        align = 'left',
-    }
-}
-ins_right {
-    'branch',
-    icon = '',
+        align = "left",
+    },
+})
+ins_right({
+    "branch",
+    icon = "",
     color = { fg = colors.violet, gui = boldSetting },
-}
+})
 
-ins_right {
-    'diff',
+ins_right({
+    "diff",
     -- Is it me or the symbol for modified us really weird
-    symbols = { added = ' ', modified = ' ', removed = ' ' },
+    symbols = { added = " ", modified = " ", removed = " " },
     diff_color = {
         added = { fg = colors.green },
         modified = { fg = "#ffbb00" },
         removed = { fg = colors.red },
     },
     cond = conditions.hide_in_width,
-}
+})
 
-ins_right {
+ins_right({
     function()
-        return '▊'
+        return "▊"
     end,
     color = getModeColor,
     padding = { left = 1 },
-}
+})
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)

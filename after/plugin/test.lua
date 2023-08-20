@@ -1,5 +1,9 @@
 local dap = require 'dap'
 function Test()
-    -- vim.print(vim.tbl_keys(dap.configurations))
-    vim.print(vim.tbl_keys(require('lualine').get_config()))
+    vim.print(dap.active)
+
+    -- type = adapter name
+    -- vim.print(dap.configurations.rust[1].type)
+
+    -- vim.print(vim.tbl_keys(da))
 end
