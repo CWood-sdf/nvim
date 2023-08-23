@@ -59,9 +59,7 @@ require("formatter").setup({
 
     },
 })
-local formatSuccess = true
 function Format()
-    formatSuccess = true
     local lspFormatSuccess = false
     local lspFormat = function()
         vim.lsp.buf.format({
@@ -82,14 +80,6 @@ function Format()
     lspFormat()
     if (lspFormatSuccess) then
         return
-    else
-        formatSuccess = false
-    end
-end
-
-function FormatPost()
-    if not formatSuccess then
-        print("Formatting failed for filetype " .. vim.bo.filetype .. " through lsp and lack of configured formatter")
     end
 end
 
@@ -97,6 +87,5 @@ end
 vim.cmd([[augroup Format
     autocmd!
     autocmd BufWritePre * lua Format()
-    autocmd BufWritePost * lua FormatPost()
 augroup END
 ]])

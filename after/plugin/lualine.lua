@@ -124,6 +124,7 @@ ins_left({
     color = { fg = "#aaaaff", gui = boldSetting },
 })
 
+ins_left { 'progress', color = { fg = colors.fg, gui = boldSetting } }
 ins_left({ "location" })
 
 ins_left({
@@ -138,7 +139,6 @@ ins_left({
     icons_enabled = true,
     color = { fg = colors.green, gui = boldSetting },
 })
--- ins_left { 'progress', color = { fg = colors.fg, gui = boldSetting } }
 
 ins_left({
     "diagnostics",

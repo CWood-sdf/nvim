@@ -22,6 +22,9 @@ local remap = function(key, desc, func, opts)
     end
 end
 
+M.feedKeys = function(keys, mode)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, true, true), mode, true)
+end
 M.makeGroup = function(mode, key, desc, makeRemaps)
     if (M.remaps[mode] == nil) then
         M.remaps[mode] = {}

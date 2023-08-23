@@ -24,20 +24,26 @@ vim.cmd([[
   augroup end
 ]])
 return require('packer').startup(function(use)
+    --formatter
     use { 'mhartington/formatter.nvim' }
+    --theme
     use {
         'folke/tokyonight.nvim',
         config = function()
             require('tokyonight').setup()
         end
     }
+
+    -- line at bottom
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true },
     }
 
+    -- just fancy icons for dap
     use 'nvim-tree/nvim-web-devicons'
 
+    --autocomment
     use {
         'numToStr/Comment.nvim',
         config = function()
@@ -45,6 +51,7 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- remember keymaps
     use {
         "folke/which-key.nvim",
         config = function()
@@ -57,6 +64,8 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    -- Debugger stuff
     use {
         "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
@@ -75,13 +84,14 @@ return require('packer').startup(function(use)
 
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
+    -- fuzzy finder
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
 
+    -- highlighting
     use {
         'nvim-treesitter/nvim-treesitter',
         { run = ':TSUpdate' }
@@ -90,15 +100,18 @@ return require('packer').startup(function(use)
     use {
         'nvim-treesitter/playground'
     }
-
+    -- epic fast file goto
     use {
         'ThePrimeagen/harpoon'
     }
 
+    -- undotree
     use 'mbbill/undotree'
 
+    -- git
     use 'tpope/vim-fugitive'
 
+    -- lsp
     use {
         'VonHeikemen/lsp-zero.nvim',
         --branch = 'v2.x',
@@ -121,14 +134,9 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' }, -- Required
             { 'rafamadriz/friendly-snippets' }
         },
-        -- use {
-        --     requires = { "nvim-treesitter/nvim-treesitter" },
-        --     "Badhi/nvim-treesitter-cpp-tools",
-        -- }
-        --
     }
 
-
+    -- copilot
     use 'github/copilot.vim'
 
     if packer_bootstrap then
