@@ -5,7 +5,7 @@ vim.g.mapleader = " ";
 wk.makeGroup("n", "do", "Over", function(remap)
     remap("%", "match", function()
         local charUnderCursor = vim.fn.getline("."):sub(vim.fn.col("."), vim.fn.col("."))
-        local allowedChars = "()[]{}\"'"
+        local allowedChars = "()[]{}"
         if string.find(allowedChars, charUnderCursor, 1, true) then
             wk.feedKeys("%x``x", "n");
         end
