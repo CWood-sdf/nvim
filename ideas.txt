@@ -1,0 +1,2 @@
+Buffer changed while formatting, not formatting (ugh)
+Whichkey registers is super slow

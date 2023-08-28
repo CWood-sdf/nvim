@@ -9,8 +9,12 @@ local currentGroupMode = "";
 
 
 local remap = function(key, desc, func, opts)
+    opts = opts or {}
     local keys = currentGroup .. key
-    M.remaps[currentGroupMode][keys] = { func, desc, opts }
+    M.remaps[currentGroupMode][keys] = { func, desc }
+    for k, v in pairs(opts) do
+        M.remaps[currentGroupMode][keys][k] = v
+    end
     -- if there's a '(...)' in the desc, then remap that key to the func too
     if (desc:find('%(') ~= nil) then
         local desc2 = desc:gsub('%(.*%)', '')
@@ -39,27 +43,36 @@ M.makeGroup = function(mode, key, desc, makeRemaps)
         makeRemaps(remap)
     end
 end
-
-
-M.remapNoGroup = function(mode, key, desc, func, opts)
+M.useGroup = function(mode, key, makeRemaps)
     if (M.remaps[mode] == nil) then
-        M.remaps[mode] = {}
+        error("Can't use group " .. key .. " in mode " .. mode .. " because it doesn't exist")
     end
-    M.remaps[mode][key] = { func, desc, opts }
-end
+    currentGroup = key
+    currentGroupMode = mode
 
-M.useGroup = function(group, makeRemaps)
-    currentGroup = group
     if (makeRemaps ~= nil) then
         makeRemaps(remap)
     end
 end
 
+
+M.remapNoGroup = function(mode, key, desc, func, opts)
+    opts = opts or {}
+    if (M.remaps[mode] == nil) then
+        M.remaps[mode] = {}
+    end
+    M.remaps[mode][key] = { func, desc }
+    for k, v in pairs(opts) do
+        M.remaps[mode][key][k] = v
+    end
+end
+
+
 M.writeBuf = function()
     for k, v in pairs(M.remaps) do
-        whichkey.register(v, {
-            mode = k,
-        })
+        local opts = {}
+        opts.mode = k
+        whichkey.register(v, opts)
     end
 end
 
