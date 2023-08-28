@@ -2,9 +2,9 @@
 
 local ensure_packer = function()
     local fn = vim.fn
-    print("bootstrapping...")
     local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
     if fn.empty(fn.glob(install_path)) > 0 then
+        print("bootstrapping...")
         fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
         vim.cmd [[packadd packer.nvim]]
         return true
@@ -24,6 +24,10 @@ vim.cmd([[
   augroup end
 ]])
 return require('packer').startup(function(use)
+    -- yuhh
+    use({
+        "iamcco/markdown-preview.nvim",
+    })
     --formatter
     use { 'mhartington/formatter.nvim' }
     --theme
