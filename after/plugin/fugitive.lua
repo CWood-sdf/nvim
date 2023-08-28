@@ -16,6 +16,9 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = { "fugitive://*" },
     group = gitAugroup,
     callback = function()
+        if vim.fn.bufexists(vim.api.nvim_get_current_buf()) == 0 then
+            return
+        end
         vim.print("Fugitive loaded")
         wk.useGroup("n", "<leader>g", function(remap)
             remap("a", "[A]dd all", function()
