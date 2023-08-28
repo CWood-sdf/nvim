@@ -118,6 +118,7 @@ ins_left({
     color = getModeColor,
     padding = { left = 0, right = 0 }, -- We don't need space before this
 })
+-- sdf
 -- ins_left({
 --     "filename",
 --     cond = conditions.buffer_not_empty,
