@@ -8,10 +8,24 @@ wk.makeGroup("n", "<leader>g", "[G]it", function(remap)
     remap("c", "[C]ommit", function()
         vim.cmd("Git commit")
     end);
-    remap("a", "[A]dd all", function()
-        vim.cmd("Git add .")
-    end);
 end)
 
 
 wk.writeBuf()
+
+local gitAuGrp = vim.api.nvim_create_augroup("Git", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+
+    pattern = "fugitive://*",
+    callback = function(ev)
+        wk.useGroup("n", "<leader>g", function(remap)
+            local opts = { noremap = true, buffer = vim.api.nvim_get_current_buf() }
+            remap("a", "[A]dd all", function()
+                vim.cmd("Git add .")
+            end, opts);
+        end)
+        wk.writeBuf()
+    end,
+    group = gitAuGrp
+})
