@@ -5,6 +5,9 @@ wk.makeGroup("n", "<leader>g", "[G]it", function(remap)
     remap("p", "[P]ush", function()
         vim.cmd("Git push")
     end);
+    remap('P', "[P]ull", function()
+        vim.cmd("Git pull")
+    end);
     remap("c", "[C]ommit", function()
         vim.cmd("Git commit")
     end);
