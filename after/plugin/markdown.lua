@@ -1,13 +1,18 @@
 local wk = require("stuff.wkutils");
-vim.fn["mkdp#util#install"]()
+
 
 local mdAugroup = vim.api.nvim_create_augroup("mdPreview", {
     clear = true
 })
 
+local markdownSourced = false
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = "*.md",
     callback = function()
+        if not markdownSourced then
+            vim.fn["mkdp#util#install"]()
+            markdownSourced = true
+        end
         local bufnr = vim.api.nvim_get_current_buf()
         local opts = {
             buffer = bufnr,

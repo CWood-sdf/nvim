@@ -72,11 +72,8 @@ end)
 wk.remapNoGroup("v", "D", "Void delete", function()
     wk.feedKeys("\"_d", "n")
 end)
-wk.remapNoGroup("v", "Y", "Yank reg x", function()
-    wk.feedKeys("\"xy", "n")
-end)
-wk.remapNoGroup("v", "P", "Paste reg x", function()
-    wk.feedKeys("\"xp", "n")
+wk.remapNoGroup("v", "P", "Paste last copy", function()
+    wk.feedKeys("\"0p", "n")
 end)
 
 
