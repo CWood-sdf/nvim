@@ -1,0 +1,2 @@
+require("themer").setup()
+

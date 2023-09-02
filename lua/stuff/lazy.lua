@@ -1,13 +1,19 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require('lazy').setup({
+    {
+        "CWood-sdf/themer",
+    },
     -- yuhh
     {
         "iamcco/markdown-preview.nvim",
         event = "VeryLazy",
     },
     --formatter
-    { 'mhartington/formatter.nvim',  event = "VeryLazy" },
+    {
+        'mhartington/formatter.nvim',
+        event = "VeryLazy"
+    },
 
     --theme
     {
@@ -137,4 +143,5 @@ return require('lazy').setup({
         event = "VeryLazy"
     },
 
-})
+}
+)
