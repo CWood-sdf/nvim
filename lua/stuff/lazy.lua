@@ -2,7 +2,8 @@
 
 return require('lazy').setup({
     {
-        "CWood-sdf/themer",
+        "CWood-sdf/pineapple",
+        dev = true,
     },
     -- yuhh
     {
@@ -143,5 +144,9 @@ return require('lazy').setup({
         event = "VeryLazy"
     },
 
+}, {
+    dev = {
+        path = "/mnt/c/Users/woodc/"
+    }
 }
 )
