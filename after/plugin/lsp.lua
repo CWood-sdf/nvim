@@ -42,8 +42,7 @@ lsp.set_preferences({
     }
 })
 
----@diagnostic disable-next-line: unused-local
-lsp.on_attach(function(client, bufnr)
+local onAttach = function(client, bufnr)
     local opts = { buffer = bufnr, noremap = false }
     wk.remapNoGroup("n", "K", "Hover", function() vim.lsp.buf.hover() end, opts)
     wk.makeGroup("n", "<leader>v", "LSP", function(remap)
@@ -62,7 +61,15 @@ lsp.on_attach(function(client, bufnr)
         remap("s", "Symbols", function() vim.lsp.buf.workspace_symbol() end, opts)
     end)
     wk.writeBuf()
-end)
+end
+---@diagnostic disable-next-line: unused-local
+lsp.on_attach(onAttach)
+
+require('lspconfig').arduino_language_server.setup({
+    cmd = { "/mnt/c/Users/woodc/downloads/arduino-language-server", "-clangd",
+        "/home/cwood/.local/share/nvim/mason/bin/clangd", "-cli-config",
+        "/home/cwood/snap/arduino-cli/41/.arduino15/arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
+})
 lsp.setup()
 
 

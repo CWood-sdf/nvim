@@ -2,8 +2,15 @@
 
 return require('lazy').setup({
     {
+        "stevearc/vim-arduino",
+    },
+    {
         "CWood-sdf/pineapple",
         dev = true,
+        dependencies = require("stuff.pineapple"),
+        opts = {
+            installedRegistry = "stuff.pineapple",
+        },
     },
     -- yuhh
     {
