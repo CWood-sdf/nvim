@@ -64,12 +64,19 @@ local onAttach = function(client, bufnr)
 end
 ---@diagnostic disable-next-line: unused-local
 lsp.on_attach(onAttach)
-
-require('lspconfig').arduino_language_server.setup({
-    cmd = { "/mnt/c/Users/woodc/downloads/arduino-language-server", "-clangd",
-        "/home/cwood/.local/share/nvim/mason/bin/clangd", "-cli-config",
-        "/home/cwood/snap/arduino-cli/41/.arduino15/arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
-})
+if jit.os == "Windows" then
+    require('lspconfig').arduino_language_server.setup({
+        cmd = { "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\arduino-language-server.cmd", "-clangd",
+            "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\clangd.cmd", "-cli-config",
+            "C:\\Users\\woodc\\appdata\\local\\arduino15\\arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
+    })
+else
+    require('lspconfig').arduino_language_server.setup({
+        cmd = { "/mnt/c/Users/woodc/downloads/arduino-language-server", "-clangd",
+            "/home/cwood/.local/share/nvim/mason/bin/clangd", "-cli-config",
+            "/home/cwood/snap/arduino-cli/41/.arduino15/arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
+    })
+end
 lsp.setup()
 
 

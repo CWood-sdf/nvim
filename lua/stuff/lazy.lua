@@ -153,7 +153,12 @@ return require('lazy').setup({
 
 }, {
     dev = {
-        path = "/mnt/c/Users/woodc/"
+        path = (function()
+            if jit.os == "Windows" then
+                return "C:\\Users\\woodc\\"
+            end
+            return "/mnt/c/Users/woodc/"
+        end)()
     }
 }
 )
