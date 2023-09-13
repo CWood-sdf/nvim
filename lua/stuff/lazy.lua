@@ -2,11 +2,15 @@
 
 return require('lazy').setup({
     {
-        --(function()
-         --   if jit.os ~= "Windows" then
-                 "stevearc/vim-arduino"
-          --  end
-        --end)(),
+        (function()
+            if jit.os ~= "Windows" then
+                return "stevearc/vim-arduino"
+            end
+        end)(),
+    },
+    {
+        "CWood-sdf/spaceport.nvim",
+        dev = true,
     },
     {
         "CWood-sdf/pineapple",
@@ -146,7 +150,8 @@ return require('lazy').setup({
             { 'L3MON4D3/LuaSnip' }, -- Required
             { 'rafamadriz/friendly-snippets' }
         },
-        event = "VeryLazy",
+        lazy = false
+        -- event = "VeryLazy",
     },
 
     -- copilot
