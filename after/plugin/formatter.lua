@@ -36,6 +36,9 @@ require("formatter").setup({
         markdown = {
             UseMasonFormatter("markdown", "prettier")
         },
+        -- lua = {
+        --     UseMasonFormatter("lua", "stylua"),
+        -- },
         -- Formatter configurations for filetype "lua" go here
         -- and will be executed in order
         -- lua = {

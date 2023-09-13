@@ -73,9 +73,7 @@ if jit.os == "Windows" then
     })
 else
     require('lspconfig').arduino_language_server.setup({
-        cmd = { "/mnt/c/Users/woodc/downloads/arduino-language-server", "-clangd",
-            "/home/cwood/.local/share/nvim/mason/bin/clangd", "-cli-config",
-            "/home/cwood/snap/arduino-cli/41/.arduino15/arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
+        cmd = { "node", --[[ "run", ]] "/mnt/c/Users/woodc/ar_ls_inter_client/index.js" },
     })
 end
 lsp.setup()

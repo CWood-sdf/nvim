@@ -2,7 +2,11 @@
 
 return require('lazy').setup({
     {
-        "stevearc/vim-arduino",
+        --(function()
+         --   if jit.os ~= "Windows" then
+                 "stevearc/vim-arduino"
+          --  end
+        --end)(),
     },
     {
         "CWood-sdf/pineapple",
