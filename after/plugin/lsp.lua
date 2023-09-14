@@ -83,18 +83,18 @@ local onAttach = function(client, bufnr)
 end
 ---@diagnostic disable-next-line: unused-local
 lsp.on_attach(onAttach)
--- if jit.os == "Windows" then
---     require('lspconfig').arduino_language_server.setup({
---         -- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
---         cmd = { "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\arduino-language-server.cmd", "-clangd",
---             "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\clangd.cmd", "-cli-config",
---             "C:\\Users\\woodc\\appdata\\local\\arduino15\\arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
---     })
--- else
---     require('lspconfig').arduino_language_server.setup({
---         cmd = { "node", --[[ "run", ]] "/mnt/c/Users/woodc/ar_ls_inter_client/index.js" },
---     })
--- end
+if jit.os == "Windows" then
+    require('lspconfig').arduino_language_server.setup({
+        -- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
+        cmd = { "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\arduino-language-server.cmd", "-clangd",
+            "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\clangd.cmd", "-cli-config",
+            "C:\\Users\\woodc\\appdata\\local\\arduino15\\arduino-cli.yaml", "-fqbn", "arduino:avr:pro", "-log", "true" },
+    })
+else
+    require('lspconfig').arduino_language_server.setup({
+        cmd = { "node", --[[ "run", ]] "/mnt/c/Users/woodc/ar_ls_inter_client/index.js" },
+    })
+end
 lsp.setup()
 
 
