@@ -53,7 +53,7 @@ local function getModeColor()
         ["!"] = colors.red,
         t = colors.green,
     }
-    return { fg = mode_color[vim.fn.mode()] }
+    return { bg = mode_color[vim.fn.mode()], fg = "#000000" }
 end
 
 local conditions = {
@@ -111,21 +111,22 @@ local function ins_right(component)
     table.insert(config.sections.lualine_x, component)
 end
 
-ins_left({
-    function()
-        return "▊"
-    end,
-    color = getModeColor,
-    padding = { left = 0, right = 0 }, -- We don't need space before this
-})
+-- ins_left({
+--     function()
+--         return "▊"
+--     end,
+--     color = getModeColor,
+--     padding = { left = 0, right = 0 }, -- We don't need space before this
+-- })
 -- sdf
 ins_left({
     "filename",
+    color = getModeColor,
     cond = conditions.buffer_not_empty,
-    color = { fg = "#aaaaff", gui = boldSetting },
+    -- color = { fg = "#aaaaff", gui = boldSetting },
 })
 
-ins_left { 'progress', color = { fg = colors.fg, gui = boldSetting } }
+ins_left { 'progress' }
 ins_left({ "location" })
 
 ins_left({
@@ -163,13 +164,13 @@ ins_left({
 ins_left({
     -- Lsp server name .
     function()
-        local msg = ""
-        local sign = " "
-        local format_sign = " "
+        local hasLsp = false
+        local hasFmt = false
+        local hasDbg = false
         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
-            return ""
+            hasLsp = false
         end
         for _, client in ipairs(clients) do
             local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
@@ -178,46 +179,65 @@ ins_left({
                 and client.server_capabilities.documentFormattingProvider
             then
                 -- remove last two chars of sign
-                sign = sign .. format_sign
-                format_sign = ""
+                -- sign = sign .. format_sign
+                -- format_sign = ""
+                hasFmt = true
             end
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                msg = client.name
-                msg = sign .. msg
-                return msg
+                -- msg = client.name
+                -- msg = sign .. msg
+                -- return sign
+                hasLsp = true
             end
         end
-        msg = sign .. msg
-        return ""
-    end,
-    color = { fg = "#ffffff", gui = boldSetting },
-})
-ins_left({
-    function()
-        local sign = " "
         local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
         if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
-            return sign .. formatter[1]().exe
+            hasFmt = true
         end
-        return ""
+        local dap = require 'dap'
+        local has_dap = dap.configurations[vim.bo.filetype] ~= nil
+        if has_dap then
+            hasDbg = true
+        end
+        local ret = ""
+        if hasLsp then
+            ret = " "
+        end
+        if hasFmt then
+            ret = ret .. " "
+        end
+        if hasDbg then
+            ret = ret .. " "
+        end
+        return ret
     end,
     color = { fg = "#ffffff", gui = boldSetting },
 })
-
-ins_left {
-    function()
-        local dap = require 'dap'
-        local has_dap = dap.configurations[vim.bo.filetype] ~= nil
-        if has_dap == false then
-            return ""
-        end
-
-        local dap_name = dap.configurations[vim.bo.filetype][1].type
-        return " " .. dap_name
-    end,
-    color = { fg = "#ffffff", gui = boldSetting },
-}
+-- ins_left({
+--     function()
+--         local sign = " "
+--         local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
+--         if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
+--             return sign .. formatter[1]().exe
+--         end
+--         return ""
+--     end,
+--     color = { fg = "#ffffff", gui = boldSetting },
+-- })
+--
+-- ins_left {
+--     function()
+--         local dap = require 'dap'
+--         local has_dap = dap.configurations[vim.bo.filetype] ~= nil
+--         if has_dap == false then
+--             return ""
+--         end
+--
+--         return " "
+--     end,
+--     color = { fg = "#ffffff", gui = boldSetting },
+-- }
 
 -- Add components to right sections
 ins_right({
@@ -233,10 +253,6 @@ ins_right({
             return ""
         end
     end,
-    color = {
-        fg = "#dddddd",
-        gui = boldSetting,
-    },
 })
 ins_right({
     "filetype",
@@ -244,11 +260,6 @@ ins_right({
     icon = {
         align = "left",
     },
-})
-ins_right({
-    "branch",
-    icon = "",
-    color = { fg = colors.violet, gui = boldSetting },
 })
 
 ins_right({
@@ -264,12 +275,18 @@ ins_right({
 })
 
 ins_right({
-    function()
-        return "▊"
-    end,
+    "branch",
+    icon = "",
     color = getModeColor,
-    padding = { left = 1 },
 })
+
+-- ins_right({
+--     function()
+--         return "▊"
+--     end,
+--     color = getModeColor,
+--     padding = { left = 1 },
+-- })
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)

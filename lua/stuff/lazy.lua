@@ -10,7 +10,7 @@ return require('lazy').setup({
     },
     {
         "CWood-sdf/spaceport.nvim",
-        dev = true,
+        -- dev = true,
     },
     {
         "CWood-sdf/pineapple",
@@ -18,6 +18,7 @@ return require('lazy').setup({
         dependencies = require("stuff.pineapple"),
         opts = {
             installedRegistry = "stuff.pineapple",
+            colorschemeFile = "after/plugin/theme.lua"
         },
     },
     -- yuhh

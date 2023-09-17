@@ -21,6 +21,9 @@ require("formatter").setup({
     log_level = vim.log.levels.WARN,
     -- All formatter configurations are opt-in
     filetype = {
+        json = {
+            UseMasonFormatter("json", "prettier"),
+        },
         typescript = {
             UseMasonFormatter("typescript", "prettier"),
         },
