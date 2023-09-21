@@ -96,7 +96,7 @@ return require('lazy').setup({
     {
         'nvim-telescope/telescope.nvim',
         event = "VeryLazy",
-        version = '0.1.1',
+        version = '0.1.3',
         -- or                            , branch = '0.1.x',
         dependencies = { { 'nvim-lua/plenary.nvim' } }
     },
