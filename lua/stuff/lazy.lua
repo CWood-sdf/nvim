@@ -2,6 +2,9 @@
 
 return require('lazy').setup({
     {
+        'nvim-treesitter/nvim-treesitter-textobjects'
+    },
+    {
         (function()
             if jit.os ~= "Windows" then
                 return "stevearc/vim-arduino"
