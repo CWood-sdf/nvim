@@ -30,7 +30,7 @@ require 'nvim-treesitter.configs'.setup {
 
             keymaps = {
                 -- You can use the capture groups defined in textobjects.scm
-                ["af"] = "@function.outer",
+                ["af"] = { query = "@function.outer", desc = "Around function" },
                 ["if"] = "@function.inner",
                 ["ac"] = "@class.outer",
                 -- You can optionally set descriptions to the mappings (used in the desc parameter of

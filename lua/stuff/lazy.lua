@@ -2,6 +2,9 @@
 
 return require('lazy').setup({
     {
+        "ThePrimeagen/vim-be-good",
+    },
+    {
         'nvim-treesitter/nvim-treesitter-textobjects'
     },
     {

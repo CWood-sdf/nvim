@@ -7,4 +7,5 @@ return {
     "EdenEast/nightfox.nvim",
     "jadnw/nightwing.nvim",
     "adrian5/oceanic-next-vim",
+    "liuchengxu/space-vim-dark",
 }
