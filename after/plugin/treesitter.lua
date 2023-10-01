@@ -1,6 +1,21 @@
 require 'nvim-treesitter.install'.compilers = { 'zig', 'clang' }
 
 
+local selectTextObjects = {}
+local function addTextObject(key, query, desc, around, inner)
+    if around then
+        selectTextObjects['a' .. key] = { query = query .. '.outer', desc = desc }
+    end
+    if inner then
+        selectTextObjects['i' .. key] = { query = query .. '.inner', desc = desc }
+    end
+end
+addTextObject('f', '@function', 'Function', true, true)
+addTextObject('c', '@class', 'Class', true, true)
+addTextObject('s', '@scope', 'Scope', true, true)
+addTextObject('a', '@parameter', 'Parameter', true, true)
+addTextObject('l', '@loop', 'Loop', true, true)
+addTextObject('i', '@conditional', 'Conditional', true, true)
 require 'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "c", "javascript", "typescript", "lua", "vim", "vimdoc", "query" },
@@ -28,17 +43,7 @@ require 'nvim-treesitter.configs'.setup {
             -- Automatically jump forward to textobj, similar to targets.vim
             lookahead = true,
 
-            keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ["af"] = { query = "@function.outer", desc = "Around function" },
-                ["if"] = "@function.inner",
-                ["ac"] = "@class.outer",
-                -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                -- nvim_buf_set_keymap) which plugins like which-key display
-                ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                -- You can also use captures from other query groups like `locals.scm`
-                ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-            },
+            keymaps = selectTextObjects,
             -- You can choose the select mode (default is charwise 'v')
             --
             -- Can also be a function which gets passed a table with the keys
