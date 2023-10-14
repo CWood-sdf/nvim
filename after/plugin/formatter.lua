@@ -95,6 +95,14 @@ function Format()
     end
 end
 
+local wk = require("stuff.wkutils")
+wk.makeGroup("n", "<leader>s", "[S]tyle", function(remap)
+    remap("f", "[F]ormat", Format)
+    remap("s", "[S]ave", function()
+        Format()
+        vim.cmd("write")
+    end)
+end)
 -- AUTOFORMAT!!!!!
 vim.cmd([[augroup Format
     autocmd!

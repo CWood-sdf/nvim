@@ -12,6 +12,11 @@ wk.makeGroup("n", "do", "Over", function(remap)
     end)
 end)
 
+wk.remapNoGroup("t", "<Esc>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
+wk.remapNoGroup("t", "<C-k>", "Up arrow", "<Up>", { noremap = true })
+wk.remapNoGroup("t", "<C-j>", "Down arrow", "<Down>", { noremap = true })
+wk.remapNoGroup("t", "<C-e>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
+
 -- buffer stuff idrk y this is here but ok
 wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)
     remap("n", "[N]umber", function()

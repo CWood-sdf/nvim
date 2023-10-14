@@ -271,7 +271,6 @@ ins_right({
         modified = { fg = "#ffbb00" },
         removed = { fg = colors.red },
     },
-    cond = conditions.hide_in_width,
 })
 
 ins_right({

@@ -6,6 +6,7 @@ require("mason-nvim-dap").setup({
 
 local dap = require('dap')
 local dapui = require("dapui")
+dap.configurations.cuda = dap.configurations.cpp
 dap.listeners.after.event_initialized["dapui_config"] = function()
     require('lualine').hide()
     dapui.open()

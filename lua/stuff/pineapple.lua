@@ -8,4 +8,5 @@ return {
     "jadnw/nightwing.nvim",
     "adrian5/oceanic-next-vim",
     "liuchengxu/space-vim-dark",
+    "rose-pine/neovim",
 }
