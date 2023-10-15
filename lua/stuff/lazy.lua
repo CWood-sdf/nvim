@@ -2,10 +2,15 @@
 
 return require('lazy').setup({
     {
-        "ThePrimeagen/vim-be-good",
+        "CWood-sdf/future.nvim",
     },
     {
-        'nvim-treesitter/nvim-treesitter-textobjects'
+        "ThePrimeagen/vim-be-good",
+        event = "VeryLazy",
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        event = "VeryLazy",
     },
     {
         (function()
@@ -20,12 +25,12 @@ return require('lazy').setup({
     },
     {
         "CWood-sdf/pineapple",
-        dev = true,
         dependencies = require("stuff.pineapple"),
         opts = {
             installedRegistry = "stuff.pineapple",
             colorschemeFile = "after/plugin/theme.lua"
         },
+        event = "VeryLazy",
     },
     -- yuhh
     {
@@ -54,7 +59,10 @@ return require('lazy').setup({
     },
 
     -- just fancy icons for dap
-    { 'nvim-tree/nvim-web-devicons', event = "VeryLazy" },
+    {
+        'nvim-tree/nvim-web-devicons',
+        event = "VeryLazy"
+    },
 
     --autocomment
     {
@@ -81,7 +89,7 @@ return require('lazy').setup({
     {
         "rcarriga/nvim-dap-ui",
         dependencies = { "mfussenegger/nvim-dap" },
-        event = "VeryLazy",
+        lazy = true
     },
 
     {
@@ -89,12 +97,12 @@ return require('lazy').setup({
         dependencies = {
             "mfussenegger/nvim-dap",
             'williamboman/mason.nvim', },
-        event = "VeryLazy",
+        lazy = true
     },
 
     {
         "mfussenegger/nvim-dap",
-        event = "VeryLazy",
+        lazy = true
 
     },
 
@@ -157,8 +165,7 @@ return require('lazy').setup({
             { 'L3MON4D3/LuaSnip' }, -- Required
             { 'rafamadriz/friendly-snippets' }
         },
-        lazy = false
-        -- event = "VeryLazy",
+        lazy = true,
     },
 
     -- copilot
@@ -175,6 +182,6 @@ return require('lazy').setup({
             end
             return "/mnt/c/Users/woodc/"
         end)()
-    }
+    },
 }
 )

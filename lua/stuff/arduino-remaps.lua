@@ -45,4 +45,3 @@ if jit.os ~= "Windows" then
         wk.writeBuf()
     end
 end
-return function() print("windows") end 
