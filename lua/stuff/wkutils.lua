@@ -8,6 +8,8 @@ local currentGroup = "";
 local currentGroupMode = "";
 
 
+
+
 local remap = function(key, desc, func, opts)
     opts = opts or {}
     local keys = currentGroup .. key
@@ -29,13 +31,18 @@ end
 M.feedKeys = function(keys, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, true, true), mode, true)
 end
-M.makeGroup = function(mode, key, desc, makeRemaps)
+M.makeGroup = function(mode, key, desc, makeRemaps, opts)
     if (M.remaps[mode] == nil) then
         M.remaps[mode] = {}
     end
     M.remaps[mode][key] = {
         name = desc
     }
+    if opts ~= nil then
+        for k, v in pairs(opts) do
+            M.remaps[mode][key][k] = v
+        end
+    end
     currentGroup = key
     currentGroupMode = mode
 

@@ -18,8 +18,8 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
             buffer = bufnr,
             noremap = true,
         };
-        wk.makeGroup("n", "<leader>m", "[M]arkdown", function(remap)
-            remap("p", "[P]review", function()
+        wk.makeGroup("n", "<leader>m", "[M]arkdown Preview", function(remap)
+            remap("p", "[P]review Start", function()
                 vim.cmd("MarkdownPreview")
             end, opts);
             remap("s", "[S]top", function()
@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
             remap("t", "[T]oggle", function()
                 vim.cmd("MarkdownPreviewToggle")
             end, opts);
-        end)
+        end, opts)
         wk.writeBuf()
     end,
     group = mdAugroup

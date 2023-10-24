@@ -85,6 +85,10 @@ require("future").load("formatter", function()
                     return true
                 end,
             })
+            -- needed bc luals virtual text stops when formatting smh
+            vim.diagnostic.config({
+                virtual_text = true
+            })
         end
         local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
         if (formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe)) then

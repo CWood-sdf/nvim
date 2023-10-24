@@ -1,6 +1,7 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require('lazy').setup({
+    { "folke/neodev.nvim", lazy = true },
     {
         "CWood-sdf/future.nvim",
     },
@@ -21,6 +22,10 @@ return require('lazy').setup({
     },
     {
         "CWood-sdf/spaceport.nvim",
+        opts = {
+            ignoreDirs = { { "/mnt/c/Users/woodc", "_" } },
+            replaceHome = true
+        },
         -- dev = true,
     },
     {
@@ -31,6 +36,7 @@ return require('lazy').setup({
             colorschemeFile = "after/plugin/theme.lua"
         },
         event = "VeryLazy",
+        dev = true
     },
     -- yuhh
     {
@@ -151,8 +157,10 @@ return require('lazy').setup({
         --branch = 'v2.x',
         dependencies = {
             -- LSP Support
-            { 'neovim/nvim-lspconfig' }, -- Required
-            {                            -- Optional
+            {
+                'neovim/nvim-lspconfig',
+            }, -- Required
+            {  -- Optional
                 'williamboman/mason.nvim',
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional

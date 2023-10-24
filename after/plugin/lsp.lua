@@ -1,13 +1,15 @@
 require("future").load("lsp", function()
     vim.cmd("Lazy! load lsp-zero.nvim")
+    vim.cmd("Lazy! load neodev.nvim")
     local lsp = require("lsp-zero")
     local wk = require("stuff.wkutils")
     lsp.preset("recommended")
+    require('neodev').setup()
 
     lsp.ensure_installed({
         'rust_analyzer',
-        'lua_ls',
         'clangd',
+        'lua_ls',
     })
 
     -- Fix Undefined global 'vim'
@@ -60,7 +62,7 @@ require("future").load("lsp", function()
             warn = 'W',
             hint = 'H',
             info = 'I'
-        }
+        },
     })
 
     local onAttach = function(_, bufnr)
@@ -98,6 +100,15 @@ require("future").load("lsp", function()
             cmd = { "node", --[[ "run", ]] "/mnt/c/Users/woodc/ar_ls_inter_client/index.js" },
         })
     end
+    require('lspconfig').lua_ls.setup({
+        settings = {
+            Lua = {
+                hint = {
+                    enable = true,
+                },
+            },
+        },
+    })
     lsp.setup()
 
 

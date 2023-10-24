@@ -17,6 +17,10 @@ addTextObject('a', '@parameter', 'Parameter', true, true)
 addTextObject('l', '@loop', 'Loop', true, true)
 addTextObject('i', '@conditional', 'Conditional', true, true)
 require 'nvim-treesitter.configs'.setup {
+    modules = {},
+
+    ignore_install = {},
+
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "c", "javascript", "typescript", "lua", "vim", "vimdoc", "query" },
 
@@ -66,6 +70,70 @@ require 'nvim-treesitter.configs'.setup {
             -- * selection_mode: eg 'v'
             -- and should return true of false
             -- include_surrounding_whitespace = true,
+        },
+        move = {
+            enable = true,
+            goto_next_start = {
+                ["]f"] = { query = "@function.outer", desc = "Next function" },
+                ["]c"] = { query = "@class.outer", desc = "Next class" },
+                --
+                -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
+                ["]l"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Next loop" },
+                --
+                -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+                -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+                ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+                ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+                ["]i"] = { query = "@conditional.outer", desc = "Next conditional" },
+            },
+            goto_next_end = {
+                ["]F"] = { query = "@function.outer", desc = "Next function" },
+                ["]C"] = { query = "@class.outer", desc = "Next class" },
+                --
+                -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
+                ["]L"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Next loop" },
+                --
+                -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+                -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+                ["]S"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+                ["]Z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+                ["]I"] = { query = "@conditional.outer", desc = "Next conditional" },
+            },
+            goto_previous_start = {
+                ["[f"] = { query = "@function.outer", desc = "Previous function" },
+                ["[c"] = { query = "@class.outer", desc = "Previous class" },
+                --
+                -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
+                ["]l"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
+                --
+                -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+                -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+                ["[s"] = { query = "@scope", query_group = "locals", desc = "Previous scope" },
+                ["[z"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
+                ["[i"] = { query = "@conditional.outer", desc = "Previous conditional" },
+            },
+            goto_previous_end = {
+                ["[F"] = { query = "@function.outer", desc = "Previous function" },
+                ["[C"] = { query = "@class.outer", desc = "Previous class" },
+                --
+                -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
+                ["]L"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
+                --
+                -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+                -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+                ["[S"] = { query = "@scope", query_group = "locals", desc = "Previous scope" },
+                ["[Z"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
+                ["[I"] = { query = "@conditional.outer", desc = "Previous conditional" },
+            },
+            -- Below will go to either the start or the end, whichever is closer.
+            -- Use if you want more granular movements
+            -- Make it even more gradual by adding multiple queries and regex.
+            -- goto_next = {
+            --     ["]i"] = "@conditional.outer",
+            -- },
+            -- goto_previous = {
+            --     ["[i"] = "@conditional.outer",
+            -- }
         },
     },
 }
