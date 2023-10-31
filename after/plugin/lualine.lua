@@ -167,8 +167,8 @@ ins_left({
         local hasLsp = false
         local hasFmt = false
         local hasDbg = false
-        local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-        local clients = vim.lsp.get_active_clients()
+        local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 });
+        local clients = vim.lsp.get_clients()
         if next(clients) == nil then
             hasLsp = false
         end
@@ -183,6 +183,7 @@ ins_left({
                 -- format_sign = ""
                 hasFmt = true
             end
+            ---@diagnostic disable-next-line: undefined-field
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                 -- msg = client.name
@@ -239,18 +240,23 @@ ins_left({
 --     color = { fg = "#ffffff", gui = boldSetting },
 -- }
 
+local startTime = vim.uv.hrtime()
 -- Add components to right sections
 ins_right({
     function()
-        local output = vim.api.nvim_command_output("Copilot status")
-        if output:find("Not logged in") then
-            return ""
-        elseif output:find("Enabled") then
-            return ""
-        elseif output:find("Disabled") then
-            return ""
+        if vim.uv.hrtime() - startTime > 1000000000 then
+            local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
+            if output:find("Not logged in") then
+                return ""
+            elseif output:find("Enabled") then
+                return ""
+            elseif output:find("Disabled") then
+                return ""
+            else
+                return ""
+            end
         else
-            return ""
+            return "Starting..."
         end
     end,
 })
