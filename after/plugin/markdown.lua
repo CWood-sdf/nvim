@@ -6,14 +6,15 @@ local mdAugroup = vim.api.nvim_create_augroup("mdPreview", {
 })
 
 local markdownSourced = false
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     pattern = "*.md",
-    callback = function()
+    callback = function(args)
+        -- print(vim.inspect(args))
         if not markdownSourced then
             vim.fn["mkdp#util#install"]()
             markdownSourced = true
         end
-        local bufnr = vim.api.nvim_get_current_buf()
+        local bufnr = args.buf
         local opts = {
             buffer = bufnr,
             noremap = true,

@@ -1,19 +1,21 @@
 require("future").load("lsp", function()
     vim.cmd("Lazy! load lsp-zero.nvim")
     vim.cmd("Lazy! load neodev.nvim")
+    vim.cmd("Lazy! load mason.nvim")
     local lsp = require("lsp-zero")
+    require("mason").setup()
     local wk = require("stuff.wkutils")
     lsp.preset("recommended")
     require('neodev').setup()
 
-    lsp.ensure_installed({
-        'rust_analyzer',
-        'clangd',
-        'lua_ls',
-    })
+    -- lsp.ensure_installed({
+    --     'rust_analyzer',
+    --     'clangd',
+    --     'lua_ls',
+    -- })
 
     -- Fix Undefined global 'vim'
-    lsp.nvim_workspace()
+    -- lsp.nvim_workspe()
 
 
     local cmp = require('cmp')
@@ -27,32 +29,36 @@ require("future").load("lsp", function()
         ['<Up>'] = cmp.mapping.select_prev_item(cmp_select),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.confirm({ select = true }),
-    })
+    }) or {}
 
     cmp_mappings['<Tab>'] = nil
     cmp_mappings['<S-Tab>'] = nil
+    local cmp_action = require('lsp-zero').cmp_action()
 
-    -- cmp.setup({
-    --     sources = {
-    --         { name = "nvim_lsp" },
-    --     },
-    --     mapping = cmp_mappings,
-    --     snippet = {
-    --         expand = function(args)
-    --             require("luasnip").lsp_expand(args.body)
-    --         end,
-    --     },
-    --     formatting = {
-    --         format = function(entry, vim_item)
-    --             vim_item.kind = lsp.protocol.CompletionItemKind[vim_item.kind]
-    --             return vim_item
-    --         end,
-    --     },
-    -- })
+    cmp_mappings['<C-d>'] = cmp_action.luasnip_jump_forward()
 
-    lsp.setup_nvim_cmp({
-        mapping = cmp_mappings
+    cmp.setup({
+        revision = 1,
+        preselect = 'None',
+        enabled = true,
+        sources = {
+            { name = "nvim_lsp" },
+        },
+        mapping = cmp_mappings,
+        snippet = {
+            expand = function(args)
+                require("luasnip").lsp_expand(args.body)
+            end,
+        },
+        window = {
+            completion = cmp.config.window.bordered(),
+            documentation = cmp.config.window.bordered(),
+        },
     })
+
+    -- lsp.setup_nvim_cmp({
+    --     mapping = cmp_mappings
+    -- })
 
 
     lsp.set_preferences({
@@ -108,7 +114,22 @@ require("future").load("lsp", function()
                 },
             },
         },
-    })
+    });
+    require("lspconfig").rust_analyzer.setup({
+
+    });
+    require("lspconfig").clangd.setup({
+
+    });
+    require("lspconfig").tsserver.setup({
+
+    });
+    require("lspconfig").svelte.setup({
+
+    });
+    require("lspconfig").prosemd_lsp.setup({
+
+    });
     lsp.setup()
 
 

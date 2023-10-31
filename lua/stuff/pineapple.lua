@@ -1,7 +1,7 @@
 return {
-    "EdenEast/nightfox.nvim",
     "catppuccin/nvim",
-    "joshdick/onedark.vim",
+    "folke/tokyonight.nvim",
+    "embark-theme/vim",
     "nordtheme/vim",
+    "daschw/leaf.nvim",
 }
-

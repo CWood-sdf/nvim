@@ -1,6 +1,17 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require('lazy').setup({
+    {
+        "j-hui/fidget.nvim",
+        tag = "legacy",
+        event = "LspAttach",
+        opts = {
+            -- options
+            window = {
+                blend = 0,
+            },
+        },
+    },
     { "folke/neodev.nvim", lazy = true },
     {
         "CWood-sdf/future.nvim",
@@ -35,8 +46,9 @@ return require('lazy').setup({
             installedRegistry = "stuff.pineapple",
             colorschemeFile = "after/plugin/theme.lua"
         },
-        event = "VeryLazy",
-        dev = true
+        lazy = false,
+        -- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
+        -- dev = true
     },
     -- yuhh
     {
@@ -49,13 +61,6 @@ return require('lazy').setup({
         event = "VeryLazy"
     },
 
-    --theme
-    {
-        'folke/tokyonight.nvim',
-        config = function()
-            require('tokyonight').setup()
-        end
-    },
 
     -- line at bottom
     {
