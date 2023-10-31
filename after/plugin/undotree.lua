@@ -1,5 +1,7 @@
 local wk = require("stuff.wkutils")
-wk.remapNoGroup('n', '<leader>u', "Toggle Undotree", vim.cmd.UndotreeToggle)
+wk.remapNoGroup('n', '<leader>u', "Toggle Undotree", function()
+    vim.cmd.UndotreeToggle()
+end)
 local undo = function(count)
     if (count == nil) then
         count = 1

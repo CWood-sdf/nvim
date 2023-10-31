@@ -30,6 +30,7 @@ return require('lazy').setup({
                 return "stevearc/vim-arduino"
             end
         end)(),
+        ft = "arduino"
     },
     {
         "CWood-sdf/spaceport.nvim",
@@ -37,6 +38,7 @@ return require('lazy').setup({
             ignoreDirs = { { "/mnt/c/Users/woodc", "_" } },
             replaceHome = true
         },
+        lazy = false
         -- dev = true,
     },
     {
@@ -46,14 +48,13 @@ return require('lazy').setup({
             installedRegistry = "stuff.pineapple",
             colorschemeFile = "after/plugin/theme.lua"
         },
-        lazy = false,
         -- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
         -- dev = true
     },
     -- yuhh
     {
         "iamcco/markdown-preview.nvim",
-        event = "VeryLazy",
+        ft = "markdown",
     },
     --formatter
     {
@@ -66,22 +67,19 @@ return require('lazy').setup({
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
-        event = "VeryLazy",
+        lazy = false
     },
 
-    -- just fancy icons for dap
-    {
-        'nvim-tree/nvim-web-devicons',
-        event = "VeryLazy"
-    },
+    -- -- just fancy icons for dap
+    -- {
+    --     'nvim-tree/nvim-web-devicons',
+    --     -- event = "VeryLazy"
+    -- },
 
     --autocomment
     {
         'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup()
-        end,
-        event = "VeryLazy",
+        lazy = true
     },
 
     -- remember keymaps
@@ -129,8 +127,8 @@ return require('lazy').setup({
     -- highlighting
     {
         'nvim-treesitter/nvim-treesitter',
-        event = "VeryLazy",
-        build = ':TSUpdate'
+        -- event = "VeryLazy",
+        -- build = ':TSUpdate'
     },
 
     {
@@ -147,7 +145,7 @@ return require('lazy').setup({
     -- undotree
     {
         'mbbill/undotree',
-        event = "VeryLazy",
+        cmd = { "UndotreeToggle", "UndotreeShow" },
     },
 
     -- git

@@ -3,25 +3,33 @@ local function setupDap()
     local dapui = require("dapui")
     require("mason").setup()
     require("mason-nvim-dap").setup({
+        ensure_installed = {},
+        automatic_installation = false,
         handlers = {}, -- sets up dap in the predefined manner
     })
 
     local dap = require('dap')
     dap.configurations.cuda = dap.configurations.cpp
     dap.listeners.after.event_initialized["dapui_config"] = function()
-        require('lualine').hide()
+        require('lualine').hide({
+            unhide = false,
+            place = { 'statusline' }
+
+        })
         dapui.open()
     end
     dap.listeners.before.event_terminated["dapui_config"] = function()
         dapui.close()
         require('lualine').hide({
-            unhide = true
+            unhide = true,
+            place = { 'statusline' }
         })
     end
     dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
         require('lualine').hide({
-            unhide = true
+            unhide = true,
+            place = { 'statusline' }
         })
     end
     dapui.setup()
