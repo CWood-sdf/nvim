@@ -133,9 +133,6 @@ require("future").load("lsp", function()
     require("lspconfig").gopls.setup({
 
     });
-    require("lspconfig").arduino_langauge_server.setup({
-
-    });
     lsp.setup()
 
 

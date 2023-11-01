@@ -76,7 +76,7 @@ require("future").load("formatter", function()
     function Format()
         local lspFormatSuccess = false
         local lspFormat = function()
-            vim.lsp.buf.format({
+            pcall(vim.lsp.buf.format, {
                 filter = function(client)
                     if (not client.server_capabilities.documentFormattingProvider) then
                         return false
