@@ -25,12 +25,13 @@ return require('lazy').setup({
         event = "VeryLazy",
     },
     {
-        (function()
-            if jit.os ~= "Windows" then
-                return "stevearc/vim-arduino"
+        "stevearc/vim-arduino",
+        ft = (function()
+            if jit.os == "Windows" then
+                return "sdjfaksdhgksd"
             end
-        end)(),
-        ft = "arduino"
+            return "arduino"
+        end)()
     },
     {
         "CWood-sdf/spaceport.nvim",
