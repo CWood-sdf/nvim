@@ -1,4 +1,5 @@
-require("future").load("treesitter", function()
+return function()
+
     require 'nvim-treesitter.install'.compilers = { 'zig', 'clang' }
 
 
@@ -138,4 +139,4 @@ require("future").load("treesitter", function()
             },
         },
     }
-end)
+end
