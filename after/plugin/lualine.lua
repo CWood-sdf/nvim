@@ -208,10 +208,12 @@ ins_left({
 		-- if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
 		--     hasFmt = true
 		-- end
-		local dap = require("dap")
-		local has_dap = dap.configurations[vim.bo.filetype] ~= nil
-		if has_dap then
-			hasDbg = true
+		if HasDapSetup() then
+			local dap = require("dap")
+			local has_dap = dap.configurations[vim.bo.filetype] ~= nil
+			if has_dap then
+				hasDbg = true
+			end
 		end
 		local ret = ""
 		if hasLsp then

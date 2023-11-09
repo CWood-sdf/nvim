@@ -1,6 +1,26 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require("lazy").setup({
+	-- {
+	-- 	"mfussenegger/nvim-lint",
+	-- 	event = "BufEnter *.*",
+	-- 	config = function()
+	-- 		vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	--
+	-- 			callback = function()
+	-- 				require("lint").try_lint()
+	-- 			end,
+	-- 		})
+	-- 		require("lint").linters_by_ft = {
+	-- 			javascript = { "eslint_d" },
+	-- 			typescript = { "eslint_d" },
+	-- 			typescriptreact = { "eslint_d" },
+	-- 			json = { "jsonlint" },
+	-- 			css = { "stylelint" },
+	-- 			markdown = { "markdownlint", "vale" },
+	-- 		}
+	-- 	end,
+	-- },
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -22,7 +42,7 @@ return require("lazy").setup({
 			},
 			notify_on_error = true,
 		},
-		event = "BufEnter *.*",
+		event = "VeryLazy",
 	},
 	{
 		"j-hui/fidget.nvim",
