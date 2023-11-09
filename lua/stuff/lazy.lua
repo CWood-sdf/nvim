@@ -18,11 +18,7 @@ return require('lazy').setup({
     },
     {
         "ThePrimeagen/vim-be-good",
-        event = "VeryLazy",
-    },
-    {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        event = "VeryLazy",
+        cmd = "VimBeGood",
     },
     {
         "stevearc/vim-arduino",
@@ -49,6 +45,7 @@ return require('lazy').setup({
             installedRegistry = "stuff.pineapple",
             colorschemeFile = "after/plugin/theme.lua"
         },
+        priority = 1000,
         -- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
         -- dev = true
     },
@@ -128,14 +125,14 @@ return require('lazy').setup({
     -- highlighting
     {
         'nvim-treesitter/nvim-treesitter',
+        lazy = true,
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+        },
         -- event = "VeryLazy",
         -- build = ':TSUpdate'
     },
 
-    {
-        'nvim-treesitter/playground',
-        event = "VeryLazy",
-    },
 
     -- epic fast file goto
     {
@@ -152,7 +149,7 @@ return require('lazy').setup({
     -- git
     {
         'tpope/vim-fugitive',
-        event = "VeryLazy",
+        cmd = "Git",
     },
 
     -- lsp

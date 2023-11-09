@@ -28,10 +28,11 @@ local remap = function(key, desc, func, opts)
     end
 end
 
-M.feedKeys = function(keys, mode)
+function M.feedKeys(keys, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, true, true), mode, true)
 end
-M.makeGroup = function(mode, key, desc, makeRemaps, opts)
+
+function M.makeGroup(mode, key, desc, makeRemaps, opts)
     if (M.remaps[mode] == nil) then
         M.remaps[mode] = {}
     end
@@ -50,7 +51,8 @@ M.makeGroup = function(mode, key, desc, makeRemaps, opts)
         makeRemaps(remap)
     end
 end
-M.useGroup = function(mode, key, makeRemaps)
+
+function M.useGroup(mode, key, makeRemaps)
     if (M.remaps[mode] == nil) then
         error("Can't use group " .. key .. " in mode " .. mode .. " because it doesn't exist")
     end
@@ -62,8 +64,7 @@ M.useGroup = function(mode, key, makeRemaps)
     end
 end
 
-
-M.remapNoGroup = function(mode, key, desc, func, opts)
+function M.remapNoGroup(mode, key, desc, func, opts)
     opts = opts or {}
     if (M.remaps[mode] == nil) then
         M.remaps[mode] = {}
@@ -74,8 +75,7 @@ M.remapNoGroup = function(mode, key, desc, func, opts)
     end
 end
 
-
-M.writeBuf = function()
+function M.writeBuf()
     for k, v in pairs(M.remaps) do
         local opts = {}
         opts.mode = k

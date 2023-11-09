@@ -81,14 +81,18 @@ require("future").load("lsp", function()
             remap("n", "[N]ext diagnostic (]d)", function() vim.diagnostic.goto_next() end, opts)
             remap("p", "[P]revious diagnostic ([d)", function() vim.diagnostic.goto_prev() end, opts)
             remap("s", "[S]ignature help (<C-h>)", function() vim.lsp.buf.signature_help() end, opts)
-        end)
-        wk.makeGroup("n", '<leader>vr', "ref/ren", function(remap)
-            remap("r", "[R]eferences", function() vim.lsp.buf.references() end, opts)
-            remap("n", "Re[n]ame", function() vim.lsp.buf.rename() end, opts)
-        end)
+            remap("r", "[R]ename", function() vim.lsp.buf.rename() end, opts)
+        end, opts)
+        wk.makeGroup("n", '<leader>vg', "Goto", function(remap)
+            remap("d", "[D]efinition (gd)", function() vim.lsp.buf.definition() end, opts)
+            remap("i", "[I]mplementation (gI)", function() vim.lsp.buf.implementation() end, opts)
+            remap("t", "[T]ype definition (gy)", function() vim.lsp.buf.type_definition() end, opts)
+            remap("D", "[D]eclaration (gD)", function() vim.lsp.buf.declaration() end, opts)
+            remap("r", "[R]eferences (gr)", function() vim.lsp.buf.references() end, opts)
+        end, opts)
         wk.makeGroup("n", "<leader>vw", "Workspace", function(remap)
             remap("s", "[S]ymbols", function() vim.lsp.buf.workspace_symbol() end, opts)
-        end)
+        end, opts)
         wk.writeBuf()
     end
     ---@diagnostic disable-next-line: unused-local
@@ -133,6 +137,7 @@ require("future").load("lsp", function()
     require("lspconfig").gopls.setup({
 
     });
+    require("lspconfig").vimls.setup({})
     lsp.setup()
 
 
