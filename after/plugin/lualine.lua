@@ -254,14 +254,33 @@ ins_left({
 --     color = { fg = "#ffffff", gui = boldSetting },
 -- }
 
-local startTime = vim.uv.hrtime()
+local startTime = nil
 -- Add components to right sections
+local hasInternet = false
+local lastInternetCheck = 0
 ins_right({
 	function()
+		if not hasInternet or (vim.uv.hrtime() - lastInternetCheck) > 10000000000 then
+			vim.fn.jobstart("ping google.com -c 1", {
+				on_exit = function(_, code)
+					if code == 0 then
+						hasInternet = true
+					else
+						hasInternet = false
+					end
+				end,
+			})
+		end
+		if not hasInternet then
+			return "󰖪 "
+		end
 		if hasEnteredFile == false then
 			return ""
+		elseif startTime == nil then
+			startTime = vim.uv.hrtime()
+			return ""
 		end
-		if vim.uv.hrtime() - startTime > 1000000000 then
+		if vim.uv.hrtime() - startTime > 100000000 then
 			local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
 			if output:find("Not logged in") then
 				return ""

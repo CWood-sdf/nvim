@@ -22,6 +22,15 @@ return require("lazy").setup({
 	-- 	end,
 	-- },
 	{
+		"stevearc/oil.nvim",
+		opts = {
+			view_options = {
+				show_hidden = true,
+			},
+		},
+		cmd = "Oil",
+	},
+	{
 		"stevearc/conform.nvim",
 		opts = {
 			format_on_save = {
@@ -74,9 +83,9 @@ return require("lazy").setup({
 		opts = {
 			ignoreDirs = { { "/mnt/c/Users/woodc", "_" } },
 			replaceHome = true,
+			projectEntry = "Oil .",
 		},
-		lazy = false,
-		-- dev = true,
+		priority = 1000,
 	},
 	{
 		"CWood-sdf/pineapple",
@@ -210,7 +219,7 @@ return require("lazy").setup({
 			{ "L3MON4D3/LuaSnip" }, -- Required
 			{ "rafamadriz/friendly-snippets" },
 		},
-		event = "BufEnter *.*",
+		event = "VeryLazy",
 		config = function()
 			require("stuff.lsp_setup")()
 		end,
@@ -219,7 +228,7 @@ return require("lazy").setup({
 	-- copilot
 	{
 		"github/copilot.vim",
-		event = "BufEnter *.*",
+		cmd = "Copilot",
 	},
 }, {
 	dev = {
