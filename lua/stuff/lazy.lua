@@ -168,7 +168,7 @@ return require("lazy").setup({
 	-- highlighting
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = "BufEnter *.*",
+		event = "VeryLazy",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
@@ -212,16 +212,17 @@ return require("lazy").setup({
 			{ "williamboman/mason-lspconfig.nvim" }, -- Optional
 
 			-- Autocompletion
-			{ "hrsh7th/nvim-cmp" }, -- Required
+			{ "hrsh7th/nvim-cmp", commit = "d3a3056204e1a9dbb7c7fe36c114dc43b681768c" }, -- Required
 			{ "hrsh7th/cmp-nvim-lsp" }, -- Required
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
 			{ "L3MON4D3/LuaSnip" }, -- Required
 			{ "rafamadriz/friendly-snippets" },
 		},
-		event = "VeryLazy",
+		event = "BufEnter *.*",
 		config = function()
 			require("stuff.lsp_setup")()
+			vim.cmd("e")
 		end,
 	},
 

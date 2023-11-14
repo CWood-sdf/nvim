@@ -1,5 +1,4 @@
 return function()
-	print("lsp-setup")
 	local lsp = require("lsp-zero")
 	require("mason").setup()
 	local wk = require("stuff.wkutils")
@@ -16,30 +15,39 @@ return function()
 
 	local cmp = require("cmp")
 	local cmp_select = { behavior = cmp.SelectBehavior.Select }
-	local cmp_mappings = lsp.defaults.cmp_mappings({
+	local cmp_mappings = {
 		["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
 		["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
 		["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
 		["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
 		["<Down>"] = cmp.mapping.select_next_item(cmp_select),
 		["<Up>"] = cmp.mapping.select_prev_item(cmp_select),
-		["<C-y>"] = cmp.mapping.confirm({ select = true }),
-		["<C-Space>"] = cmp.mapping.confirm({ select = true }),
-	}) or {}
+		["<C-y>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+		["<C-Space>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+		["<CR>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+	}
 
 	cmp_mappings["<Tab>"] = nil
 	cmp_mappings["<S-Tab>"] = nil
-	local cmp_action = require("lsp-zero").cmp_action()
 
-	cmp_mappings["<C-d>"] = cmp_action.luasnip_jump_forward()
+	-- local cmp_action = require("lsp-zero").cmp_action()
+	--
+	-- cmp_mappings["<C-d>"] = cmp_action.luasnip_jump_forward()
 
 	cmp.setup({
-		revision = 1,
-		preselect = "None",
 		enabled = true,
-		sources = {
+		sources = cmp.config.sources({
 			{ name = "nvim_lsp" },
-		},
+		}),
 		mapping = cmp_mappings,
 		snippet = {
 			expand = function(args)
@@ -56,15 +64,15 @@ return function()
 	--     mapping = cmp_mappings
 	-- })
 
-	lsp.set_preferences({
-		suggest_lsp_servers = true,
-		sign_icons = {
-			error = "E",
-			warn = "W",
-			hint = "H",
-			info = "I",
-		},
-	})
+	-- lsp.set_preferences({
+	-- 	suggest_lsp_servers = true,
+	-- 	sign_icons = {
+	-- 		error = "E",
+	-- 		warn = "W",
+	-- 		hint = "H",
+	-- 		info = "I",
+	-- 	},
+	-- })
 
 	local onAttach = function(_, bufnr)
 		local opts = { buffer = bufnr, noremap = false }
@@ -120,6 +128,7 @@ return function()
 	end
 	---@diagnostic disable-next-line: unused-local
 	lsp.on_attach(onAttach)
+	local startTime = vim.loop.hrtime()
 	if jit.os == "Windows" then
 		require("lspconfig").arduino_language_server.setup({
 			-- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
@@ -160,6 +169,7 @@ return function()
 	require("lspconfig").gopls.setup({})
 	require("lspconfig").vimls.setup({})
 	lsp.setup()
+	print((vim.loop.hrtime() - startTime) / 1000000)
 
 	vim.diagnostic.config({
 		virtual_text = true,

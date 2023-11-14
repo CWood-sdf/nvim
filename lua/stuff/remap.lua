@@ -26,7 +26,9 @@ end)
 
 -- window stuff
 wk.makeGroup("n", "<leader>p", "[P]roject", function(remap)
-	remap("v", "[V]iew", vim.cmd("Oil"))
+	remap("v", "[V]iew", function()
+		vim.cmd("Oil")
+	end)
 end)
 
 -- copy (obv)

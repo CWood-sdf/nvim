@@ -272,7 +272,7 @@ ins_right({
 			})
 		end
 		if not hasInternet then
-			return "󰖪 "
+			return "󰖪"
 		end
 		if hasEnteredFile == false then
 			return ""
@@ -282,6 +282,7 @@ ins_right({
 		end
 		if vim.uv.hrtime() - startTime > 100000000 then
 			local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
+
 			if output:find("Not logged in") then
 				return ""
 			elseif output:find("Enabled") then
@@ -292,7 +293,7 @@ ins_right({
 				return ""
 			end
 		else
-			return "Starting..."
+			return "󰔟"
 		end
 	end,
 })
