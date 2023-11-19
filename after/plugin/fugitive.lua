@@ -11,10 +11,15 @@ wk.makeGroup("n", "<leader>g", "[G]it", function(remap)
 end)
 
 wk.writeBuf()
+local used = {}
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	pattern = "fugitive://*",
-	callback = function()
+	callback = function(_)
 		local buf = vim.api.nvim_get_current_buf()
+		if used[buf] then
+			return
+		end
+		used[buf] = true
 		local opts = {
 			buffer = buf,
 		}

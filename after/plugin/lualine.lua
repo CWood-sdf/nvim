@@ -325,8 +325,23 @@ ins_right({
 	},
 })
 
+local branchRunning = false
+local branch = ""
 ins_right({
-	"branch",
+	function()
+		if not branchRunning then
+			branchRunning = true
+			vim.fn.jobstart("git branch --show-current", {
+				on_stdout = function(_, str)
+					if str[1] ~= "" then
+						branch = "" .. str[1]
+					end
+					branchRunning = false
+				end,
+			})
+		end
+		return branch
+	end,
 	icon = "",
 	color = getModeColor,
 })
