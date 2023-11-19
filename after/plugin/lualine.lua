@@ -186,12 +186,6 @@ ins_left({
 			hasLsp = false
 		end
 		for _, client in ipairs(clients) do
-			if client.server_capabilities.documentFormattingProvider then
-				-- remove last two chars of sign
-				-- sign = sign .. format_sign
-				-- format_sign = ""
-				hasFmt = true
-			end
 			---@diagnostic disable-next-line: undefined-field
 			local filetypes = client.config.filetypes
 			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
@@ -199,10 +193,19 @@ ins_left({
 				-- msg = sign .. msg
 				-- return sign
 				hasLsp = true
+				if client.server_capabilities.documentFormattingProvider then
+					-- remove last two chars of sign
+					-- sign = sign .. format_sign
+					-- format_sign = ""
+					hasFmt = true
+				end
 			end
 		end
-		if #require("conform").list_formatters(vim.api.nvim_get_current_buf()) > 0 then
-			hasFmt = true
+		local formatters = require("conform").list_formatters(vim.api.nvim_get_current_buf())
+		for _, formatter in ipairs(formatters) do
+			if formatter.available then
+				hasFmt = true
+			end
 		end
 		-- local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
 		-- if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
@@ -258,9 +261,11 @@ local startTime = nil
 -- Add components to right sections
 local hasInternet = false
 local lastInternetCheck = 0
+local copilotSetup = false
 ins_right({
 	function()
 		if not hasInternet or (vim.uv.hrtime() - lastInternetCheck) > 10000000000 then
+			-- annoyingly, :Copilot status freezes up the entire ui indefinitely if there's no internet
 			vim.fn.jobstart("ping google.com -c 1", {
 				on_exit = function(_, code)
 					if code == 0 then
@@ -273,6 +278,10 @@ ins_right({
 		end
 		if not hasInternet then
 			return "󰖪"
+		end
+		if not copilotSetup then
+			vim.cmd("Copilot enable")
+			copilotSetup = true
 		end
 		if hasEnteredFile == false then
 			return ""

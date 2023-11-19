@@ -22,10 +22,14 @@ return require("lazy").setup({
 	-- 	end,
 	-- },
 	{
-		"stevearc/oil.nvim",
+		"CWood-sdf/oil.nvim",
 		opts = {
 			view_options = {
 				show_hidden = true,
+			},
+			skip_confirm_for_all_edits = true,
+			keymaps = {
+				["<C-s>"] = nil,
 			},
 		},
 		cmd = "Oil",
@@ -48,6 +52,7 @@ return require("lazy").setup({
 				html = { "prettier" },
 				css = { "prettier" },
 				markdown = { "prettier" },
+				yaml = { "prettier" },
 			},
 			notify_on_error = true,
 		},
@@ -197,6 +202,12 @@ return require("lazy").setup({
 		cmd = "Git",
 	},
 
+	{ -- Optional
+		"williamboman/mason.nvim",
+		cmd = "Mason",
+		opts = {},
+	},
+
 	-- lsp
 	{
 		"VonHeikemen/lsp-zero.nvim",
@@ -206,13 +217,11 @@ return require("lazy").setup({
 			{
 				"neovim/nvim-lspconfig",
 			}, -- Required
-			{ -- Optional
-				"williamboman/mason.nvim",
-			},
 			{ "williamboman/mason-lspconfig.nvim" }, -- Optional
+			{ "williamboman/mason.nvim" }, -- Optional
 
 			-- Autocompletion
-			{ "hrsh7th/nvim-cmp", commit = "d3a3056204e1a9dbb7c7fe36c114dc43b681768c" }, -- Required
+			{ "hrsh7th/nvim-cmp" }, -- Required
 			{ "hrsh7th/cmp-nvim-lsp" }, -- Required
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
@@ -229,6 +238,9 @@ return require("lazy").setup({
 	-- copilot
 	{
 		"github/copilot.vim",
+		config = function()
+			vim.cmd("Copilot setup")
+		end,
 		cmd = "Copilot",
 	},
 }, {

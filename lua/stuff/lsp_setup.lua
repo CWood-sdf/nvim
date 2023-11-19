@@ -1,6 +1,5 @@
 return function()
 	local lsp = require("lsp-zero")
-	require("mason").setup()
 	local wk = require("stuff.wkutils")
 	lsp.preset("recommended")
 
@@ -30,10 +29,6 @@ return function()
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
 		}),
-		["<CR>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
 	}
 
 	cmp_mappings["<Tab>"] = nil
@@ -47,7 +42,8 @@ return function()
 		enabled = true,
 		sources = cmp.config.sources({
 			{ name = "nvim_lsp" },
-		}),
+			{ name = "luasnip" },
+		}, { { name = "buffer" } }),
 		mapping = cmp_mappings,
 		snippet = {
 			expand = function(args)
@@ -82,6 +78,9 @@ return function()
 		wk.makeGroup("n", "<leader>v", "LSP", function(remap)
 			remap("d", "[D]iagnostic float", function()
 				vim.diagnostic.open_float()
+			end, opts)
+			remap("i", "[I]nlay hints", function()
+				vim.lsp.inlay_hint(0, nil)
 			end, opts)
 			remap("h", "[H]over (K)", function()
 				vim.lsp.buf.hover()
@@ -128,7 +127,6 @@ return function()
 	end
 	---@diagnostic disable-next-line: unused-local
 	lsp.on_attach(onAttach)
-	local startTime = vim.loop.hrtime()
 	if jit.os == "Windows" then
 		require("lspconfig").arduino_language_server.setup({
 			-- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
@@ -168,8 +166,10 @@ return function()
 	require("lspconfig").prosemd_lsp.setup({})
 	require("lspconfig").gopls.setup({})
 	require("lspconfig").vimls.setup({})
+	require("lspconfig").yamlls.setup({})
+	require("lspconfig").jsonls.setup({})
+	require("lspconfig").html.setup({})
 	lsp.setup()
-	print((vim.loop.hrtime() - startTime) / 1000000)
 
 	vim.diagnostic.config({
 		virtual_text = true,

@@ -1,7 +1,6 @@
 local wk = require("stuff.wkutils")
 local function setupDap()
 	local dapui = require("dapui")
-	require("mason").setup()
 	require("mason-nvim-dap").setup({
 		ensure_installed = {},
 		automatic_installation = false,
