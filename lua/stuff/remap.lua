@@ -1,6 +1,11 @@
 local wk = require("stuff.wkutils")
 
 vim.g.mapleader = " "
+wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
+	remap("b", "[B]reakpoint", vim.cmd.DapToggleBreakpoint)
+	remap("c", "[C]ontinue (<F5>)", vim.cmd.DapContinue)
+end)
+wk.writeBuf()
 
 wk.makeGroup("n", "do", "Over", function(remap)
 	remap("%", "match", function()

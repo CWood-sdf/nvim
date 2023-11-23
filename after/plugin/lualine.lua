@@ -171,6 +171,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 		})
 	end,
 })
+local dapSetup = false
 ins_left({
 	-- Lsp server name .
 	function()
@@ -211,7 +212,14 @@ ins_left({
 		-- if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
 		--     hasFmt = true
 		-- end
-		if HasDapSetup() then
+		if not dapSetup then
+			for _, v in pairs(require("lazy").plugins()) do
+				if v[1] == "nvim-dap" and v._.loaded ~= nil then
+					dapSetup = true
+				end
+			end
+		end
+		if dapSetup then
 			local dap = require("dap")
 			local has_dap = dap.configurations[vim.bo.filetype] ~= nil
 			if has_dap then
@@ -256,6 +264,21 @@ ins_left({
 --     end,
 --     color = { fg = "#ffffff", gui = boldSetting },
 -- }
+
+local hasChecked = false
+ins_right({
+	function()
+		if not hasChecked then
+			require("lazy.manage.checker").check()
+			hasChecked = true
+		end
+		if require("lazy.status").has_updates() then
+			return require("lazy.status").updates()
+		end
+		return ""
+	end,
+	color = { fg = "#5EE4FF" },
+})
 
 local startTime = nil
 -- Add components to right sections

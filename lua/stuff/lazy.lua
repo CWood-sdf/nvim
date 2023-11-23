@@ -22,6 +22,13 @@ return require("lazy").setup({
 	-- 	end,
 	-- },
 	{
+		"norcalli/nvim-colorizer.lua",
+		event = "BufReadPre *.*",
+		config = function()
+			require("colorizer").setup()
+		end,
+	},
+	{
 		"CWood-sdf/oil.nvim",
 		opts = {
 			view_options = {
@@ -56,7 +63,7 @@ return require("lazy").setup({
 			},
 			notify_on_error = true,
 		},
-		event = "VeryLazy",
+		event = "BufReadPre *.*",
 	},
 	{
 		"j-hui/fidget.nvim",
@@ -142,24 +149,29 @@ return require("lazy").setup({
 
 	-- Debugger stuff
 	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap" },
-		lazy = true,
-	},
-
-	{
-		"jay-babu/mason-nvim-dap.nvim",
+		"mfussenegger/nvim-dap",
 		dependencies = {
-			"mfussenegger/nvim-dap",
+			"rcarriga/nvim-dap-ui",
+			"jay-babu/mason-nvim-dap.nvim",
 			"williamboman/mason.nvim",
 		},
-		lazy = true,
+		config = require("stuff.dap_setup"),
+		cmd = { "DapContinue", "DapToggleBreakpoint" },
 	},
 
-	{
-		"mfussenegger/nvim-dap",
-		lazy = true,
-	},
+	-- {
+	-- 	"jay-babu/mason-nvim-dap.nvim",
+	-- 	dependencies = {
+	-- 		"mfussenegger/nvim-dap",
+	-- 		"williamboman/mason.nvim",
+	-- 	},
+	-- 	lazy = true,
+	-- },
+	--
+	-- {
+	-- 	"mfussenegger/nvim-dap",
+	-- 	lazy = true,
+	-- },
 
 	-- fuzzy finder
 	{
@@ -227,13 +239,18 @@ return require("lazy").setup({
 			{ "hrsh7th/cmp-path" },
 			{ "L3MON4D3/LuaSnip" }, -- Required
 			{ "rafamadriz/friendly-snippets" },
-			{ "folke/neodev.nvim" },
+			-- { "folke/neodev.nvim" },
 		},
 		event = "BufReadPre *.*",
 		config = function()
 			require("stuff.lsp_setup")()
 			-- vim.cmd("e")
 		end,
+	},
+	{
+		"folke/neodev.nvim",
+		event = "BufReadPre *.lua",
+		opts = {},
 	},
 
 	-- copilot
