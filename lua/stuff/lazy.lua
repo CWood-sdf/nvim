@@ -69,7 +69,7 @@ return require("lazy").setup({
 			},
 		},
 	},
-	{ "folke/neodev.nvim", ft = "lua", opts = {} },
+	-- { "folke/neodev.nvim", ft = "lua", opts = {} },
 	{
 		"ThePrimeagen/vim-be-good",
 		cmd = "VimBeGood",
@@ -86,7 +86,7 @@ return require("lazy").setup({
 	{
 		"CWood-sdf/spaceport.nvim",
 		opts = {
-			ignoreDirs = { { "/mnt/c/Users/woodc", "_" } },
+			ignoreDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" } },
 			replaceHome = true,
 			projectEntry = "Oil .",
 		},
@@ -125,7 +125,7 @@ return require("lazy").setup({
 	--autocomment
 	{
 		"numToStr/Comment.nvim",
-		event = "BufEnter *.*",
+		event = "BufReadPre *.*",
 		opts = {},
 	},
 
@@ -227,11 +227,12 @@ return require("lazy").setup({
 			{ "hrsh7th/cmp-path" },
 			{ "L3MON4D3/LuaSnip" }, -- Required
 			{ "rafamadriz/friendly-snippets" },
+			{ "folke/neodev.nvim" },
 		},
-		event = "BufEnter *.*",
+		event = "BufReadPre *.*",
 		config = function()
 			require("stuff.lsp_setup")()
-			vim.cmd("e")
+			-- vim.cmd("e")
 		end,
 	},
 
@@ -249,7 +250,7 @@ return require("lazy").setup({
 			if jit.os == "Windows" then
 				return "C:\\Users\\woodc\\"
 			end
-			return "/mnt/c/Users/woodc/"
+			return "~/projects/"
 		end)(),
 	},
 })

@@ -336,6 +336,8 @@ ins_right({
 					if str[1] ~= "" then
 						branch = "" .. str[1]
 					end
+				end,
+				on_exit = function()
 					branchRunning = false
 				end,
 			})

@@ -2,6 +2,7 @@ return function()
 	local lsp = require("lsp-zero")
 	local wk = require("stuff.wkutils")
 	lsp.preset("recommended")
+	require("neodev").setup({})
 
 	-- lsp.ensure_installed({
 	--     'rust_analyzer',

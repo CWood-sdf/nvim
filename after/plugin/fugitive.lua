@@ -27,6 +27,11 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 			remap("a", "[A]dd all", function()
 				vim.cmd("Git add .")
 			end, opts)
+			remap("c", "[C]ommit all", function()
+				local msg = vim.fn.input("Commit message: ")
+				vim.cmd("Git add .")
+				vim.cmd('Git commit -m "' .. msg .. '"')
+			end, opts)
 		end, opts)
 
 		wk.writeBuf()
