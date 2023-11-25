@@ -1,6 +1,15 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require("lazy").setup({
+	{
+		"dstein64/vim-startuptime",
+		-- lazy-load on a command
+		cmd = "StartupTime",
+		-- init is called during startup. Configuration for vim plugins typically should be set in an init function
+		init = function()
+			vim.g.startuptime_tries = 10
+		end,
+	},
 	-- {
 	-- 	"mfussenegger/nvim-lint",
 	-- 	event = "BufEnter *.*",
@@ -22,10 +31,19 @@ return require("lazy").setup({
 	-- 	end,
 	-- },
 	{
+		"folke/trouble.nvim",
+		cmd = { "TroubleToggle", "Trouble" },
+		opts = {},
+	},
+	{
 		"norcalli/nvim-colorizer.lua",
 		event = "BufReadPre *.*",
 		config = function()
 			require("colorizer").setup()
+			require("colorizer").setup({
+				"*",
+				markdown = { names = false },
+			})
 		end,
 	},
 	{
@@ -179,7 +197,7 @@ return require("lazy").setup({
 	-- fuzzy finder
 	{
 		"nvim-telescope/telescope.nvim",
-		event = { "User SpaceportDone" },
+		event = "VeryLazy",
 		config = function()
 			local builtin = require("telescope.builtin")
 
@@ -366,6 +384,9 @@ return require("lazy").setup({
 			end
 			return "~/projects/"
 		end)(),
+	},
+	install = {
+		missing = false,
 	},
 	checker = {
 		enabled = true,
