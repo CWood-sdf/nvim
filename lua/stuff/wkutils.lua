@@ -35,7 +35,17 @@ function M.feedKeys(keys, mode)
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, true, true), mode, true)
 end
 
+---@param mode string|string[]
+---@param key string
+---@param desc string
+---@param makeRemaps fun(remap: fun(key: string, desc: string, func: fun() | string, opts: table?))
 function M.makeGroup(mode, key, desc, makeRemaps, opts)
+	if type(mode) == "table" then
+		for _, m in ipairs(mode) do
+			M.makeGroup(m, key, desc, makeRemaps, opts)
+		end
+		return
+	end
 	if M.remaps[mode] == nil then
 		M.remaps[mode] = {}
 	end
@@ -57,6 +67,12 @@ function M.makeGroup(mode, key, desc, makeRemaps, opts)
 end
 
 function M.useGroup(mode, key, makeRemaps)
+	if type(mode) == "table" then
+		for _, m in ipairs(mode) do
+			M.useGroup(m, key, makeRemaps)
+		end
+		return
+	end
 	if M.remaps[mode] == nil then
 		error("Can't use group " .. key .. " in mode " .. mode .. " because it doesn't exist")
 	end
@@ -68,7 +84,18 @@ function M.useGroup(mode, key, makeRemaps)
 	end
 end
 
+---@param mode string|string[]
+---@param key string
+---@param desc string
+---@param func fun() | string
+---@param opts table?
 function M.remapNoGroup(mode, key, desc, func, opts)
+	if type(mode) == "table" then
+		for _, m in ipairs(mode) do
+			M.remapNoGroup(m, key, desc, func, opts)
+		end
+		return
+	end
 	opts = opts or {}
 	if M.remaps[mode] == nil then
 		M.remaps[mode] = {}

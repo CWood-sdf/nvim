@@ -23,17 +23,19 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 		local opts = {
 			buffer = buf,
 		}
-		wk.makeGroup("n", "<leader>g", "[G]it", function(remap)
-			remap("a", "[A]dd all", function()
-				vim.cmd("Git add .")
-			end)
-			remap("c", "[C]ommit all", function()
-				local msg = vim.fn.input("Commit message: ")
-				vim.cmd("Git add .")
-				vim.cmd('Git commit -m "' .. msg .. '"')
-			end)
-		end, opts)
+		vim.fn.timer_start(100, function()
+			wk.makeGroup("n", "<leader>g", "[G]it", function(remap)
+				remap("a", "[A]dd all", function()
+					vim.cmd("Git add .")
+				end)
+				remap("c", "[C]ommit all", function()
+					local msg = vim.fn.input("Commit message: ")
+					vim.cmd("Git add .")
+					vim.cmd('Git commit -m "' .. msg .. '"')
+				end)
+			end, opts)
 
-		wk.writeBuf()
+			wk.writeBuf()
+		end)
 	end,
 })

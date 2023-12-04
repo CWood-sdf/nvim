@@ -1,6 +1,27 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require("lazy").setup({
+	--ssr
+	{
+		"cshuaimin/ssr.nvim",
+		keys = "<leader>s",
+		config = function()
+			require("ssr").setup({})
+		end,
+	},
+	--refactoring
+	{
+		"ThePrimeagen/refactoring.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("refactoring").setup({})
+		end,
+		cmd = "Refactor",
+	},
+	-- startuptime
 	{
 		"dstein64/vim-startuptime",
 		-- lazy-load on a command
@@ -30,11 +51,13 @@ return require("lazy").setup({
 	-- 		}
 	-- 	end,
 	-- },
+	--trouble
 	{
 		"folke/trouble.nvim",
 		cmd = { "TroubleToggle", "Trouble" },
 		opts = {},
 	},
+	--colorizer
 	{
 		"norcalli/nvim-colorizer.lua",
 		event = "BufReadPre *.*",
@@ -46,19 +69,23 @@ return require("lazy").setup({
 			})
 		end,
 	},
+	--oil
 	{
-		"CWood-sdf/oil.nvim",
+		"stevearc/oil.nvim",
 		opts = {
 			view_options = {
 				show_hidden = true,
 			},
-			skip_confirm_for_all_edits = true,
+			-- skip_confirm_for_all_edits = true,
 			keymaps = {
-				["<C-s>"] = nil,
+				["<C-s>"] = function()
+					vim.cmd("w")
+				end,
 			},
 		},
 		cmd = "Oil",
 	},
+	--conform
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -83,6 +110,7 @@ return require("lazy").setup({
 		},
 		event = "BufReadPre *.*",
 	},
+	--fidget
 	{
 		"j-hui/fidget.nvim",
 		tag = "legacy",
@@ -94,11 +122,12 @@ return require("lazy").setup({
 			},
 		},
 	},
-	-- { "folke/neodev.nvim", ft = "lua", opts = {} },
+	-- vimbegood
 	{
 		"ThePrimeagen/vim-be-good",
 		cmd = "VimBeGood",
 	},
+	--arduino
 	{
 		"stevearc/vim-arduino",
 		ft = (function()
@@ -108,15 +137,23 @@ return require("lazy").setup({
 			return "arduino"
 		end)(),
 	},
+	-- spaceport
 	{
 		"CWood-sdf/spaceport.nvim",
 		opts = {
-			ignoreDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" } },
+			replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" } },
 			replaceHome = true,
 			projectEntry = "Oil .",
+			-- sections = {
+			-- 	"_global_remaps",
+			-- 	-- "remaps",
+			-- 	"recents",
+			-- },
 		},
+		dev = true,
 		priority = 1000,
 	},
+	-- pineapple
 	{
 		"CWood-sdf/pineapple",
 		dependencies = require("stuff.pineapple"),
@@ -124,11 +161,12 @@ return require("lazy").setup({
 			installedRegistry = "stuff.pineapple",
 			colorschemeFile = "after/plugin/theme.lua",
 		},
-		priority = 1000,
+		cmd = "Pineapple",
+		-- priority = 1000,
 		-- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
-		dev = true,
+		-- dev = true,
 	},
-	-- yuhh
+	-- md preview
 	{
 		"iamcco/markdown-preview.nvim",
 		ft = "markdown",
@@ -140,15 +178,20 @@ return require("lazy").setup({
 	-- line at bottom
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		lazy = false,
+		-- dependencies = { "nvim-tree/nvim-web-devicons" },
+		event = "VeryLazy",
+		config = function()
+			vim.fn.timer_start(100, function()
+				require("stuff.lualine")
+			end)
+		end,
 	},
 
-	-- -- just fancy icons for dap
-	-- {
-	--     'nvim-tree/nvim-web-devicons',
-	--     -- event = "VeryLazy"
-	-- },
+	-- just fancy icons for dap
+	{
+		"nvim-tree/nvim-web-devicons",
+		-- event = "VeryLazy"
+	},
 
 	--autocomment
 	{
@@ -197,25 +240,9 @@ return require("lazy").setup({
 	-- fuzzy finder
 	{
 		"nvim-telescope/telescope.nvim",
-		event = "VeryLazy",
-		config = function()
-			local builtin = require("telescope.builtin")
-
-			local wk = require("stuff.wkutils")
-
-			wk.makeGroup("n", "<leader>f", "[F]ind", function(remap)
-				remap("f", "[F]iles", builtin.find_files)
-				remap("s", "[S]tring", builtin.live_grep)
-				remap("b", "[B]uffer", builtin.buffers)
-				remap("h", "[H]elp", builtin.help_tags)
-				remap("c", "[C]ommands", builtin.commands)
-				remap("t", "[T]ags", builtin.tags)
-				remap("r", "[R]ecent file", builtin.oldfiles)
-				remap("g", "[G]it files (<C-p>)", builtin.git_files)
-			end)
-			wk.writeBuf()
-		end,
+		keys = "<leader>f",
 		version = "0.1.3",
+		opts = {},
 		-- or                            , branch = '0.1.x',
 		dependencies = { { "nvim-lua/plenary.nvim" } },
 	},
@@ -282,7 +309,7 @@ return require("lazy").setup({
 		cmd = "Mason",
 		opts = {},
 	},
-
+	--cmp
 	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -362,6 +389,7 @@ return require("lazy").setup({
 			-- vim.cmd("e")
 		end,
 	},
+	-- neodev
 	{
 		"folke/neodev.nvim",
 		event = "BufReadPre *.lua",
@@ -372,7 +400,9 @@ return require("lazy").setup({
 	{
 		"github/copilot.vim",
 		config = function()
-			vim.cmd("Copilot setup")
+			vim.cmd("let g:copilot_node_command = 'bun'")
+			-- vim.cmd("let g:copilot_filetypes.markdown = v:true")
+			vim.cmd("let g:copilot_filetypes = { 'markdown': v:true }")
 		end,
 		cmd = "Copilot",
 	},
@@ -390,7 +420,7 @@ return require("lazy").setup({
 	},
 	checker = {
 		enabled = true,
-		frequency = 1200,
+		frequency = 600,
 		notify = false,
 	},
 })
