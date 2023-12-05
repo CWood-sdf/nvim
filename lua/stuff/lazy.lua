@@ -144,13 +144,14 @@ return require("lazy").setup({
 			replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" } },
 			replaceHome = true,
 			projectEntry = "Oil .",
-			-- sections = {
-			-- 	"_global_remaps",
-			-- 	-- "remaps",
-			-- 	"recents",
-			-- },
+			sections = {
+				"_global_remaps",
+				"name_blue_green",
+				"remaps",
+				"recents",
+			},
 		},
-		dev = true,
+		-- dev = true,
 		priority = 1000,
 	},
 	-- pineapple
@@ -415,9 +416,9 @@ return require("lazy").setup({
 			return "~/projects/"
 		end)(),
 	},
-	install = {
-		missing = false,
-	},
+	-- install = {
+	-- 	-- missing = false,
+	-- },
 	checker = {
 		enabled = true,
 		frequency = 600,
