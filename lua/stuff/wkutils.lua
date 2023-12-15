@@ -40,6 +40,7 @@ end
 ---@param desc string
 ---@param makeRemaps fun(remap: fun(key: string, desc: string, func: fun() | string, opts: table?))
 function M.makeGroup(mode, key, desc, makeRemaps, opts)
+	groupOpts = {}
 	if type(mode) == "table" then
 		for _, m in ipairs(mode) do
 			M.makeGroup(m, key, desc, makeRemaps, opts)
@@ -57,6 +58,8 @@ function M.makeGroup(mode, key, desc, makeRemaps, opts)
 			M.remaps[mode][key][k] = v
 		end
 		groupOpts = opts
+	else
+		groupOpts = {}
 	end
 	currentGroup = key
 	currentGroupMode = mode
@@ -73,9 +76,9 @@ function M.useGroup(mode, key, makeRemaps)
 		end
 		return
 	end
-	if M.remaps[mode] == nil then
-		error("Can't use group " .. key .. " in mode " .. mode .. " because it doesn't exist")
-	end
+	-- if M.remaps[mode] == nil then
+	--
+	-- end
 	currentGroup = key
 	currentGroupMode = mode
 
@@ -90,13 +93,16 @@ end
 ---@param func fun() | string
 ---@param opts table?
 function M.remapNoGroup(mode, key, desc, func, opts)
+	if opts == nil then
+		opts = {}
+	end
+	opts = opts or {}
 	if type(mode) == "table" then
 		for _, m in ipairs(mode) do
 			M.remapNoGroup(m, key, desc, func, opts)
 		end
 		return
 	end
-	opts = opts or {}
 	if M.remaps[mode] == nil then
 		M.remaps[mode] = {}
 	end
@@ -107,11 +113,21 @@ function M.remapNoGroup(mode, key, desc, func, opts)
 end
 
 function M.writeBuf()
+	local newRemaps = {}
 	for k, v in pairs(M.remaps) do
+		if newRemaps[k] == nil then
+			newRemaps[k] = {}
+		end
+		for k2, v2 in pairs(v) do
+			if v2.name ~= nil then
+				newRemaps[k][k2] = v2
+			end
+		end
 		local opts = {}
 		opts.mode = k
 		whichkey.register(v, opts)
 	end
+	M.remaps = newRemaps
 end
 
 return M

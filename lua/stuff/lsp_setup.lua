@@ -27,7 +27,7 @@ return function()
 	-- 	},
 	-- })
 
-	local onAttach = function(_, bufnr)
+	local onAttach = function(args, bufnr)
 		local opts = { buffer = bufnr, noremap = false }
 		wk.remapNoGroup("n", "K", "Hover", function()
 			vim.lsp.buf.hover()
@@ -133,5 +133,44 @@ return function()
 
 	vim.diagnostic.config({
 		virtual_text = true,
+	})
+
+	local id = nil
+	wk.useGroup("n", "<leader>v", function(remap)
+		remap("L", "LSP restart", function()
+			if id ~= nil then
+				vim.lsp.stop_client(id)
+				id = nil
+			end
+			id = vim.lsp.start_client({
+				filetypes = { "maple", "mpl" },
+				name = "maple",
+				cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
+				root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
+			})
+			vim.cmd("e")
+		end)
+	end)
+	vim.api.nvim_create_autocmd({ "BufEnter", "BufNew" }, {
+		pattern = "*.mpl",
+		callback = function(args)
+			if id == nil then
+				id = vim.lsp.start_client({
+					filetypes = { "maple", "mpl" },
+					name = "maple",
+					cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
+					root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
+				})
+			end
+			local bufnr = args.buffer or args.bufnr or vim.api.nvim_get_current_buf()
+			if vim.lsp.buf_is_attached(bufnr, id) then
+				return
+			end
+			print("Attaching maple lsp")
+			local ok = vim.lsp.buf_attach_client(bufnr, id)
+			if not ok then
+				print("Failed to attach maple lsp")
+			end
+		end,
 	})
 end

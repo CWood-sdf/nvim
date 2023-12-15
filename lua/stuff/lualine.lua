@@ -214,7 +214,7 @@ ins_left({
 		-- end
 		if not dapSetup then
 			for _, v in pairs(require("lazy").plugins()) do
-				if v[1] == "nvim-dap" and v._.loaded ~= nil then
+				if v[1] == "mfussenegger/nvim-dap" and v._.loaded ~= nil then
 					dapSetup = true
 				end
 			end
