@@ -147,22 +147,9 @@ return function()
 				name = "maple",
 				cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
 				root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
+				cmd_cwd = vim.fn.getcwd(),
 			})
-			vim.cmd("e")
-		end)
-	end)
-	vim.api.nvim_create_autocmd({ "BufEnter", "BufNew" }, {
-		pattern = "*.mpl",
-		callback = function(args)
-			if id == nil then
-				id = vim.lsp.start_client({
-					filetypes = { "maple", "mpl" },
-					name = "maple",
-					cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
-					root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
-				})
-			end
-			local bufnr = args.buffer or args.bufnr or vim.api.nvim_get_current_buf()
+			local bufnr = vim.api.nvim_get_current_buf()
 			if vim.lsp.buf_is_attached(bufnr, id) then
 				return
 			end
@@ -171,6 +158,15 @@ return function()
 			if not ok then
 				print("Failed to attach maple lsp")
 			end
-		end,
-	})
+		end)
+		remap("D", "LSP stop", function()
+			if id ~= nil then
+				local bufnr = vim.api.nvim_get_current_buf()
+				vim.lsp.buf_detach_client(bufnr, id)
+				vim.lsp.stop_client(id)
+			else
+				print("LSP not running")
+			end
+		end)
+	end)
 end

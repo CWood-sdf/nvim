@@ -259,6 +259,7 @@ return require("lazy").setup({
 		event = "BufReadPre *.*",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-context",
 		},
 		config = function()
 			require("stuff.ts_setup")()

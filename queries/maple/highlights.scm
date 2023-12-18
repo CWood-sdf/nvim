@@ -15,6 +15,17 @@
 
 (comment) @comment
 
+(variable_definition
+  name: (identifier) @function.definition
+  ("=" 
+   right: (expression (anon_function))
+   )
+  )
+
+
+(function_definition
+  function_name: (identifier) @function.definition
+  )
 (function_definition
   function_name: (identifier) @function.definition
   (parameter_list
@@ -32,8 +43,7 @@
 ;
 [
   "while"
-  ; "continue"
-  ; "break"
+  "break"
 ] @repeat
 ;
 [
@@ -47,6 +57,11 @@
 ;
 ;
 "import" @include
+
+(import_expression
+  (import_path) @string
+
+  )
 ;
 [ "," ] @punctuation.delimiter
 ;

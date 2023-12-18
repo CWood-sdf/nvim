@@ -139,7 +139,18 @@ return function()
 	})
 
 	local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+	vim.cmd("hi! link TreesitterContext Normal")
+	require("treesitter-context").setup({
+		seperator = true,
+	})
+	local wkutils = require("stuff.wkutils")
+	wkutils.useGroup("n", "[", function(remap)
+		remap("t", "ts context", function()
+			require("treesitter-context").go_to_context()
+		end)
+	end)
 	vim.treesitter.language.register("maple", "maple")
+	---@diagnostic disable-next-line: inject-field
 	parser_config.maple = {
 		install_info = {
 			url = "~/projects/maple/tree-sitter-maple", -- local path or git repo
