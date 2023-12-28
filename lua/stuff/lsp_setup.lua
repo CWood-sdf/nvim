@@ -27,6 +27,7 @@ return function()
 	-- 	},
 	-- })
 
+	---@diagnostic disable-next-line: unused-local
 	local onAttach = function(args, bufnr)
 		local opts = { buffer = bufnr, noremap = false }
 		wk.remapNoGroup("n", "K", "Hover", function()
@@ -129,6 +130,9 @@ return function()
 	require("lspconfig").yamlls.setup({})
 	require("lspconfig").jsonls.setup({})
 	require("lspconfig").html.setup({})
+	require("lspconfig").zls.setup({})
+	require("lspconfig").eslint.setup({})
+	require("lspconfig").bashls.setup({})
 	lsp.setup()
 
 	vim.diagnostic.config({
@@ -142,19 +146,22 @@ return function()
 				vim.lsp.stop_client(id)
 				id = nil
 			end
+			---@diagnostic disable-next-line: missing-fields
 			id = vim.lsp.start_client({
 				filetypes = { "maple", "mpl" },
 				name = "maple",
 				cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
+				---@diagnostic disable-next-line: assign-type-mismatch
 				root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
+				---@diagnostic disable-next-line: assign-type-mismatch
 				cmd_cwd = vim.fn.getcwd(),
 			})
 			local bufnr = vim.api.nvim_get_current_buf()
-			if vim.lsp.buf_is_attached(bufnr, id) then
+			if vim.lsp.buf_is_attached(bufnr, id or -1) then
 				return
 			end
 			print("Attaching maple lsp")
-			local ok = vim.lsp.buf_attach_client(bufnr, id)
+			local ok = vim.lsp.buf_attach_client(bufnr, id or -1)
 			if not ok then
 				print("Failed to attach maple lsp")
 			end

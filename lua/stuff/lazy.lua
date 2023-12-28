@@ -1,6 +1,103 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 return require("lazy").setup({
+	{
+		"CWood-sdf/keyRecorder",
+		event = "VeryLazy",
+		dev = true,
+		opts = {},
+	},
+	{
+		"ThePrimeagen/vim-apm",
+		cmd = "VimApm",
+	},
+	{
+		"Eandrju/cellular-automaton.nvim",
+		cmd = "CellularAutomaton",
+		config = function()
+			local animation = {
+				fps = 20,
+				name = "bounce",
+			}
+			function animation.init(grid)
+				for i = 1, #grid do
+					for j = 1, #grid[i] do
+						if grid[i][j].char ~= " " then
+							local velBound = 1
+							local velX = math.random(-velBound, velBound)
+							local velY = math.random(-velBound, velBound)
+							while velX == 0 and velY == 0 do
+								velX = math.random(-velBound, velBound)
+								velY = math.random(-velBound, velBound)
+							end
+							grid[i][j].velocity = { x = velX, y = velY }
+							-- grid[i][j].hl_group = { "@comment", "
+						else
+							grid[i][j].char = " "
+						end
+					end
+				end
+			end
+			function animation.update(grid)
+				local skipList = {}
+				for i = 1, #grid do
+					for j = 1, #grid[i] do
+						if skipList[i] == nil then
+							skipList[i] = {}
+						end
+						if skipList[i][j] then
+							goto continue
+						end
+						if grid[i][j].char ~= " " then
+							local vel = grid[i][j].velocity
+							local x = i
+							local y = j
+							local newX = x + vel.x
+							local newY = y + vel.y
+							-- print("yo")
+							-- print(newX, newY)
+							if newX < 1 then
+								vel.x = 1
+								newX = 1
+							end
+							if newY < 1 then
+								vel.y = 1
+								newY = 1
+							end
+							if newX > #grid then
+								vel.x = -1
+								newX = #grid
+							end
+							if newY > #grid[i] then
+								vel.y = -1
+								newY = #grid[i]
+							end
+							-- print(newX, newY)
+							if grid[newX][newY].char == " " then
+								local temp = grid[newX][newY].hl_group
+								grid[newX][newY].hl_group = grid[x][y].hl_group
+								grid[x][y].hl_group = temp
+								grid[newX][newY].char = grid[x][y].char
+								grid[x][y].char = " "
+								grid[newX][newY].velocity = grid[x][y].velocity
+								grid[x][y].velocity = { x = 0, y = 0 }
+								if skipList[newX] == nil then
+									skipList[newX] = {}
+								end
+								skipList[newX][newY] = true
+							else
+								-- print("hi")
+								grid[x][y].velocity = { x = -vel.x, y = -vel.y }
+							end
+						end
+						::continue::
+					end
+				end
+				return true
+			end
+			require("cellular-automaton").register_animation(animation)
+		end,
+	},
 	--ssr
 	{
 		"cshuaimin/ssr.nvim",
@@ -140,19 +237,27 @@ return require("lazy").setup({
 	-- spaceport
 	{
 		"CWood-sdf/spaceport.nvim",
-		opts = {
-			replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" } },
-			replaceHome = true,
-			projectEntry = "Oil .",
-			sections = {
-				"_global_remaps",
-				"name_blue_green",
-				"remaps",
-				"recents",
-			},
-		},
-		-- dev = true,
-		priority = 1000,
+		config = function()
+			local opts = {
+				replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" }, { "~/.local/share/nvim", "@" } },
+				replaceHome = true,
+				projectEntry = "Oil .",
+				lastViewTime = "yesterday",
+				sections = {
+					"_global_remaps",
+					-- "name_blue_green",
+					"name_blue_green",
+					"remaps",
+					"recents",
+					"hacker_news",
+					-- "pinned",
+					-- "today",
+				},
+			}
+			require("spaceport").setup(opts)
+		end,
+		dev = true,
+		-- priority = 1000,
 	},
 	-- pineapple
 	{
@@ -165,7 +270,7 @@ return require("lazy").setup({
 		cmd = "Pineapple",
 		-- priority = 1000,
 		-- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
-		-- dev = true,
+		dev = true,
 	},
 	-- md preview
 	{

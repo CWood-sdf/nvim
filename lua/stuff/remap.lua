@@ -2,6 +2,11 @@ local wk = require("stuff.wkutils")
 -- vim.g.copilot_node_command = "~/.bun/bin/bun"
 -- vim.cmd("let g:copilot_filetypes = {'markdown': v:true}")
 
+wk.makeGroup("n", "<leader>C", "[C]ellular Automaton", function(remap)
+	remap("r", "[R]ain", ":CellularAutomaton make_it_rain<CR>", { noremap = true })
+	remap("l", "[L]ife", ":CellularAutomaton game_of_life<CR>", { noremap = true })
+	remap("b", "[B]ounce", ":CellularAutomaton bounce<CR>", { noremap = true })
+end)
 wk.makeGroup({ "n", "x" }, "<leader>s", "[S]SR", function(remap)
 	remap("r", "[R]un", function()
 		require("ssr").open()
