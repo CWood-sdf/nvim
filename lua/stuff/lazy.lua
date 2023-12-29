@@ -2,6 +2,11 @@
 
 return require("lazy").setup({
 	{
+		"ziontee113/color-picker.nvim",
+		opts = {},
+		cmd = { "PickColor", "PickColorInsert" },
+	},
+	{
 		"CWood-sdf/keyRecorder",
 		event = "VeryLazy",
 		dev = true,

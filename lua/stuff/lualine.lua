@@ -3,6 +3,7 @@
 -- Credit: glepnir
 -- CWood-sdf additions: Copilot status, formatting name, debug name
 local lualine = require("lualine")
+local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
 local boldSetting = ""
 vim.defer_fn(function()
@@ -265,6 +266,74 @@ ins_left({
 --     color = { fg = "#ffffff", gui = boldSetting },
 -- }
 
+local lastFetch = 0
+local canCheck = false
+local canGetChangeCount = false
+local changes = {
+	out = 0,
+	in_ = 0,
+}
+ins_right({
+	function()
+		if vim.uv.hrtime() - lastFetch > 200000000 then
+			lastFetch = vim.uv.hrtime()
+			vim.fn.jobstart("git fetch", {
+				on_exit = function()
+					canCheck = true
+				end,
+			})
+		end
+		if canCheck and branch ~= "" then
+			canCheck = false
+			vim.fn.jobstart("git rev-list --left-right --count origin/" .. branch .. "..." .. branch, {
+				on_stdout = function(_, str)
+					if str[1] == "" then
+						return
+					end
+					-- print(str[1])
+					local in_, out = str[1]:match("(%d+)%s+(%d+)")
+					changes.out = out * 1
+					changes.in_ = in_ * 1
+				end,
+				on_stderr = function(_, str)
+					if str[1] == "" then
+						return
+					end
+					canGetChangeCount = true
+				end,
+			})
+		end
+		if canGetChangeCount then
+			canGetChangeCount = false
+			vim.fn.jobstart("git rev-list --left-right --count @{upstream}...HEAD", {
+				on_stdout = function(_, str)
+					if str[1] == "" then
+						return
+					end
+					local out = str[1]:match("(%d+)")
+					-- print(str[1])
+					changes.out = out * 1
+					changes.in_ = 0
+				end,
+				on_exit = function() end,
+			})
+		end
+		if changes.out == 0 and changes.in_ == 0 then
+			return ""
+		end
+		-- print(changes.out, changes.in_)
+		local up = " "
+		local down = " "
+		if changes.out == 0 then
+			return changes.in_ .. down
+		end
+		if changes.in_ == 0 then
+			return changes.out .. up
+		end
+		return changes.out .. up .. " " .. changes.in_ .. down
+	end,
+	color = { fg = "#36BCD7" },
+})
 local hasChecked = false
 ins_right({
 	function()
@@ -356,7 +425,6 @@ ins_right({
 })
 
 local branchRunning = false
-local branch = ""
 ins_right({
 	function()
 		if not branchRunning then

@@ -1,5 +1,5 @@
 return function()
-	require("nvim-treesitter.install").compilers = { "zig", "clang" }
+	require("nvim-treesitter.install").compilers = { "clang" }
 
 	local selectTextObjects = {}
 	local function addTextObject(key, query, desc, around, inner)
