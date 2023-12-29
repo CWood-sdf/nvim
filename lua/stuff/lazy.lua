@@ -239,6 +239,30 @@ return require("lazy").setup({
 			return "arduino"
 		end)(),
 	},
+
+	-- remember keymaps
+	{
+		"folke/which-key.nvim",
+		config = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+			require("which-key").setup({})
+		end,
+		lazy = false,
+	},
+	-- pineapple
+	{
+		"CWood-sdf/pineapple",
+		dependencies = require("stuff.pineapple"),
+		opts = {
+			installedRegistry = "stuff.pineapple",
+			colorschemeFile = "after/plugin/theme.lua",
+		},
+		cmd = "Pineapple",
+		-- priority = 1000,
+		-- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
+		dev = true,
+	},
 	-- spaceport
 	{
 		"CWood-sdf/spaceport.nvim",
@@ -264,19 +288,6 @@ return require("lazy").setup({
 		dev = true,
 		-- priority = 1000,
 	},
-	-- pineapple
-	{
-		"CWood-sdf/pineapple",
-		dependencies = require("stuff.pineapple"),
-		opts = {
-			installedRegistry = "stuff.pineapple",
-			colorschemeFile = "after/plugin/theme.lua",
-		},
-		cmd = "Pineapple",
-		-- priority = 1000,
-		-- commit = "d2ad4b8c012eaaa37ac043d78fce2bee155efda6",
-		dev = true,
-	},
 	-- md preview
 	{
 		"iamcco/markdown-preview.nvim",
@@ -292,9 +303,7 @@ return require("lazy").setup({
 		-- dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = false,
 		config = function()
-			vim.fn.timer_start(100, function()
-				require("stuff.lualine")
-			end)
+			require("stuff.lualine")
 		end,
 	},
 
@@ -313,17 +322,6 @@ return require("lazy").setup({
 			require("Comment").setup()
 			require("Comment.ft").set("maple", "// %s")
 		end,
-	},
-
-	-- remember keymaps
-	{
-		"folke/which-key.nvim",
-		config = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 300
-			require("which-key").setup({})
-		end,
-		lazy = false,
 	},
 
 	-- Debugger stuff
