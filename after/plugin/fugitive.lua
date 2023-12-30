@@ -13,8 +13,6 @@ end)
 wk.writeBuf()
 local used = {}
 
----@type Package
-local sdf = {}
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	pattern = "fugitive://*",
 	callback = function(_)

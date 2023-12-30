@@ -104,7 +104,7 @@ return function()
 					["[c"] = { query = "@class.outer", desc = "Previous class" },
 					--
 					-- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
-					["]l"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
+					["[l"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
 					--
 					-- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
 					-- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
@@ -117,7 +117,7 @@ return function()
 					["[C"] = { query = "@class.outer", desc = "Previous class" },
 					--
 					-- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
-					["]L"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
+					["[L"] = { query = { "@loop.inner", "@loop.outer" }, desc = "Previous loop" },
 					--
 					-- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
 					-- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.

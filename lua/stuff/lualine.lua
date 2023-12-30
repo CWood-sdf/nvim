@@ -275,8 +275,8 @@ local changes = {
 }
 ins_right({
 	function()
-		if vim.uv.hrtime() - lastFetch > 200000000 then
-			lastFetch = vim.uv.hrtime()
+		if vim.loop.hrtime() - lastFetch > 200000000 then
+			lastFetch = vim.loop.hrtime()
 			vim.fn.jobstart("git fetch", {
 				on_exit = function()
 					canCheck = true
@@ -356,7 +356,7 @@ local lastInternetCheck = 0
 local copilotSetup = false
 ins_right({
 	function()
-		if not hasInternet or (vim.uv.hrtime() - lastInternetCheck) > 10000000000 then
+		if not hasInternet or (vim.loop.hrtime() - lastInternetCheck) > 10000000000 then
 			-- annoyingly, :Copilot status freezes up the entire ui indefinitely if there's no internet
 			local ping = "ping google.com"
 			if jit.os:find("Windows") == nil then
@@ -385,10 +385,10 @@ ins_right({
 		if hasEnteredFile == false then
 			return ""
 		elseif startTime == nil then
-			startTime = vim.uv.hrtime()
+			startTime = vim.loop.hrtime()
 			return ""
 		end
-		if vim.uv.hrtime() - startTime > 100000000 then
+		if vim.loop.hrtime() - startTime > 100000000 then
 			local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
 
 			if output:find("Not logged in") then
