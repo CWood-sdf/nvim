@@ -2,6 +2,54 @@
 
 return require("lazy").setup({
     {
+        'nvim-neorg/neorg',
+        ft = "norg",
+        build = ":Neorg sync-parsers",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-neorg/neorg-telescope",
+        },
+        opts = {
+            load = {
+                ["core.defaults"] = {},  -- Loads default behaviour
+                ["core.concealer"] = {}, -- Adds pretty icons to your documents
+                ["core.dirman"] = {      -- Manages Neorg workspaces
+                    config = {
+                        workspaces = {
+                            notes = "~/notes",
+                        },
+                    },
+                },
+                ["core.completion"] = {
+                    config = {
+                        engine = "nvim-cmp",
+                    },
+                },
+                -- ["core.integrations.treesitter"] = {
+                --     config = {
+                --         configure_parsers = true,
+                --     },
+                -- },
+                -- ["core.integrations.nvim-cmp"] = {
+                --     config = {
+                --         sources = {
+                --             { name = "neorg" },
+                --         },
+                --     },
+                -- },
+            },
+        }
+    },
+    {
+        'jim-fx/sudoku.nvim',
+        cmd = 'Sudoku',
+        opts = {},
+    },
+    {
+        'alec-gibson/nvim-tetris',
+        cmd = 'Tetris',
+    },
+    {
         "ziontee113/color-picker.nvim",
         opts = {},
         cmd = { "PickColor", "PickColorInsert" },
@@ -276,13 +324,10 @@ return require("lazy").setup({
                 lastViewTime = "yesterday",
                 sections = {
                     "_global_remaps",
-                    -- "name_blue_green",
                     "name_blue_green",
                     "remaps",
                     "recents",
                     "hacker_news",
-                    -- "pinned",
-                    -- "today",
                 },
             }
             require("spaceport").setup(opts)
@@ -302,7 +347,6 @@ return require("lazy").setup({
     -- line at bottom
     {
         "nvim-lualine/lualine.nvim",
-        -- dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = false,
         config = function()
             require("stuff.lualine")
@@ -463,9 +507,10 @@ return require("lazy").setup({
             cmp.setup({
                 enabled = true,
                 sources = cmp.config.sources({
+                    { name = "neorg" },
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
-                }, { { name = "buffer" } }),
+                }, { { name = "buffer" }, { name = "neorg" } }),
                 mapping = cmp_mappings,
                 snippet = {
                     expand = function(args)

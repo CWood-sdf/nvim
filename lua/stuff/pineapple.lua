@@ -3,4 +3,5 @@ return {
     "nordtheme/vim",
     "morhetz/gruvbox",
     "tomasr/molokai",
+    "rebelot/kanagawa.nvim",
 }
