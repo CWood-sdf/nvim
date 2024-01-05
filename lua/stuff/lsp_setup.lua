@@ -2,7 +2,6 @@ return function()
     local lsp = require("lsp-zero")
     local wk = require("stuff.wkutils")
     lsp.preset("recommended")
-    require("neodev").setup({})
 
     -- lsp.ensure_installed({
     --     'rust_analyzer',
@@ -86,8 +85,7 @@ return function()
         end, opts)
         wk.writeBuf()
     end
-    ---@diagnostic disable-next-line: unused-local
-    lsp.on_attach(onAttach)
+    require("neodev").setup({})
     if jit.os == "Windows" then
         require("lspconfig").arduino_language_server.setup({
             -- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
@@ -131,11 +129,15 @@ return function()
     require("lspconfig").jsonls.setup({})
     require("lspconfig").html.setup({})
     require("lspconfig").zls.setup({})
+    require("lspconfig").pyright.setup({})
     require("lspconfig").eslint.setup({})
     require("lspconfig").bashls.setup({})
     -- require("lspconfig").grammarly.setup({})
     require("lspconfig").vale_ls.setup({})
     lsp.setup()
+
+    ---@diagnostic disable-next-line: unused-local
+    lsp.on_attach(onAttach)
 
     vim.diagnostic.config({
         virtual_text = true,

@@ -54,12 +54,12 @@ return require("lazy").setup({
         opts = {},
         cmd = { "PickColor", "PickColorInsert" },
     },
-    {
-        "CWood-sdf/keyRecorder",
-        event = "VeryLazy",
-        dev = true,
-        opts = {},
-    },
+    -- {
+    --     "CWood-sdf/keyRecorder",
+    --     event = "VeryLazy",
+    --     dev = true,
+    --     opts = {},
+    -- },
     {
         "ThePrimeagen/vim-apm",
         cmd = "VimApm",
@@ -356,8 +356,8 @@ return require("lazy").setup({
     -- just fancy icons for dap
     {
         "nvim-tree/nvim-web-devicons",
-        lazy = true,
-        -- event = "VeryLazy"
+        -- lazy = true,
+        event = "VeryLazy"
     },
 
     --autocomment
