@@ -173,6 +173,7 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
     end,
 })
 local dapSetup = false
+local dap_save_path = vim.fn.stdpath("data") .. "/dapft.txt"
 ins_left({
     -- Lsp server name .
     function()
@@ -216,6 +217,21 @@ ins_left({
         -- if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
         --     hasFmt = true
         -- end
+        local dapFile = io.open(dap_save_path, "r")
+        if dapFile == nil then
+            local f = io.open(dap_save_path, "w")
+            f = f or {}
+            f:write("")
+            f:close()
+            dapFile = io.open(dap_save_path, "r") or {}
+        end
+        local dapTable = {}
+        -- read dapFile line by line into dapTable
+        local dapStr = dapFile:read("*l")
+        while dapStr ~= nil do
+            dapTable[dapStr] = true
+            dapStr = dapFile:read("*l")
+        end
         if not dapSetup then
             for _, v in pairs(require("lazy").plugins()) do
                 if v[1] == "mfussenegger/nvim-dap" and v._.loaded ~= nil then
@@ -229,6 +245,17 @@ ins_left({
             if has_dap then
                 hasDbg = true
             end
+            if hasDbg and dapTable[vim.bo.filetype] == nil then
+                dapTable[vim.bo.filetype] = true
+                local file = io.open(dap_save_path, "w")
+                local str = ""
+                for k, _ in pairs(dapTable) do
+                    str = str .. k .. "\n"
+                end
+                file:write(str)
+            end
+        else
+            hasDbg = dapTable[vim.bo.filetype] == true
         end
         local ret = ""
         if hasLsp then
