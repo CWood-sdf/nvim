@@ -2,6 +2,41 @@
 
 return require("lazy").setup({
     {
+        'zaldih/themery.nvim',
+        opts = {
+            themes = {
+                "tokyonight", "tokyonight-night", "tokyonight-storm",
+            },
+        },
+        cmd = "Themery",
+    },
+    {
+        "seandewar/killersheep.nvim",
+        opts = {},
+        cmd = "KillKillKill"
+    },
+    {
+        "Dhanus3133/LeetBuddy.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = function()
+            require("leetbuddy").setup({})
+        end,
+        cmd = "LBQuestions"
+    },
+    {
+        'akinsho/git-conflict.nvim',
+        version = "*",
+        config = true,
+        cmd = {
+            "GitConflictListQf",
+            "GitConflictNextConflict",
+            "GitConflictPrevConflict",
+        },
+    },
+    {
         'nvim-neorg/neorg',
         ft = "norg",
         build = ":Neorg sync-parsers",
@@ -320,7 +355,10 @@ return require("lazy").setup({
             local opts = {
                 replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" }, { "~/.local/share/nvim", "@" } },
                 replaceHome = true,
-                projectEntry = "Oil .",
+                projectEntry = function()
+                    vim.cmd("Oil")
+                    vim.cmd("e")
+                end,
                 lastViewTime = "yesterday",
                 sections = {
                     "_global_remaps",
@@ -534,13 +572,11 @@ return require("lazy").setup({
     },
     -- lsp
     {
-        "VonHeikemen/lsp-zero.nvim",
-        --branch = 'v2.x',
+        "neovim/nvim-lspconfig",
+        -- "VonHeikemen/lsp-zero.nvim",
+        -- branch = 'v2.x',
         dependencies = {
             -- LSP Support
-            {
-                "neovim/nvim-lspconfig",
-            },                                       -- Required
             { "williamboman/mason-lspconfig.nvim" }, -- Optional
             { "williamboman/mason.nvim" },           -- Optional
 
@@ -550,7 +586,6 @@ return require("lazy").setup({
         event = "BufReadPre *.*",
         config = function()
             require("stuff.lsp_setup")()
-            -- vim.cmd("e")
         end,
     },
     -- neodev

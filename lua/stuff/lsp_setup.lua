@@ -1,30 +1,6 @@
 return function()
-    local lsp = require("lsp-zero")
+    -- local lsp = require("lsp-zero")
     local wk = require("stuff.wkutils")
-    lsp.preset("recommended")
-
-    -- lsp.ensure_installed({
-    --     'rust_analyzer',
-    --     'clangd',
-    --     'lua_ls',
-    -- })
-
-    -- Fix Undefined global 'vim'
-    -- lsp.nvim_workspe()
-
-    -- lsp.setup_nvim_cmp({
-    --     mapping = cmp_mappings
-    -- })
-
-    -- lsp.set_preferences({
-    -- 	suggest_lsp_servers = true,
-    -- 	sign_icons = {
-    -- 		error = "E",
-    -- 		warn = "W",
-    -- 		hint = "H",
-    -- 		info = "I",
-    -- 	},
-    -- })
 
     ---@diagnostic disable-next-line: unused-local
     local onAttach = function(args, bufnr)
@@ -85,31 +61,30 @@ return function()
         end, opts)
         wk.writeBuf()
     end
+    require('mason').setup({
+        ensure_installed = {
+            "clangd",
+            "lua-language-server",
+            "rust-analyzer",
+        },
+    });
+    require('mason-lspconfig').setup({
+        automatic_installation = true,
+    });
+    require('mason-lspconfig').setup_handlers({
+        function(server_name)
+            if server_name == "lua_ls" then
+                return
+            end
+            require('lspconfig')[server_name].setup({
+                -- if server_name == "arduino
+                on_attach = onAttach,
+            })
+        end,
+    })
     require("neodev").setup({})
-    if jit.os == "Windows" then
-        require("lspconfig").arduino_language_server.setup({
-            -- cmd = { "node", --[[ "run", ]] "C:/Users/woodc/ar_ls_inter_client/index.js" },
-            cmd = {
-                "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\arduino-language-server.cmd",
-                "-clangd",
-                "C:\\Users\\woodc\\AppData\\Local\\nvim-data\\mason\\bin\\clangd.cmd",
-                "-cli-config",
-                "C:\\Users\\woodc\\appdata\\local\\arduino15\\arduino-cli.yaml",
-                "-fqbn",
-                "arduino:avr:pro",
-                "-log",
-                "true",
-            },
-        })
-    else
-        require("lspconfig").arduino_language_server.setup({
-            cmd = {
-                "node", --[[ "run", ]]
-                "/mnt/c/Users/woodc/ar_ls_inter_client/index.js",
-            },
-        })
-    end
     require("lspconfig").lua_ls.setup({
+        on_attach = onAttach,
         settings = {
             Lua = {
                 hint = {
@@ -118,27 +93,6 @@ return function()
             },
         },
     })
-    require("lspconfig").rust_analyzer.setup({})
-    require("lspconfig").clangd.setup({})
-    require("lspconfig").tsserver.setup({})
-    require("lspconfig").svelte.setup({})
-    require("lspconfig").prosemd_lsp.setup({})
-    require("lspconfig").gopls.setup({})
-    require("lspconfig").vimls.setup({})
-    require("lspconfig").yamlls.setup({})
-    require("lspconfig").jsonls.setup({})
-    require("lspconfig").html.setup({})
-    require("lspconfig").zls.setup({})
-    require("lspconfig").pyright.setup({})
-    require("lspconfig").eslint.setup({})
-    require("lspconfig").bashls.setup({})
-    -- require("lspconfig").grammarly.setup({})
-    require("lspconfig").vale_ls.setup({})
-    lsp.setup()
-
-    ---@diagnostic disable-next-line: unused-local
-    lsp.on_attach(onAttach)
-
     vim.diagnostic.config({
         virtual_text = true,
     })
