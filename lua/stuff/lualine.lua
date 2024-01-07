@@ -177,9 +177,6 @@ local dap_save_path = vim.fn.stdpath("data") .. "/dapft.txt"
 ins_left({
     -- Lsp server name .
     function()
-        -- if hasEnteredFile == false then
-        --     return ""
-        -- end
         local hasLsp = false
         local hasFmt = false
         local hasDbg = false
@@ -195,28 +192,21 @@ ins_left({
             ---@diagnostic disable-next-line: undefined-field
             local filetypes = client.config.filetypes
             if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                -- msg = client.name
-                -- msg = sign .. msg
-                -- return sign
                 hasLsp = true
                 if client.server_capabilities.documentFormattingProvider then
-                    -- remove last two chars of sign
-                    -- sign = sign .. format_sign
-                    -- format_sign = ""
                     hasFmt = true
                 end
             end
         end
+        -- get dem formatters
         local formatters = require("conform").list_formatters(vim.api.nvim_get_current_buf())
         for _, formatter in ipairs(formatters) do
             if formatter.available then
                 hasFmt = true
             end
         end
-        -- local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
-        -- if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
-        --     hasFmt = true
-        -- end
+
+        -- this is for caching dap status
         local dapFile = io.open(dap_save_path, "r")
         if dapFile == nil then
             local f = io.open(dap_save_path, "w")
@@ -232,6 +222,7 @@ ins_left({
             dapTable[dapStr] = true
             dapStr = dapFile:read("*l")
         end
+        -- we dont want to setup dap bc it takes forever
         if not dapSetup then
             for _, v in pairs(require("lazy").plugins()) do
                 if v[1] == "mfussenegger/nvim-dap" and v._.loaded ~= nil then
@@ -258,6 +249,7 @@ ins_left({
             hasDbg = dapTable[vim.bo.filetype] == true
         end
         local ret = ""
+        -- just add the signs
         if hasLsp then
             ret = " "
         end
@@ -271,31 +263,8 @@ ins_left({
     end,
     color = { fg = "#ffffff", gui = boldSetting },
 })
--- ins_left({
---     function()
---         local sign = " "
---         local formatter = require("formatter.config").values.filetype[vim.bo.filetype]
---         if formatter ~= nil and masonRegistry.is_installed(formatter[1]().exe) then
---             return sign .. formatter[1]().exe
---         end
---         return ""
---     end,
---     color = { fg = "#ffffff", gui = boldSetting },
--- })
---
--- ins_left {
---     function()
---         local dap = require 'dap'
---         local has_dap = dap.configurations[vim.bo.filetype] ~= nil
---         if has_dap == false then
---             return ""
---         end
---
---         return " "
---     end,
---     color = { fg = "#ffffff", gui = boldSetting },
--- }
 
+-- git pull/push list
 local lastFetch = 0
 local canCheck = false
 local canGetChangeCount = false
@@ -362,11 +331,13 @@ ins_right({
         end
         return changes.out .. up .. " " .. changes.in_ .. down
     end,
-    color = { fg = "#36BCD7" },
+    color = { fg = "#5ee4ff" },
 })
+-- Lazy sync status
 local hasChecked = false
 ins_right({
     function()
+        -- only check at start of program
         if not hasChecked then
             require("lazy.manage.checker").check()
             hasChecked = true
