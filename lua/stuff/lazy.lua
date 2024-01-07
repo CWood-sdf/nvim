@@ -1,6 +1,6 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
-return require("lazy").setup("stuff.plugins", {
+return require("lazy").setup("plugins", {
     dev = {
         path = (function()
             if jit.os == "Windows" then
