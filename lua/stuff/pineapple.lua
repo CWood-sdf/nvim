@@ -4,4 +4,5 @@ return {
     "morhetz/gruvbox",
     "tomasr/molokai",
     "rebelot/kanagawa.nvim",
+    "cocopon/iceberg.vim",
 }
