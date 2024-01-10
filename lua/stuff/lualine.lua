@@ -274,7 +274,7 @@ local changes = {
 }
 ins_right({
     function()
-        if vim.loop.hrtime() - lastFetch > 1000000000 then
+        if vim.loop.hrtime() - lastFetch > 10000000000 then
             lastFetch = vim.loop.hrtime()
             vim.fn.jobstart("git fetch", {
                 on_exit = function()
