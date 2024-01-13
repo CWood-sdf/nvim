@@ -10,13 +10,13 @@ return {
         lastViewTime = "yesterday",
         sections = {
             "_global_remaps",
-            "name",
+            "name_blue_green",
             "remaps",
             "recents",
-            "hacker_news",
+            -- "hacker_news",
         },
         debug = false,
     },
-    -- dev = true,
+    dev = true,
     -- priority = 1000,
 }
