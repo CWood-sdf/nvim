@@ -1,7 +1,7 @@
 return {
     "CWood-sdf/spaceport.nvim",
     opts = {
-        replaceDirs = { { "~/projects", "_" }, { "/mnt/c/Users/woodc", "$" }, { "~/.local/share/nvim", "@" } },
+        replaceDirs = { { "~/projects", "_" }, { "~/.local/share/nvim", "@" } },
         replaceHome = true,
         projectEntry = function()
             vim.cmd("Oil")

@@ -8,6 +8,9 @@ return require("lazy").setup("plugins", {
             return "~/projects/"
         end)(),
     },
+    change_detection = {
+        notify = false,
+    },
     -- install = {
     -- 	-- missing = false,
     -- },
