@@ -7,13 +7,14 @@ return {
             vim.cmd("Oil")
             vim.cmd("e")
         end,
-        lastViewTime = "yesterday",
+        -- lastViewTime = "yesterday",
+        maxRecentFiles = 25,
         sections = {
             "_global_remaps",
             "name_blue_green",
             "remaps",
             "recents",
-            -- "hacker_news",
+            "hacker_news",
         },
         debug = false,
     },

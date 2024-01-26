@@ -60,7 +60,7 @@ return {
                         vim.cmd("TroubleToggle")
                     end, opts)
                 end, opts)
-                wk.makeGroup("n", "<leader>vg", "Goto", function(remap)
+                wk.makeGroup("n", "<leader>vo", "G[o]to", function(remap)
                     remap("d", "[D]efinition (gd)", function()
                         vim.lsp.buf.definition()
                     end, opts)
@@ -99,6 +99,9 @@ return {
                     if server_name == "lua_ls" then
                         return
                     end
+                    if server_name == "arduino_language_server" then
+                        return
+                    end
                     require('lspconfig')[server_name].setup({
                         -- if server_name == "arduino
                         on_attach = onAttach,
@@ -114,6 +117,20 @@ return {
                             enable = true,
                         },
                     },
+                },
+            })
+            require("lspconfig").arduino_language_server.setup({
+                on_attach = onAttach,
+                cmd = {
+                    os.getenv("HOME") .. "/projects/arduino-language-server/arduino-language-server",
+                    "-clangd",
+                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
+                    "-fqbn",
+                    "arduino:avr:bt",
+                    "-cli-config",
+                    os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
+                    "-log",
+                    "true",
                 },
             })
             vim.diagnostic.config({

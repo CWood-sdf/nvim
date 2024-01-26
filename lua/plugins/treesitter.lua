@@ -5,6 +5,7 @@ return {
         "nvim-treesitter/nvim-treesitter-textobjects",
         "nvim-treesitter/nvim-treesitter-context",
     },
+    -- tag = "v0.9.2",
     config = function()
         require("nvim-treesitter.install").compilers = { "clang" }
 
@@ -29,7 +30,7 @@ return {
             ignore_install = {},
 
             -- A list of parser names, or "all" (the five listed parsers should always be installed)
-            ensure_installed = { "bash", "rust", "zig", "c", "javascript", "typescript", "lua", "vim", "vimdoc", "query" },
+            ensure_installed = { "markdown", "bash", "rust", "zig", "c", "javascript", "typescript", "lua", "vim", "vimdoc", "query" },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
             sync_install = false,
@@ -64,7 +65,7 @@ return {
                     -- mapping query_strings to modes.
                     selection_modes = {
                         ["@parameter.outer"] = "v", -- charwise
-                        ["@function.outer"] = "V", -- linewise
+                        ["@function.outer"] = "V",  -- linewise
                         ["@class.outer"] = "<c-v>", -- blockwise
                     },
                     -- If you set this to `true` (default is `false`) then any textobject is
@@ -161,13 +162,13 @@ return {
         parser_config.maple = {
             install_info = {
                 url = "~/projects/maple/tree-sitter-maple", -- local path or git repo
-                files = { "src/parser.c" },             -- note that some parsers also require src/scanner.c or src/scanner.cc
+                files = { "src/parser.c" },                 -- note that some parsers also require src/scanner.c or src/scanner.cc
                 -- optional entries:
-                branch = "main",                        -- default branch in case of git repo if different from master
-                generate_requires_npm = false,          -- if stand-alone parser without npm dependencies
-                requires_generate_from_grammar = true,  -- if folder contains pre-generated src/parser.c
+                branch = "main",                            -- default branch in case of git repo if different from master
+                generate_requires_npm = false,              -- if stand-alone parser without npm dependencies
+                requires_generate_from_grammar = true,      -- if folder contains pre-generated src/parser.c
             },
-            filetype = "maple",                         -- if filetype does not match the parser name
+            filetype = "maple",                             -- if filetype does not match the parser name
         }
     end,
     -- event = "VeryLazy",

@@ -40,6 +40,11 @@ return {
             remap("g", "[G]it files (<C-p>)", function()
                 require("telescope.builtin").git_files()
             end)
+            remap('e', 'Th[e]me', function()
+                vim.cmd("Lazy! load pineapple")
+                require("telescope").load_extension("pineapple")
+                require("telescope").extensions.pineapple.colorschemes()
+            end)
         end)
         wk.writeBuf()
     end,

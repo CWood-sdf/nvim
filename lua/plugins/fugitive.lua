@@ -33,7 +33,7 @@ return {
                         remap("a", "[A]dd all", function()
                             vim.cmd("Git add .")
                         end)
-                        remap("c", "[C]ommit all", function()
+                        remap("C", "[C]ommit all", function()
                             local msg = vim.fn.input("Commit message: ")
                             vim.cmd("Git add .")
                             vim.cmd('Git commit -m "' .. msg .. '"')
