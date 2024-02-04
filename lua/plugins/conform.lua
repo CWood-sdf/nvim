@@ -20,5 +20,5 @@ return {
         },
         notify_on_error = true,
     },
-    event = "BufReadPre *.*",
+    event = "User SpaceportDone",
 }

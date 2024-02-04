@@ -1,11 +1,12 @@
 -- Eviline config for lualine
 -- Author: shadmansaleh
 -- Credit: glepnir
--- CWood-sdf additions: Copilot status, formatting name, debug name
+-- CWood-sdf additions: lotsa stuff
 local lualine = require("lualine")
 local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
 local boldSetting = ""
+local Config = require("stuff.config")
 vim.defer_fn(function()
     boldSetting = (function()
         if vim.fn.exists("GuiFont") == 1 then
@@ -119,19 +120,26 @@ end
 --     padding = { left = 0, right = 0 }, -- We don't need space before this
 -- })
 -- sdf
+Config.addFlag("lualine.filename")
 ins_left({
     "filename",
     color = getModeColor,
-    cond = conditions.buffer_not_empty,
+    cond = conditions.buffer_not_empty and Config.getFn("lualine.filename"),
     -- color = { fg = "#aaaaff", gui = boldSetting },
 })
 
-ins_left({ "progress" })
-ins_left({ "location" })
+ins_left({
+    "progress",
+    cond = Config.getFn("lualine.progress"),
+})
+ins_left({
+    "location",
+    cond = Config.getFn("lualine.location"),
+})
 
 ins_left({
     "o:encoding", -- option component same as &encoding in viml
-    cond = conditions.hide_in_width,
+    cond = conditions.hide_in_width and Config.getFn("lualine.encoding"),
     color = { fg = colors.green, gui = boldSetting },
 })
 
@@ -140,6 +148,7 @@ ins_left({
     fmt = string.upper,
     icons_enabled = true,
     color = { fg = colors.green, gui = boldSetting },
+    cond = Config.getFn("lualine.fileformat"),
 })
 
 ins_left({
@@ -151,6 +160,7 @@ ins_left({
         color_warn = { fg = colors.yellow },
         color_info = { fg = colors.cyan },
     },
+    cond = Config.getFn("lualine.diagnostics"),
 })
 
 -- Insert mid section. You can make any number of sections in neovim :)
@@ -162,8 +172,8 @@ ins_left({
 })
 local hasEnteredFile = false
 local auGroup = vim.api.nvim_create_augroup("Lualine", {})
-vim.api.nvim_create_autocmd({ "BufRead" }, {
-    pattern = "*",
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "SpaceportDone",
     group = auGroup,
     callback = function()
         hasEnteredFile = true
@@ -239,6 +249,9 @@ ins_left({
             if hasDbg and dapTable[vim.bo.filetype] == nil then
                 dapTable[vim.bo.filetype] = true
                 local file = io.open(dap_save_path, "w")
+                if file == nil then
+                    return ""
+                end
                 local str = ""
                 for k, _ in pairs(dapTable) do
                     str = str .. k .. "\n"
@@ -262,6 +275,9 @@ ins_left({
         return ret
     end,
     color = { fg = "#ffffff", gui = boldSetting },
+    cond = function()
+        return Config.get("lualine.lsp") and hasEnteredFile
+    end,
 })
 
 -- git pull/push list
@@ -332,6 +348,7 @@ ins_right({
         return changes.out .. up .. " " .. changes.in_ .. down
     end,
     color = { fg = "#5ee4ff" },
+    cond = Config.getFn("lualine.gitStatus"),
 })
 -- Lazy sync status
 local hasChecked = false
@@ -348,6 +365,7 @@ ins_right({
         return ""
     end,
     color = { fg = "#5EE4FF" },
+    cond = Config.getFn("lualine.lazyStatus"),
 })
 
 local startTime = nil
@@ -405,6 +423,7 @@ ins_right({
             return "󰔟"
         end
     end,
+    cond = Config.getFn("lualine.copilot"),
 })
 ins_right({
     "filetype",
@@ -412,6 +431,7 @@ ins_right({
     icon = {
         align = "left",
     },
+    cond = Config.getFn("lualine.filetype"),
 })
 
 ins_right({
@@ -423,6 +443,7 @@ ins_right({
         modified = { fg = "#ffbb00" },
         removed = { fg = colors.red },
     },
+    cond = Config.getFn("lualine.diff"),
 })
 
 local branchRunning = false
@@ -446,6 +467,7 @@ ins_right({
     end,
     icon = "",
     color = getModeColor,
+    cond = Config.getFn("lualine.branch"),
 })
 
 -- ins_right({

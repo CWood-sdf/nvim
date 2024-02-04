@@ -28,4 +28,24 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
---vim.opt.colorcolumn = "80"
+local conf = require("stuff.config")
+vim.opt.colorcolumn = ""
+conf.addFlag("values.nocolorcolumn")
+conf.addCallback("values.nocolorcolumn", function(v)
+    if v then
+        vim.opt.colorcolumn = ""
+    else
+        vim.opt.colorcolumn = "80"
+    end
+end)
+
+local mouse = vim.opt.mouse
+vim.opt.mouse = ""
+conf.addFlag("values.nomouse")
+conf.addCallback("values.nomouse", function(v)
+    if not v then
+        vim.opt.mouse = mouse
+    else
+        vim.opt.mouse = ""
+    end
+end)

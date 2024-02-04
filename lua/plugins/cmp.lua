@@ -1,6 +1,7 @@
 return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
+    keys = { ":" },
     config = function()
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -28,6 +29,45 @@ return {
         --
         -- cmp_mappings["<C-d>"] = cmp_action.luasnip_jump_forward()
 
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(
+                {
+                    ["<C-j>"] = {
+                        c = function()
+                            if cmp.visible() then
+                                cmp.select_next_item()
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                    },
+                    ["<C-k>"] = {
+                        c = function()
+                            if cmp.visible() then
+                                cmp.select_prev_item()
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                    },
+                    ["<C-Space>"] = {
+                        c = cmp.mapping.confirm({ select = true })
+                    },
+                }
+            ),
+            sources = cmp.config.sources({
+                -- { name = 'path' }
+                -- { name = 'cmdline' }
+            }, {
+                {
+                    name = 'cmdline',
+                    option = {
+                        ignore_cmds = { 'lua', 'Man', '!' }
+                    }
+                }
+            })
+        })
+
         ---@diagnostic disable-next-line: missing-fields
         cmp.setup({
             enabled = true,
@@ -51,6 +91,7 @@ return {
     dependencies = {
         { "hrsh7th/nvim-cmp" },     -- Required
         { "hrsh7th/cmp-nvim-lsp" }, -- Required
+        { "hrsh7th/cmp-cmdline" },
         { "hrsh7th/cmp-buffer" },
         { "hrsh7th/cmp-path" },
         { "L3MON4D3/LuaSnip" }, -- Required

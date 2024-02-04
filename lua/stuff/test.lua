@@ -1,14 +1,20 @@
-local group = vim.api.nvim_create_augroup("P", {})
-vim.api.nvim_create_autocmd("User", {
-    pattern = "PineappleColorschemePre",
-    group = group,
-    callback = function(data)
-        print("PineappleColorschemePre")
-        print(vim.inspect(data))
-        local file = io.open("yeet.txt", "w")
-        file:close()
-        file = io.open("yeet.txt", "w")
-        file:write(vim.inspect(data))
-        file:close()
-    end,
-})
+local t = vim.loop.hrtime()
+
+
+local arr = {}
+local x = 0
+
+while x < 46 do
+    local sub = {}
+    local y = 0
+    while y < 71 do
+        sub[y + 1] = "a"
+        y = y + 1
+    end
+    arr[x + 1] = sub
+    x = x + 1
+end
+print(arr[45][70])
+
+local t2 = vim.loop.hrtime()
+print((t2 - t) / 1e6, "ms")

@@ -17,6 +17,5 @@ return {
         "GitConflictPrevConflict",
     },
     keys = { "<leader>g" },
-    lazy = false,
     dev = true,
 }

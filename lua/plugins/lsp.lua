@@ -25,6 +25,19 @@ return {
         config = function()
             local wk = require("stuff.wkutils")
 
+            local id = nil
+            local configs = require('lspconfig.configs')
+            if not configs.maple then
+                configs.maple = {
+                    default_config = {
+                        cmd = { os.getenv("HOME") .. "/projects/Maple/lsp/target/debug/maple-lsp" },
+                        filetypes = { "maple", "mpl" },
+                        root_dir = function()
+                            return vim.fn.getcwd()
+                        end,
+                    },
+                }
+            end
             ---@diagnostic disable-next-line: unused-local
             local onAttach = function(args, bufnr)
                 local opts = { buffer = bufnr, noremap = false }
@@ -102,12 +115,21 @@ return {
                     if server_name == "arduino_language_server" then
                         return
                     end
+                    -- local f = io.open("skip.sdf", "r")
+                    -- if f ~= nil and server_name == "clangd" then
+                    --     f:close()
+                    --     return
+                    -- end
                     require('lspconfig')[server_name].setup({
                         -- if server_name == "arduino
                         on_attach = onAttach,
                     })
                 end,
             })
+            require('lspconfig').maple.setup({
+                on_attach = onAttach,
+            })
+            -- require('lspconfig').ccls.setup({})
             require("neodev").setup({})
             require("lspconfig").lua_ls.setup({
                 on_attach = onAttach,
@@ -122,11 +144,11 @@ return {
             require("lspconfig").arduino_language_server.setup({
                 on_attach = onAttach,
                 cmd = {
-                    os.getenv("HOME") .. "/projects/arduino-language-server/arduino-language-server",
+                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
                     "-clangd",
                     os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
                     "-fqbn",
-                    "arduino:avr:bt",
+                    "arduino:avr:uno",
                     "-cli-config",
                     os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
                     "-log",
@@ -153,45 +175,6 @@ return {
                 text = "",
                 texthl = "TextHint",
             })
-
-
-            local id = nil
-            wk.useGroup("n", "<leader>v", function(remap)
-                remap("L", "LSP restart", function()
-                    if id ~= nil then
-                        vim.lsp.stop_client(id)
-                        id = nil
-                    end
-                    ---@diagnostic disable-next-line: missing-fields
-                    id = vim.lsp.start_client({
-                        filetypes = { "maple", "mpl" },
-                        name = "maple",
-                        cmd = { "/home/cwood/projects/maple/lsp/target/debug/maple-lsp" },
-                        ---@diagnostic disable-next-line: assign-type-mismatch
-                        root_dir = vim.fs.dirname(vim.fs.find({ "maple.mpl" }, { upward = true })[1]),
-                        ---@diagnostic disable-next-line: assign-type-mismatch
-                        cmd_cwd = vim.fn.getcwd(),
-                    })
-                    local bufnr = vim.api.nvim_get_current_buf()
-                    if vim.lsp.buf_is_attached(bufnr, id or -1) then
-                        return
-                    end
-                    print("Attaching maple lsp")
-                    local ok = vim.lsp.buf_attach_client(bufnr, id or -1)
-                    if not ok then
-                        print("Failed to attach maple lsp")
-                    end
-                end)
-                remap("D", "LSP stop", function()
-                    if id ~= nil then
-                        local bufnr = vim.api.nvim_get_current_buf()
-                        vim.lsp.buf_detach_client(bufnr, id)
-                        vim.lsp.stop_client(id)
-                    else
-                        print("LSP not running")
-                    end
-                end)
-            end)
         end,
     },
     {
