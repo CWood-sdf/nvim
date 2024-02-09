@@ -11,8 +11,8 @@ return {
     -- just fancy icons for dap
     {
         "nvim-tree/nvim-web-devicons",
-        -- lazy = true,
-        event = "VeryLazy"
+        lazy = true,
+        -- event = "VeryLazy"
     },
 
     { -- Optional

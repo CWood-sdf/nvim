@@ -348,7 +348,7 @@ ins_right({
         return changes.out .. up .. " " .. changes.in_ .. down
     end,
     color = { fg = "#5ee4ff" },
-    cond = Config.getFn("lualine.gitStatus"),
+    cond = Config.getFn("lualine.gitStatus") and conditions.check_git_workspace,
 })
 -- Lazy sync status
 local hasChecked = false

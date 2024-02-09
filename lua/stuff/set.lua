@@ -43,6 +43,7 @@ local mouse = vim.opt.mouse
 vim.opt.mouse = ""
 conf.addFlag("values.nomouse")
 conf.addCallback("values.nomouse", function(v)
+    print(v)
     if not v then
         vim.opt.mouse = mouse
     else

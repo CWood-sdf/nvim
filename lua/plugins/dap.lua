@@ -1,4 +1,34 @@
+vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "LazyLoad",
+    callback = function(data)
+        if data.data == "nvim-dap" then
+            vim.api.nvim_exec_autocmds("User", { pattern = "LoadNvimLuaDap" })
+        end
+    end,
+})
 return {
+    {
+        "jbyuki/one-small-step-for-vimkind",
+        requires = {
+            "mfussenegger/nvim-dap",
+        },
+        config = function()
+            local dap = require("dap")
+            dap.configurations.lua = {
+                {
+                    type = 'nlua',
+                    request = 'attach',
+                    name = "Attach to running Neovim instance",
+                }
+            }
+
+            dap.adapters.nlua = function(callback, config)
+                callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+            end
+        end,
+        event = "User LoadNvimLuaDap",
+
+    },
     -- Debugger stuff
     {
         "mfussenegger/nvim-dap",
@@ -11,10 +41,18 @@ return {
             local wk = require('stuff.wkutils')
             wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
                 remap("b", "[B]reakpoint", vim.cmd.DapToggleBreakpoint)
+                remap('v', 'Ser[v]er', function()
+                    require('osv').launch({ port = 8086 })
+                end)
+                remap('y', 'Banana debug', function()
+                    require('banana').yeet()
+                end)
                 -- remap('i', 'Conditional bp', function()
                 --     require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')
                 -- end)
-                remap("c", "[C]ontinue (<F5>)", vim.cmd.DapContinue)
+                remap("c", "[C]ontinue (<F5>)", function()
+                    vim.cmd.DapContinue()
+                end)
             end)
             wk.writeBuf()
         end,
@@ -56,6 +94,10 @@ return {
             local function terminateDap()
                 dapui.close()
                 vim.cmd("DapTerminate")
+                require("lualine").hide({
+                    unhide = true,
+                    place = { "statusline" },
+                })
             end
             wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
                 remap("i", "Step [I]nto (<F11>)", vim.cmd.DapStepInto)
