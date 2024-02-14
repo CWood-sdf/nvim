@@ -1,5 +1,8 @@
 return {
     "David-Kunz/gen.nvim",
-    opts = {},
+    opts = {
+        model = "dolphin-mixtral",
+
+    },
     cmd = "Gen",
 }

@@ -3,6 +3,7 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         lazy = false,
+        -- event = "VeryLazy",
         config = function()
             require("stuff.lualine")
         end,
@@ -12,7 +13,6 @@ return {
     {
         "nvim-tree/nvim-web-devicons",
         lazy = true,
-        -- event = "VeryLazy"
     },
 
     { -- Optional
