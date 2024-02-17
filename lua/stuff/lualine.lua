@@ -128,6 +128,8 @@ ins_left({
     -- color = { fg = "#aaaaff", gui = boldSetting },
 })
 
+Config.addFlag("lualine.progress")
+Config.set("lualine.progress", false)
 ins_left({
     "progress",
     cond = Config.getFn("lualine.progress"),
