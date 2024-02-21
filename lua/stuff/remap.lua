@@ -49,7 +49,7 @@ wk.makeGroup("n", "<leader>p", "[P]roject", function(remap)
 end)
 
 -- copy (obv)
-wk.remapNoGroup("x", "<C-c>", "Copy", [["+y]], { noremap = true })
+wk.remapNoGroup("v", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-c>", "Copy", [["+y]], { noremap = true })
 
 -- save
