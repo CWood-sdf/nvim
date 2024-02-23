@@ -36,6 +36,7 @@ return {
             "rcarriga/nvim-dap-ui",
             "jay-babu/mason-nvim-dap.nvim",
             "williamboman/mason.nvim",
+            -- 'theHamsta/nvim-dap-virtual-text',
         },
         init = function()
             local wk = require('stuff.wkutils')
@@ -102,7 +103,7 @@ return {
             wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
                 remap("i", "Step [I]nto (<F11>)", vim.cmd.DapStepInto)
                 remap("o", "Step [O]ut (<F12>)", vim.cmd.DapStepOut)
-                remap("s", "[S]tep Over (<F9>)", vim.cmd.DapStepOver)
+                remap("s", "[S]tep Over (<F10>)", vim.cmd.DapStepOver)
                 remap("t", "[T]erminate (<S-F5>)", terminateDap)
             end)
             wk.makeGroup("n", "<leader>du", "[U]i", function(remap)
@@ -130,4 +131,11 @@ return {
         cmd = { "DapContinue", "DapToggleBreakpoint" },
         keys = { "<leader>d" },
     },
+    -- {
+    --     'theHamsta/nvim-dap-virtual-text',
+    --     opts = {
+    --
+    --     },
+    --     lazy = true,
+    -- }
 }

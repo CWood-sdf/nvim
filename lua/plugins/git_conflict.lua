@@ -16,6 +16,6 @@ return {
         "GitConflictNextConflict",
         "GitConflictPrevConflict",
     },
-    keys = { "<leader>g" },
+    keys = { "<leader>gc" },
     dev = true,
 }

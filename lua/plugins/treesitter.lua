@@ -8,7 +8,7 @@ return {
     },
     -- tag = "v0.9.2",
     config = function()
-        require("nvim-treesitter.install").compilers = { "clang" }
+        require("nvim-treesitter.install").compilers = { "zig", "clang" }
 
         local selectTextObjects = {}
         local function addTextObject(key, query, desc, around, inner)
@@ -172,6 +172,4 @@ return {
             filetype = "maple",                                                 -- if filetype does not match the parser name
         }
     end,
-    -- event = "VeryLazy",
-    -- build = ':TSUpdate'
 }

@@ -1,8 +1,3 @@
--- vim.api.nvim_set_hl(0, "Sdf", { bg = "#000000", fg = "#00ff00" })
--- vim.api.nvim_set_hl(0, "SpaceportRecentsProject", { bg = "#000000", fg = "#ab7299" })
-local i = 0
-local w = 182
-local lastRender = 0
 return {
     "CWood-sdf/spaceport.nvim",
     opts = {
@@ -14,7 +9,6 @@ return {
                 vim.cmd("e")
             end)
         end,
-        -- lastViewTime = "yesterday",
         maxRecentFiles = 18,
         sections = {
             "_global_remaps",
@@ -26,5 +20,4 @@ return {
         debug = true,
     },
     dev = true,
-    -- priority = 1000,
 }

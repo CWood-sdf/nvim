@@ -25,7 +25,6 @@ return {
         config = function()
             local wk = require("stuff.wkutils")
 
-            local id = nil
             local configs = require('lspconfig.configs')
             if not configs.maple then
                 configs.maple = {
@@ -71,6 +70,12 @@ return {
                     end, opts)
                     remap("t", "[T]oggle trouble", function()
                         vim.cmd("TroubleToggle")
+                    end, opts)
+                    remap("S", "[S]top", function()
+                        vim.cmd("LspStop")
+                    end, opts)
+                    remap("R", "[R]estart", function()
+                        vim.cmd("LspRestart")
                     end, opts)
                 end, opts)
                 wk.makeGroup("n", "<leader>vo", "G[o]to", function(remap)
@@ -161,19 +166,19 @@ return {
 
             vim.fn.sign_define("DiagnosticSignError", {
                 text = "",
-                texthl = "TextError",
+                texthl = "DiagnosticError",
             })
             vim.fn.sign_define("DiagnosticSignWarn", {
                 text = "",
-                texthl = "TextWarn",
+                texthl = "DiagnosticWarn",
             })
             vim.fn.sign_define("DiagnosticSignInfo", {
                 text = "",
-                texthl = "TextInfo",
+                texthl = "DiagnosticInfo",
             })
             vim.fn.sign_define("DiagnosticSignHint", {
                 text = "",
-                texthl = "TextHint",
+                texthl = "DiagnosticHint",
             })
         end,
     },
@@ -192,5 +197,10 @@ return {
                 blend = 0,
             },
         },
+    },
+    {
+        "laytan/cloak.nvim",
+        opts = {},
+        event = "BufReadPre",
     },
 }

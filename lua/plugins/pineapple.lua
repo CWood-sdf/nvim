@@ -2,12 +2,10 @@ return {
     {
         "CWood-sdf/pineapple",
         dependencies = require("stuff.pineapple"),
-        config = function()
-            require('pineapple').setup({
-                installedRegistry = "stuff.pineapple",
-                colorschemeFile = "after/plugin/theme.lua",
-            })
-        end,
+        opts = {
+            installedRegistry = "stuff.pineapple",
+            colorschemeFile = "after/plugin/theme.lua",
+        },
         -- lazy = false,
         cmd = "Pineapple",
         -- priority = 1000,

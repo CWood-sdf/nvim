@@ -196,7 +196,7 @@ ins_left({
         if buf_ft == "" then
             return ""
         end
-        local clients = vim.lsp.get_clients()
+        local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
             hasLsp = false
         end
@@ -292,6 +292,28 @@ local changes = {
 }
 ins_right({
     function()
+        local amount = #require('calendar').getAssignmentsToWorryAbout()
+        if amount == 0 then
+            return ""
+        end
+        return amount .. ""
+    end,
+    color = { fg = "#5EE4FF" },
+    cond = Config.getFn("lualine.calendarStatus"),
+})
+ins_right({
+    function()
+        local amount = #require('calendar').getEventsToWorryAbout()
+        if amount == 0 then
+            return ""
+        end
+        return amount .. "󱨰"
+    end,
+    color = { fg = "#b880eb" },
+    cond = Config.getFn("lualine.calendarEvents"),
+})
+ins_right({
+    function()
         if vim.loop.hrtime() - lastFetch > 5 * 1000000000 then
             lastFetch = vim.loop.hrtime()
             vim.fn.jobstart("git fetch", {
@@ -370,14 +392,21 @@ ins_right({
     cond = Config.getFn("lualine.lazyStatus"),
 })
 
-local startTime = nil
--- Add components to right sections
-local hasInternet = false
-local lastInternetCheck = 0
-local copilotSetup = false
+-- local startTime = nil
+-- -- Add components to right sections
+-- local hasInternet = false
+-- local lastInternetCheck = 0
+-- local copilotSetup = false
+local Copilot = {
+    startTime = nil,
+    hasInternet = false,
+    lastInternetCheck = 0,
+    copilotSetup = false,
+    cachedReturn = "",
+}
 ins_right({
     function()
-        if not hasInternet or (vim.loop.hrtime() - lastInternetCheck) > 10000000000 then
+        if not Copilot.hasInternet or (vim.loop.hrtime() - Copilot.lastInternetCheck) > 10000000000 then
             -- annoyingly, :Copilot status freezes up the entire ui indefinitely if there's no internet
             local ping = "ping google.com"
             if jit.os:find("Windows") == nil then
@@ -389,38 +418,45 @@ ins_right({
             vim.fn.jobstart(ping, {
                 on_exit = function(_, code)
                     if code == 0 then
-                        hasInternet = true
+                        Copilot.hasInternet = true
                     else
-                        hasInternet = false
+                        Copilot.hasInternet = false
                     end
                 end,
             })
         end
-        if not hasInternet then
+        if not Copilot.hasInternet then
             return "󰖪"
         end
-        if not copilotSetup then
+        if not Copilot.copilotSetup then
             vim.cmd("Copilot enable")
-            copilotSetup = true
+            Copilot.copilotSetup = true
         end
         if hasEnteredFile == false then
             return ""
-        elseif startTime == nil then
-            startTime = vim.loop.hrtime()
+        elseif Copilot.startTime == nil then
+            Copilot.startTime = vim.loop.hrtime()
             return ""
         end
-        if vim.loop.hrtime() - startTime > 100000000 then
+        local checkTime = 1e9
+        if vim.loop.hrtime() - Copilot.startTime > checkTime then
             local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
+            Copilot.startTime = vim.loop.hrtime()
 
+            local ret = ""
             if output:find("Not logged in") then
-                return ""
+                ret = ""
             elseif output:find("Enabled") then
-                return ""
+                ret = ""
             elseif output:find("Disabled") then
-                return ""
+                ret = ""
             else
-                return ""
+                ret = ""
             end
+            Copilot.cachedReturn = ret
+            return ret
+        elseif vim.loop.hrtime() - Copilot.startTime <= checkTime then
+            return Copilot.cachedReturn
         else
             return "󰔟"
         end
