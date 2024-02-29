@@ -33,6 +33,7 @@ end)
 wk.remapNoGroup("t", "<C-k>", "Up arrow", "<Up>", { noremap = true })
 wk.remapNoGroup("t", "<C-j>", "Down arrow", "<Down>", { noremap = true })
 wk.remapNoGroup("t", "<C-e>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
+wk.remapNoGroup("i", "<C-e>", "Exit insert mode", "<Esc>", { noremap = true })
 
 -- buffer stuff idrk y this is here but ok
 wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)
@@ -51,6 +52,7 @@ end)
 -- copy (obv)
 wk.remapNoGroup("v", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-c>", "Copy", [["+y]], { noremap = true })
+wk.remapNoGroup("n", "<C-v>", "Paste", [["+p]], { noremap = true })
 
 -- save
 wk.remapNoGroup("i", "<C-s>", "Save file", function()

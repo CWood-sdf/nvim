@@ -1,8 +1,8 @@
 local function canvasImport(_, success, fail)
     local output = ""
     print("Started canvas import")
-    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/api/canvas/index.js" }, {
-        cwd = os.getenv("HOME") .. "/projects/api/canvas",
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/canvas-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/projects/canvas-api",
         on_exit = function(code)
             -- print(vim.inspect(code))
             -- if code ~= 0 then
@@ -57,8 +57,8 @@ end
 local function waImport(_, success, fail)
     local output = ""
     print("Started webassign import")
-    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/api/wa/index.js" }, {
-        cwd = os.getenv("HOME") .. "/projects/api/wa",
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/webassign-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/projects/webassign-api",
         on_exit = function(code)
             -- print(vim.inspect(code))
             -- if code ~= 0 then
@@ -99,8 +99,8 @@ local function waImport(_, success, fail)
                         type = "assignment",
                         title = event.name,
                         due = event.due,
+                        description = event.course or "",
                         warnTime = "1d",
-                        description = "",
                         source = "webassign",
                     }
                     require('calendar').addAssignment(e)
@@ -114,8 +114,8 @@ end
 local function gsImport(_, success, fail)
     local output = ""
     print("Started gradescope import")
-    vim.fn.jobstart({ "python3", os.getenv("HOME") .. "/projects/api/yeet.py" }, {
-        cwd = os.getenv("HOME") .. "/projects/api",
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/gradescope-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/projects/gradescope-api",
         on_exit = function(code)
             -- print(vim.inspect(code))
             -- if code ~= 0 then
@@ -124,7 +124,8 @@ local function gsImport(_, success, fail)
             success()
             -- end
         end,
-        on_stderr = function()
+        on_stderr = function(e)
+            print(vim.inspect(e))
         end,
         on_stdout = function(_, d)
             for _, v in ipairs(d) do
@@ -188,6 +189,23 @@ local function calendarConfig()
                 fn = gsImport,
             },
             {
+                id = "test",
+                runFrequency = "365d",
+                fn = function(_, success)
+                    print("Running test")
+                    require('calendar').addAssignment({
+                        source = "test",
+                        title = "Test " .. os.date("%A"),
+                        due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
+                        warnTime = "1d",
+                        description = "Test " .. os.date("%A"),
+                        type = "assignment",
+                    })
+                    -- require('calendar').inputAssignment()
+                    success()
+                end,
+            },
+            {
                 id = "pray",
                 runFrequency = "1d",
                 fn = function(_, success)
@@ -195,7 +213,7 @@ local function calendarConfig()
                     require('calendar').addAssignment({
                         source = "pray",
                         title = "Pray " .. os.date("%A"),
-                        due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:00:00"),
+                        due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
                         warnTime = "1d",
                         description = "Pray " .. os.date("%A"),
                         type = "assignment",

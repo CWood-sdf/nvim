@@ -5,9 +5,9 @@ return {
         replaceHome = true,
         projectEntry = function()
             vim.cmd("Oil .")
-            vim.schedule(function()
-                vim.cmd("e")
-            end)
+            -- vim.schedule(function()
+            --     vim.cmd("e")
+            -- end)
         end,
         maxRecentFiles = 18,
         sections = {
@@ -16,6 +16,13 @@ return {
             "remaps",
             "recents",
             "hacker_news",
+        },
+        shortcuts = {
+            { "f", ".config/nvim" },
+            { "i", "pineapple" },
+            { "s", "spaceport.nvim" },
+            { "c", "calendar" },
+            { "b", "banana.nvim" },
         },
         debug = true,
     },

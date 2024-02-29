@@ -55,11 +55,19 @@ return {
                     require("telescope").load_extension("file_browser")
                     require("telescope").extensions.file_browser.file_browser()
                 end)
+                remap("N", "[N]erd fonts", function()
+                    require("telescope").load_extension("nerdy")
+                    require("telescope").extensions.nerdy.nerdy()
+                end)
             end)
             wk.writeBuf()
         end,
     },
     {
-        "nvim-telescope/telescope-file-browser.nvim",
+        '2KAbhishek/nerdy.nvim',
+        cmd = "Nerdy",
+        keys = "<leader>fN",
+        depends = { "nvim-telescope/telescope.nvim" },
     },
+
 }
