@@ -208,6 +208,9 @@ function M.toggle(flag)
     end
     if tempString ~= "" then
         flagObj[tempString] = not flagObj[tempString]
+        if callbackObj[tempString] == nil then
+            callbackObj[tempString] = {}
+        end
         for _, callback in ipairs(callbackObj[tempString]) do
             callback(flagObj[tempString])
         end

@@ -299,7 +299,10 @@ ins_right({
         return amount .. ""
     end,
     color = { fg = "#5EE4FF" },
-    cond = Config.getFn("lualine.calendarStatus"),
+    cond = function()
+        return Config.get("lualine.calendarStatus") and
+            #require('calendar').getAssignmentsToWorryAbout() > 0
+    end,
 })
 ins_right({
     function()
