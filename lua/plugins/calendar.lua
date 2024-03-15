@@ -1,8 +1,8 @@
-local function canvasImport(_, success, fail)
+local function canvasImport(_, success)
     local output = ""
-    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/canvas-api/index.js" }, {
-        cwd = os.getenv("HOME") .. "/projects/canvas-api",
-        on_exit = function(code)
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/canvas-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/canvas-api",
+        on_exit = function()
             -- print(vim.inspect(code))
             -- if code ~= 0 then
             --     fail()
@@ -53,11 +53,11 @@ local function canvasImport(_, success, fail)
     })
 end
 
-local function waImport(_, success, fail)
+local function waImport(_, success)
     local output = ""
-    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/webassign-api/index.js" }, {
-        cwd = os.getenv("HOME") .. "/projects/webassign-api",
-        on_exit = function(code)
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/webassign-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/webassign-api",
+        on_exit = function()
             -- print(vim.inspect(code))
             -- if code ~= 0 then
             --     fail()
@@ -109,11 +109,11 @@ local function waImport(_, success, fail)
     })
 end
 
-local function gsImport(_, success, fail)
+local function gsImport(_, success)
     local output = ""
-    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/projects/gradescope-api/index.js" }, {
-        cwd = os.getenv("HOME") .. "/projects/gradescope-api",
-        on_exit = function(code)
+    vim.fn.jobstart({ "node", os.getenv("HOME") .. "/gradescope-api/index.js" }, {
+        cwd = os.getenv("HOME") .. "/gradescope-api",
+        on_exit = function()
             -- print(vim.inspect(code))
             -- if code ~= 0 then
             --     fail()
@@ -121,7 +121,7 @@ local function gsImport(_, success, fail)
             success()
             -- end
         end,
-        on_stderr = function(e)
+        on_stderr = function()
             -- print(vim.inspect(e))
         end,
         on_stdout = function(_, d)
@@ -133,6 +133,9 @@ local function gsImport(_, success, fail)
                 ---@type table<string, {name: string, due: integer, course: string}>
                 local data = vim.json.decode(output) or {}
                 for _, event in ipairs(require('calendar').readData().assignments) do
+                    if event.done then
+                        goto continue
+                    end
                     local stillExists = false
                     if event.source ~= "gradescope" then
                         stillExists = true
@@ -146,6 +149,7 @@ local function gsImport(_, success, fail)
                     if not stillExists then
                         require('calendar').markDone(event.title)
                     end
+                    ::continue::
                 end
 
                 for _, event in ipairs(data) do
@@ -226,4 +230,7 @@ return {
     lazy = false,
     config = calendarConfig,
     dev = true,
+    dependencies = {
+        "CWood-sdf/cmdTree.nvim",
+    },
 }

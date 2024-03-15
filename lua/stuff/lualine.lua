@@ -7,14 +7,14 @@ local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
 local boldSetting = ""
 local Config = require("stuff.config")
-vim.defer_fn(function()
-    boldSetting = (function()
-        if vim.fn.exists("GuiFont") == 1 then
-            return "bold"
-        end
-        return "bold"
-    end)()
-end, 500)
+-- vim.defer_fn(function()
+--     boldSetting = (function()
+--         if vim.fn.exists("GuiFont") == 1 then
+--             return "bold"
+--         end
+--         return "bold"
+--     end)()
+-- end, 500)
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
@@ -364,8 +364,8 @@ ins_right({
             return ""
         end
         -- print(changes.out, changes.in_)
-        local up = " "
-        local down = " "
+        local up = ""
+        local down = ""
         if changes.out == 0 then
             return changes.in_ .. down
         end
@@ -375,7 +375,9 @@ ins_right({
         return changes.out .. up .. " " .. changes.in_ .. down
     end,
     color = { fg = "#5ee4ff" },
-    cond = Config.getFn("lualine.gitStatus") and conditions.check_git_workspace,
+    cond = function()
+        return Config.get("lualine.gitStatus") and conditions.check_git_workspace()
+    end,
 })
 -- Lazy sync status
 local hasChecked = false
@@ -409,7 +411,7 @@ local Copilot = {
 }
 ins_right({
     function()
-        if not Copilot.hasInternet or (vim.loop.hrtime() - Copilot.lastInternetCheck) > 10000000000 then
+        if not Copilot.hasInternet or (vim.loop.hrtime() - Copilot.lastInternetCheck) > 1e9 then
             -- annoyingly, :Copilot status freezes up the entire ui indefinitely if there's no internet
             local ping = "ping google.com"
             if jit.os:find("Windows") == nil then
@@ -443,13 +445,13 @@ ins_right({
         end
         local checkTime = 1e9
         if vim.loop.hrtime() - Copilot.startTime > checkTime then
-            local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
             Copilot.startTime = vim.loop.hrtime()
+            local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
 
             local ret = ""
             if output:find("Not logged in") then
                 ret = ""
-            elseif output:find("Enabled") then
+            elseif output:find("Enabled") or output:find("Ready") then
                 ret = ""
             elseif output:find("Disabled") then
                 ret = ""

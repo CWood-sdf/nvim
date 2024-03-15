@@ -6,5 +6,5 @@ return {
         },
     },
 
-    -- dev = true,
+    dev = true,
 }

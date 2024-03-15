@@ -120,6 +120,9 @@ return {
                     if server_name == "arduino_language_server" then
                         return
                     end
+                    if server_name == "html" then
+                        return
+                    end
                     -- local f = io.open("skip.sdf", "r")
                     -- if f ~= nil and server_name == "clangd" then
                     --     f:close()
@@ -133,6 +136,26 @@ return {
             })
             require('lspconfig').maple.setup({
                 on_attach = onAttach,
+            })
+            -- require('lspconfig').glint.setup({
+            --     on_attach = onAttach,
+            -- })
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities.textDocument.completion.completionItem.snippetSupport = true
+            require('lspconfig').html.setup({
+                on_attach = onAttach,
+                filetypes = { "html", "templ", "handlebars" },
+                capabilities = capabilities,
+            })
+            require('lspconfig').tailwindcss.setup({
+                on_attach = onAttach,
+                filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "handlebars" },
+                capabilities = capabilities,
+            })
+            require('lspconfig').htmx.setup({
+                on_attach = onAttach,
+                filetypes = { "html", "javascriptreact", "templ", "typescriptreact", "handlebars" },
+                capabilities = capabilities,
             })
             -- require('lspconfig').ccls.setup({})
             require("neodev").setup({})

@@ -23,6 +23,8 @@ return {
             { "s", "spaceport.nvim" },
             { "c", "calendar" },
             { "b", "banana.nvim" },
+            { "w", "calendarwebthing" },
+            { "t", "cmdTree" },
         },
         debug = true,
     },

@@ -19,26 +19,25 @@ return {
         "williamboman/mason.nvim",
         opts = {},
     },
-
-    -- copilot
     {
-        "github/copilot.vim",
-        config = function()
-            vim.keymap.set("i", "<C-L>", "<Plug>(copilot-accept-word)")
-            if vim.fn.executable("bun") == 1 then
-                vim.cmd("let g:copilot_node_command = 'bun'")
-            end
-            -- vim.cmd("let g:copilot_filetypes.markdown = v:true")
-            vim.cmd("let g:copilot_filetypes = { 'markdown': v:true }")
-        end,
-        init = function()
-            vim.api.nvim_create_autocmd({ "User" }, {
-                pattern = "SpaceportDone",
-                callback = function()
-                    vim.g.copilot_workspace_folders = { vim.fn.getcwd() }
-                end,
-            })
-        end,
-        cmd = "Copilot",
+        "CWood-sdf/cmdTree.nvim",
+        opts = {
+            DEBUG = true,
+        },
+        dev = true,
     },
+
+    -- {
+    --     "folke/noice.nvim",
+    --     opts = {},
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         -- OPTIONAL:
+    --         --   `nvim-notify` is only needed, if you want to use the notification view.
+    --         --   If not available, we use `mini` as the fallback
+    --         "rcarriga/nvim-notify",
+    --     },
+    --
+    -- },
+
 }

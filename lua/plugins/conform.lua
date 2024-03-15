@@ -21,6 +21,7 @@ return {
             py = { "black" },
             bash = { "beautysh" },
             sh = { "beautysh" },
+            handlebars = { "djlint" },
         },
         notify_on_error = true,
     },

@@ -2,99 +2,81 @@ local M = {}
 
 local flags = {}
 local callbacks = {}
+local ct = require('cmdTree')
 
-local function filterCompletion(working, items)
-    local newItems = {}
-    for _, item in ipairs(items) do
-        if item:sub(1, #working) == working then
-            table.insert(newItems, item)
+local getFlag = ct.repeatParams(function(args)
+    if args.params[1] == nil then
+        local ret = {}
+        for k, _ in pairs(flags) do
+            table.insert(ret, k)
+        end
+        return ret
+    end
+    local t = flags
+    for _, v in ipairs(args.params[1]) do
+        t = t[v]
+        if type(t) ~= "table" then
+            return nil
         end
     end
-    return newItems
-end
+    if type(t) ~= "table" then
+        return nil
+    end
+    local ret = {}
+    for k, _ in pairs(t) do
+        table.insert(ret, k)
+    end
+    return ret
+end)
 
 local cmdTree = {
     Config = {
-        set = {},
-        toggle = {},
-        get = {},
+        set = {
+            _callback = function(args)
+                local str = ""
+                for _, v in ipairs(args.params[1]) do
+                    str = str .. v
+                    str = str .. "."
+                end
+                str = str:sub(1, #str - 1)
+                print(str)
+                M.set(str, args.params[2] == "true")
+            end,
+            getFlag,
+            ct.requiredParams(function()
+                return { "true", "false" }
+            end),
+
+        },
+        toggle = {
+            _callback = function(args)
+                local str = ""
+                for _, v in ipairs(args.params[1]) do
+                    str = str .. v
+                    str = str .. "."
+                end
+                str = str:sub(1, #str - 1)
+                M.toggle(str)
+            end,
+            getFlag,
+        },
+        get = {
+            _callback = function(args)
+                local str = ""
+                for _, v in ipairs(args.params[1]) do
+                    str = str .. v
+                    str = str .. "."
+                end
+                str = str:sub(1, #str - 1)
+                print(M.get(str))
+            end,
+            getFlag,
+        },
     },
 }
 
 local function initCmd()
-    vim.api.nvim_create_user_command("Config", function(opts)
-        if #opts.fargs == 0 then
-            print("No arguments given")
-            return
-        end
-        if opts.fargs[1] == "set" then
-            local flag = ""
-            for i = 2, #opts.fargs - 1 do
-                flag = flag .. opts.fargs[i]
-                flag = flag .. "."
-            end
-            flag = flag:sub(1, #flag - 1)
-            local value = opts.fargs[#opts.fargs] == "true"
-            M.set(flag, value)
-        end
-        if opts.fargs[1] == "toggle" then
-            local flag = ""
-            for i = 2, #opts.fargs do
-                flag = flag .. opts.fargs[i]
-                flag = flag .. "."
-            end
-            flag = flag:sub(1, #flag - 1)
-            M.toggle(flag)
-        end
-        if opts.fargs[1] == "get" then
-            local flag = ""
-            for i = 2, #opts.fargs - 1 do
-                flag = flag .. opts.fargs[i]
-                flag = flag .. "."
-            end
-            flag = flag:sub(1, #flag - 1)
-            print(M.get(flag))
-        end
-    end, {
-        nargs = "*",
-        complete = function(working, current, _)
-            cmdTree.Config.set = flags
-            cmdTree.Config.toggle = flags
-            cmdTree.Config.get = flags
-            local tempCmds = cmdTree
-            local i = 1
-            local cmdStr = ""
-            while i <= #current do
-                local c = current:sub(i, i)
-                if c == " " then
-                    if tempCmds[cmdStr] ~= nil then
-                        tempCmds = tempCmds[cmdStr]
-                        if tempCmds == nil then
-                            return {}
-                        end
-                        cmdStr = ""
-                    else
-                        return {}
-                    end
-                else
-                    cmdStr = cmdStr .. c
-                end
-                i = i + 1
-            end
-            if type(tempCmds) ~= "table" then
-                return {}
-            end
-            if tempCmds ~= nil then
-                local ret = {}
-                for k, _ in pairs(tempCmds) do
-                    table.insert(ret, k)
-                end
-
-
-                return filterCompletion(working, ret)
-            end
-            return {}
-        end,
+    ct.createCmd(cmdTree, {
 
     })
 end
