@@ -30,9 +30,6 @@ local colors = {
     blue     = '#51afef',
     red      = '#ec5f67',
 }
-local function pad(str)
-    return " " .. str .. " "
-end
 local function getModeColor()
     -- auto change color according to neovims mode
     local mode_color = {
