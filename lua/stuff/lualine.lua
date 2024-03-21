@@ -2,7 +2,7 @@
 -- Author: shadmansaleh
 -- Credit: glepnir
 -- CWood-sdf additions: lotsa stuff
-local lualine = require("lualine")
+-- local lualine = require("lualine")
 local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
 local boldSetting = ""
@@ -30,6 +30,9 @@ local colors = {
     blue     = '#51afef',
     red      = '#ec5f67',
 }
+local function pad(str)
+    return " " .. str .. " "
+end
 local function getModeColor()
     -- auto change color according to neovims mode
     local mode_color = {
@@ -119,13 +122,27 @@ end
 --     color = getModeColor,
 --     padding = { left = 0, right = 0 }, -- We don't need space before this
 -- })
--- sdf
 Config.addFlag("lualine.filename")
 ins_left({
     "filename",
     color = getModeColor,
+    events = { "ModeChanged" },
     cond = conditions.buffer_not_empty and Config.getFn("lualine.filename"),
     -- color = { fg = "#aaaaff", gui = boldSetting },
+})
+Config.addFlag("lualine.perf")
+ins_left({
+    function()
+        -- return ""
+        -- local time = require('lazyline').getTimeSpent()
+        local time = require('lazyline').getTimeSpent()
+        return require('calendar.utils').deltaToLengthStr(time / 1e9) ..
+            "" .. math.ceil((time % 1e9) / 1e6) .. "ms"
+    end,
+    events = "*",
+    -- fmt = string.upper,
+    cond = Config.getFn("lualine.perf"),
+    color = { fg = colors.green, gui = boldSetting },
 })
 
 Config.addFlag("lualine.progress")
@@ -140,14 +157,14 @@ ins_left({
 })
 
 ins_left({
-    "o:encoding", -- option component same as &encoding in viml
+    function() return vim.opt.encoding:get() end,
     cond = conditions.hide_in_width and Config.getFn("lualine.encoding"),
     color = { fg = colors.green, gui = boldSetting },
+    events = { "BufEnter" },
 })
 
 ins_left({
     "fileformat",
-    fmt = string.upper,
     icons_enabled = true,
     color = { fg = colors.green, gui = boldSetting },
     cond = Config.getFn("lualine.fileformat"),
@@ -276,6 +293,7 @@ ins_left({
         end
         return ret
     end,
+    events = { "BufEnter", "LspAttach" },
     color = { fg = "#ffffff", gui = boldSetting },
     cond = function()
         return Config.get("lualine.lsp") and hasEnteredFile
@@ -283,9 +301,9 @@ ins_left({
 })
 
 -- git pull/push list
-local lastFetch = 0
-local canCheck = false
-local canGetChangeCount = false
+-- local lastFetch = 0
+-- local canCheck = false
+-- local canGetChangeCount = false
 local changes = {
     out = 0,
     in_ = 0,
@@ -298,6 +316,7 @@ ins_right({
         end
         return amount .. ""
     end,
+    events = "(1s)",
     color = { fg = "#5EE4FF" },
     cond = function()
         return Config.get("lualine.calendarStatus") and
@@ -305,6 +324,7 @@ ins_right({
     end,
 })
 ins_right({
+    events = { "(1s)" },
     function()
         local amount = #require('calendar').getEventsToWorryAbout()
         if amount == 0 then
@@ -316,54 +336,63 @@ ins_right({
     cond = Config.getFn("lualine.calendarEvents"),
 })
 ins_right({
+    jobs = {
+        {
+            events = { "(5s)", "DirChanged" },
+            function(render)
+                vim.fn.jobstart("git fetch", {
+                    on_exit = function()
+                        if branch ~= "" then
+                            vim.fn.jobstart("git rev-list --left-right --count origin/" .. branch .. "..." .. branch, {
+                                on_stdout = function(_, str)
+                                    if str[1] == "" then
+                                        return
+                                    end
+                                    -- print(str[1])
+                                    local in_, out = str[1]:match("(%d+)%s+(%d+)")
+                                    local oldOut = changes.out
+                                    local oldIn = changes.in_
+                                    changes.out = out * 1
+                                    changes.in_ = in_ * 1
+                                    if oldOut ~= changes.out or oldIn ~= changes.in_ then
+                                        render()
+                                    end
+                                end,
+                                on_stderr = function(_, str)
+                                    if str[1] == "" then
+                                        return
+                                    end
+                                    vim.fn.jobstart("git rev-list --left-right --count @{upstream}...HEAD", {
+                                        on_stdout = function(_, s)
+                                            if s[1] == "" then
+                                                return
+                                            end
+                                            local out = s[1]:match("(%d+)")
+                                            -- print(str[1])
+                                            local oldOut = changes.out
+                                            local oldIn = changes.in_
+                                            changes.out = out * 1
+                                            changes.in_ = 0
+                                            if oldOut ~= changes.out or oldIn ~= changes.in_ then
+                                                render()
+                                            end
+                                        end,
+                                        on_exit = function() end,
+                                    })
+                                end,
+                            })
+                        end
+                    end,
+                })
+            end,
+
+        },
+
+    },
     function()
-        if vim.loop.hrtime() - lastFetch > 5 * 1000000000 then
-            lastFetch = vim.loop.hrtime()
-            vim.fn.jobstart("git fetch", {
-                on_exit = function()
-                    canCheck = true
-                end,
-            })
-        end
-        if canCheck and branch ~= "" then
-            canCheck = false
-            vim.fn.jobstart("git rev-list --left-right --count origin/" .. branch .. "..." .. branch, {
-                on_stdout = function(_, str)
-                    if str[1] == "" then
-                        return
-                    end
-                    -- print(str[1])
-                    local in_, out = str[1]:match("(%d+)%s+(%d+)")
-                    changes.out = out * 1
-                    changes.in_ = in_ * 1
-                end,
-                on_stderr = function(_, str)
-                    if str[1] == "" then
-                        return
-                    end
-                    canGetChangeCount = true
-                end,
-            })
-        end
-        if canGetChangeCount then
-            canGetChangeCount = false
-            vim.fn.jobstart("git rev-list --left-right --count @{upstream}...HEAD", {
-                on_stdout = function(_, str)
-                    if str[1] == "" then
-                        return
-                    end
-                    local out = str[1]:match("(%d+)")
-                    -- print(str[1])
-                    changes.out = out * 1
-                    changes.in_ = 0
-                end,
-                on_exit = function() end,
-            })
-        end
         if changes.out == 0 and changes.in_ == 0 then
             return ""
         end
-        -- print(changes.out, changes.in_)
         local up = ""
         local down = ""
         if changes.out == 0 then
@@ -393,6 +422,7 @@ ins_right({
         end
         return ""
     end,
+    events = { "(2m)", "User LazySync" },
     color = { fg = "#5EE4FF" },
     cond = Config.getFn("lualine.lazyStatus"),
 })
@@ -411,31 +441,8 @@ local Copilot = {
 }
 ins_right({
     function()
-        if not Copilot.hasInternet or (vim.loop.hrtime() - Copilot.lastInternetCheck) > 1e9 then
-            -- annoyingly, :Copilot status freezes up the entire ui indefinitely if there's no internet
-            local ping = "ping google.com"
-            if jit.os:find("Windows") == nil then
-                ping = ping .. " -c"
-            else
-                ping = ping .. " -n"
-            end
-            ping = ping .. " 1"
-            vim.fn.jobstart(ping, {
-                on_exit = function(_, code)
-                    if code == 0 then
-                        Copilot.hasInternet = true
-                    else
-                        Copilot.hasInternet = false
-                    end
-                end,
-            })
-        end
         if not Copilot.hasInternet then
             return "󰖪"
-        end
-        if not Copilot.copilotSetup then
-            vim.cmd("Copilot enable")
-            Copilot.copilotSetup = true
         end
         if hasEnteredFile == false then
             return ""
@@ -443,29 +450,67 @@ ins_right({
             Copilot.startTime = vim.loop.hrtime()
             return ""
         end
-        local checkTime = 1e9
-        if vim.loop.hrtime() - Copilot.startTime > checkTime then
-            Copilot.startTime = vim.loop.hrtime()
-            local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
-
-            local ret = ""
-            if output:find("Not logged in") then
-                ret = ""
-            elseif output:find("Enabled") or output:find("Ready") then
-                ret = ""
-            elseif output:find("Disabled") then
-                ret = ""
-            else
-                ret = ""
-            end
-            Copilot.cachedReturn = ret
-            return ret
-        elseif vim.loop.hrtime() - Copilot.startTime <= checkTime then
-            return Copilot.cachedReturn
-        else
-            return "󰔟"
-        end
+        return Copilot.cachedReturn
     end,
+    jobs = {
+        {
+            events = { "(1s)" },
+            function(render)
+                Copilot.lastInternetCheck = vim.loop.hrtime()
+                local ping = "ping google.com"
+                if jit.os:find("Windows") == nil then
+                    ping = ping .. " -c"
+                else
+                    ping = ping .. " -n"
+                end
+                ping = ping .. " 1"
+                local old = Copilot.hasInternet
+                vim.fn.jobstart(ping, {
+                    on_exit = function(_, code)
+                        if code == 0 then
+                            Copilot.hasInternet = true
+                        else
+                            Copilot.hasInternet = false
+                        end
+                        if old ~= Copilot.hasInternet then
+                            render()
+                        end
+                    end,
+                })
+            end,
+        },
+        {
+            events = { "(1s)" },
+            function(render)
+                if not Copilot.hasInternet then
+                    return
+                end
+                if not Copilot.copilotSetup then
+                    vim.cmd("Copilot enable")
+                    Copilot.copilotSetup = true
+                end
+                Copilot.startTime = vim.loop.hrtime()
+                local old = Copilot.cachedReturn
+                local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
+
+                local ret = ""
+                if output:find("Not logged in") then
+                    ret = ""
+                elseif output:find("Enabled") or output:find("Ready") then
+                    ret = ""
+                elseif output:find("Disabled") then
+                    ret = ""
+                else
+                    ret = ""
+                end
+                Copilot.cachedReturn = ret
+                if old ~= ret then
+                    render()
+                end
+            end,
+        },
+    },
+    events = { "BufEnter" },
     cond = Config.getFn("lualine.copilot"),
 })
 ins_right({
@@ -489,28 +534,34 @@ ins_right({
     cond = Config.getFn("lualine.diff"),
 })
 
-local branchRunning = false
+
 ins_right({
     function()
-        if not branchRunning then
-            branchRunning = true
-            vim.fn.jobstart("git branch --show-current", {
-                on_stdout = function(_, str)
-                    if str[1] ~= "" then
-                        branch = "" .. str[1]
-                    end
-                end,
-                on_exit = function()
-                    branchRunning = false
-                end,
-            })
-            --
+        if branch == "" then
+            return ""
         end
-        return branch
+        return " " .. branch
     end,
-    icon = "",
+    events = { "ModeChanged" },
     color = getModeColor,
     cond = Config.getFn("lualine.branch"),
+    jobs = {
+        {
+            function(render)
+                vim.fn.jobstart("git branch --show-current", {
+                    on_stdout = function(_, str)
+                        if str[1] ~= "" then
+                            branch = "" .. str[1]
+                        end
+                    end,
+                    on_exit = function()
+                        render()
+                    end,
+                })
+            end,
+            events = { "DirChanged", "(10s)" },
+        },
+    },
 })
 
 -- ins_right({
@@ -522,4 +573,4 @@ ins_right({
 -- })
 
 -- Now don't forget to initialize lualine
-lualine.setup(config)
+return config

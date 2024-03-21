@@ -207,8 +207,24 @@ local function calendarConfig()
                 end,
             },
             {
+                id = "ti_thing",
+                runFrequency = "c0 0 * * * MON",
+                fn = function(_, success)
+                    require('calendar').addEvent({
+                        source = "ti_thing",
+                        title = "Ti_thing",
+                        startTime = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 18:00:00"),
+                        endTime = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 19:00:00"),
+                        warnTime = "1d",
+                        description = "Ti_thing",
+                        type = "event",
+                    })
+                    success()
+                end,
+            },
+            {
                 id = "pray",
-                runFrequency = "1d",
+                runFrequency = "c0 0 * * * *",
                 fn = function(_, success)
                     -- print("Running pray")
                     require('calendar').addAssignment({

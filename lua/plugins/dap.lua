@@ -36,6 +36,7 @@ return {
             "rcarriga/nvim-dap-ui",
             "jay-babu/mason-nvim-dap.nvim",
             "williamboman/mason.nvim",
+            "nvim-neotest/nvim-nio",
             -- 'theHamsta/nvim-dap-virtual-text',
         },
         init = function()
@@ -54,6 +55,15 @@ return {
                 remap("c", "[C]ontinue (<F5>)", function()
                     vim.cmd.DapContinue()
                 end)
+                remap("C", "[C]alendar debug", function()
+                    local parsed = require('calendar.cron').parse("*/4 * * * *")
+                    if parsed == nil then
+                        print("Failed to parse")
+                    else
+                        ---@cast parsed Calendar.Cron
+                        print(vim.fn.strftime("%D %H %M", parsed:nextOccurence()))
+                    end
+                end)
             end)
             wk.writeBuf()
         end,
@@ -70,35 +80,35 @@ return {
             local dap = require("dap")
             dap.configurations.cuda = dap.configurations.cpp
             dap.listeners.after.event_initialized["dapui_config"] = function()
-                require("lualine").hide({
-                    unhide = false,
-                    place = { "statusline" },
-                })
+                -- require("lualine").hide({
+                --     unhide = false,
+                --     place = { "statusline" },
+                -- })
                 dapui.open()
             end
             dap.listeners.before.event_terminated["dapui_config"] = function()
                 dapui.close()
-                require("lualine").hide({
-                    unhide = true,
-                    place = { "statusline" },
-                })
+                -- require("lualine").hide({
+                --     unhide = true,
+                --     place = { "statusline" },
+                -- })
             end
             dap.listeners.before.event_exited["dapui_config"] = function()
                 dapui.close()
-                require("lualine").hide({
-                    unhide = true,
-                    place = { "statusline" },
-                })
+                -- require("lualine").hide({
+                --     unhide = true,
+                --     place = { "statusline" },
+                -- })
             end
             dapui.setup()
             local wk = require("stuff.wkutils")
             local function terminateDap()
                 dapui.close()
                 vim.cmd("DapTerminate")
-                require("lualine").hide({
-                    unhide = true,
-                    place = { "statusline" },
-                })
+                -- require("lualine").hide({
+                --     unhide = true,
+                --     place = { "statusline" },
+                -- })
             end
             wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
                 remap("i", "Step [I]nto (<F11>)", vim.cmd.DapStepInto)

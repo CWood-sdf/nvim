@@ -1,13 +1,14 @@
 return {
     -- line at bottom
-    {
-        "nvim-lualine/lualine.nvim",
-        lazy = false,
-        -- event = "VeryLazy",
-        config = function()
-            require("stuff.lualine")
-        end,
-    },
+    -- {
+    --     "nvim-lualine/lualine.nvim",
+    --     lazy = false,
+    --     dev = true,
+    --     -- event = "VeryLazy",
+    --     config = function()
+    --         require("lualine").setup(require('stuff.lualine'))
+    --     end,
+    -- },
 
     -- just fancy icons for dap
     {
@@ -25,6 +26,7 @@ return {
             DEBUG = true,
         },
         dev = true,
+        lazy = false,
     },
 
     -- {
