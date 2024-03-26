@@ -17,4 +17,5 @@ return {
         })
     end,
     cmd = "Copilot",
+    -- enabled = false,
 }

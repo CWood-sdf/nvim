@@ -8,6 +8,7 @@ return {
         formatters_by_ft = {
             -- lua = { "stylua" },
             cpp = { "clang-format" },
+            asm = { "asmfmt" },
             c = { "clang-format" },
             javascript = { "prettier" },
             typescript = { "prettier" },

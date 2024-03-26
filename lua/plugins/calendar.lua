@@ -218,6 +218,7 @@ local function calendarConfig()
                         warnTime = "1d",
                         description = "Ti_thing",
                         type = "event",
+                        location = "STA Classroom 6",
                     })
                     success()
                 end,

@@ -3,5 +3,6 @@ return {
     lazy = false,
     opts = {},
     dev = true,
+    -- enabled = false,
 
 }

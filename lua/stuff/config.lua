@@ -93,9 +93,11 @@ function M.addFlag(flag)
     while i <= #flag do
         local char = flag:sub(i, i)
         if char == "." then
+            if callbackObj[tempString] == nil then
+                callbackObj[tempString] = {}
+            end
             if flagObj[tempString] == nil then
                 flagObj[tempString] = {}
-                callbackObj[tempString] = {}
             end
             flagObj = flagObj[tempString]
             callbackObj = callbackObj[tempString]
@@ -190,9 +192,6 @@ function M.toggle(flag)
     end
     if tempString ~= "" then
         flagObj[tempString] = not flagObj[tempString]
-        if callbackObj[tempString] == nil then
-            callbackObj[tempString] = {}
-        end
         for _, callback in ipairs(callbackObj[tempString]) do
             callback(flagObj[tempString])
         end
@@ -228,6 +227,36 @@ function M.get(flag)
     local tempString = ""
     local i = 1
     local flagObj = flags
+    local callbackObj = callbacks
+    while i <= #flag do
+        local char = flag:sub(i, i)
+        if char == "." then
+            if flagObj[tempString] == nil then
+                flagObj[tempString] = {}
+                callbackObj[tempString] = {}
+            end
+            flagObj = flagObj[tempString]
+            callbackObj = callbackObj[tempString]
+            tempString = ""
+        else
+            tempString = tempString .. char
+        end
+        i = i + 1
+    end
+    if tempString ~= "" then
+        if flagObj[tempString] == nil then
+            flagObj[tempString] = true
+            callbackObj[tempString] = {}
+        end
+        return flagObj[tempString]
+    end
+    return true
+end
+
+function M.has(flag)
+    local tempString = ""
+    local i = 1
+    local flagObj = flags
     while i <= #flag do
         local char = flag:sub(i, i)
         if char == "." then
@@ -242,17 +271,21 @@ function M.get(flag)
         i = i + 1
     end
     if tempString ~= "" then
-        if flagObj[tempString] == nil then
-            flagObj[tempString] = true
-        end
-        return flagObj[tempString]
+        return flagObj[tempString] ~= nil
     end
     return true
 end
 
 function M.getFn(flag)
+    if not M.has(flag) then
+        M.addFlag(flag)
+    end
+    local val = M.get(flag)
+    M.addCallback(flag, function(newVal)
+        val = newVal
+    end)
     return function()
-        return M.get(flag)
+        return val
     end
 end
 

@@ -1,10 +1,11 @@
 return {
     'nvim-neorg/neorg',
     ft = "norg",
-    build = ":Neorg sync-parsers",
+    -- build = ":Neorg sync-parsers",
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-neorg/neorg-telescope",
+        "vhyrro/luarocks.nvim",
     },
     opts = {
         load = {

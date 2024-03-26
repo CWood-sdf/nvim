@@ -2,19 +2,10 @@
 -- Author: shadmansaleh
 -- Credit: glepnir
 -- CWood-sdf additions: lotsa stuff
--- local lualine = require("lualine")
 local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
 local boldSetting = ""
 local Config = require("stuff.config")
--- vim.defer_fn(function()
---     boldSetting = (function()
---         if vim.fn.exists("GuiFont") == 1 then
---             return "bold"
---         end
---         return "bold"
---     end)()
--- end, 500)
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
@@ -65,11 +56,15 @@ local conditions = {
         return vim.fn.winwidth(0) > 80
     end,
     check_git_workspace = function()
+        local start = vim.loop.hrtime()
         local filepath = vim.fn.expand("%:p:h")
         local gitdir = vim.fn.finddir(".git", filepath .. ";")
+        local time = vim.loop.hrtime() - start
+        print("Time to check git workspace: " .. time / 1e6 .. "ms")
         return gitdir and #gitdir > 0 and #gitdir < #filepath
     end,
 }
+
 
 -- Config
 local config = {
@@ -119,15 +114,16 @@ end
 --     color = getModeColor,
 --     padding = { left = 0, right = 0 }, -- We don't need space before this
 -- })
-Config.addFlag("lualine.filename")
+local fname = Config.getFn("lualine.filename")
 ins_left({
     "filename",
     color = getModeColor,
     events = { "ModeChanged" },
-    cond = conditions.buffer_not_empty and Config.getFn("lualine.filename"),
+    cond = function() return conditions.buffer_not_empty() and fname() end,
     -- color = { fg = "#aaaaff", gui = boldSetting },
 })
 Config.addFlag("lualine.perf")
+Config.set("lualine.perf", false)
 ins_left({
     function()
         -- return ""
@@ -153,9 +149,10 @@ ins_left({
     cond = Config.getFn("lualine.location"),
 })
 
+local encodingFlag = Config.getFn("lualine.encoding")
 ins_left({
     function() return vim.opt.encoding:get() end,
-    cond = conditions.hide_in_width and Config.getFn("lualine.encoding"),
+    cond = function() return conditions.hide_in_width() and encodingFlag() end,
     color = { fg = colors.green, gui = boldSetting },
     events = { "BufEnter" },
 })
@@ -177,6 +174,9 @@ ins_left({
         color_info = { fg = colors.cyan },
     },
     cond = Config.getFn("lualine.diagnostics"),
+    fmt = function(s)
+        return s .. " "
+    end,
 })
 
 -- Insert mid section. You can make any number of sections in neovim :)
@@ -200,6 +200,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
 })
 local dapSetup = false
 local dap_save_path = vim.fn.stdpath("data") .. "/dapft.txt"
+local lspFlag = Config.getFn("lualine.lsp")
 ins_left({
     -- Lsp server name .
     function()
@@ -293,7 +294,7 @@ ins_left({
     events = { "BufEnter", "LspAttach" },
     color = { fg = "#ffffff", gui = boldSetting },
     cond = function()
-        return Config.get("lualine.lsp") and hasEnteredFile
+        return lspFlag() and hasEnteredFile
     end,
 })
 
@@ -305,33 +306,59 @@ local changes = {
     out = 0,
     in_ = 0,
 }
+local assignmentsFlag = Config.getFn("lualine.calendarStatus")
+local lastAssignments = 0
 ins_right({
     function()
-        local amount = #require('calendar').getAssignmentsToWorryAbout()
+        local amount = lastAssignments
         if amount == 0 then
             return ""
         end
         return amount .. ""
     end,
-    events = "(1s)",
+    jobs = {
+        {
+            events = { "(1s)" },
+            function(render)
+                local old = lastAssignments
+                lastAssignments = #require('calendar').getAssignmentsToWorryAbout()
+                if old ~= lastAssignments then
+                    render()
+                end
+            end,
+        },
+    },
     color = { fg = "#5EE4FF" },
     cond = function()
-        return Config.get("lualine.calendarStatus") and
+        return assignmentsFlag() and
             #require('calendar').getAssignmentsToWorryAbout() > 0
     end,
 })
+local lastEvents = 0
 ins_right({
-    events = { "(1s)" },
     function()
-        local amount = #require('calendar').getEventsToWorryAbout()
+        local amount = lastEvents
         if amount == 0 then
             return ""
         end
         return amount .. "󱨰"
     end,
+    jobs = {
+        {
+            events = { "(1s)" },
+            function(render)
+                local old = lastEvents
+                lastEvents = #require('calendar').getEventsToWorryAbout()
+                if old ~= lastEvents then
+                    render()
+                end
+            end,
+        },
+    },
     color = { fg = "#b880eb" },
     cond = Config.getFn("lualine.calendarEvents"),
 })
+local gitFlag = Config.getFn("lualine.gitStatus")
 ins_right({
     jobs = {
         {
@@ -340,6 +367,8 @@ ins_right({
                 vim.fn.jobstart("git fetch", {
                     on_exit = function()
                         if branch ~= "" then
+                            local oldOut = changes.out
+                            local oldIn = changes.in_
                             vim.fn.jobstart("git rev-list --left-right --count origin/" .. branch .. "..." .. branch, {
                                 on_stdout = function(_, str)
                                     if str[1] == "" then
@@ -347,18 +376,15 @@ ins_right({
                                     end
                                     -- print(str[1])
                                     local in_, out = str[1]:match("(%d+)%s+(%d+)")
-                                    local oldOut = changes.out
-                                    local oldIn = changes.in_
                                     changes.out = out * 1
                                     changes.in_ = in_ * 1
-                                    if oldOut ~= changes.out or oldIn ~= changes.in_ then
-                                        render()
-                                    end
                                 end,
                                 on_stderr = function(_, str)
                                     if str[1] == "" then
                                         return
                                     end
+                                    local oldOut2 = changes.out
+                                    local oldIn2 = changes.in_
                                     vim.fn.jobstart("git rev-list --left-right --count @{upstream}...HEAD", {
                                         on_stdout = function(_, s)
                                             if s[1] == "" then
@@ -366,16 +392,20 @@ ins_right({
                                             end
                                             local out = s[1]:match("(%d+)")
                                             -- print(str[1])
-                                            local oldOut = changes.out
-                                            local oldIn = changes.in_
                                             changes.out = out * 1
                                             changes.in_ = 0
-                                            if oldOut ~= changes.out or oldIn ~= changes.in_ then
+                                        end,
+                                        on_exit = function()
+                                            if oldOut2 ~= changes.out or oldIn2 ~= changes.in_ then
                                                 render()
                                             end
                                         end,
-                                        on_exit = function() end,
                                     })
+                                end,
+                                on_exit = function()
+                                    if oldOut ~= changes.out or oldIn ~= changes.in_ then
+                                        render()
+                                    end
                                 end,
                             })
                         end
@@ -402,7 +432,7 @@ ins_right({
     end,
     color = { fg = "#5ee4ff" },
     cond = function()
-        return Config.get("lualine.gitStatus") and conditions.check_git_workspace()
+        return gitFlag()
     end,
 })
 -- Lazy sync status
@@ -419,7 +449,7 @@ ins_right({
         end
         return ""
     end,
-    events = { "(2m)", "User LazySync" },
+    events = { "User LazyCheck", "User LazySync" },
     color = { fg = "#5EE4FF" },
     cond = Config.getFn("lualine.lazyStatus"),
 })
@@ -477,7 +507,7 @@ ins_right({
             end,
         },
         {
-            events = { "(1s)" },
+            events = { "(1s)", "BufEnter" },
             function(render)
                 if not Copilot.hasInternet then
                     return
@@ -507,7 +537,6 @@ ins_right({
             end,
         },
     },
-    events = { "BufEnter" },
     cond = Config.getFn("lualine.copilot"),
 })
 ins_right({
@@ -560,14 +589,5 @@ ins_right({
         },
     },
 })
-
--- ins_right({
---     function()
---         return "▊"
---     end,
---     color = getModeColor,
---     padding = { left = 1 },
--- })
-
 -- Now don't forget to initialize lualine
 return config

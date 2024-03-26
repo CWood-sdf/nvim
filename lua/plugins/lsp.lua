@@ -137,6 +137,9 @@ return {
             require('lspconfig').maple.setup({
                 on_attach = onAttach,
             })
+            require('lspconfig').gleam.setup({
+                on_attach = onAttach,
+            })
             -- require('lspconfig').glint.setup({
             --     on_attach = onAttach,
             -- })
