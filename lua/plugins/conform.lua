@@ -6,7 +6,7 @@ return {
             timeout_ms = 1000,
         },
         formatters_by_ft = {
-            -- lua = { "stylua" },
+            lua = { "stylua" },
             cpp = { "clang-format" },
             asm = { "asmfmt" },
             c = { "clang-format" },

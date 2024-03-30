@@ -8,6 +8,9 @@ return require("lazy").setup("plugins", {
             return "~/projects/"
         end)(),
     },
+    ui = {
+        backdrop = 60,
+    },
     change_detection = {
         notify = false,
     },
