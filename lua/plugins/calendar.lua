@@ -10,8 +10,7 @@ local function canvasImport(_, success)
             success()
             -- end
         end,
-        on_stderr = function()
-        end,
+        on_stderr = function() end,
         on_stdout = function(e, d)
             for _, v in ipairs(d) do
                 output = output .. v
@@ -19,7 +18,7 @@ local function canvasImport(_, success)
             if string.find(output, "]") then
                 ---@type table<string, {name: string, due: integer, course: string}>
                 local data = vim.json.decode(output) or {}
-                for _, event in ipairs(require('calendar').readData().assignments) do
+                for _, event in ipairs(require("calendar").readData().assignments) do
                     local stillExists = false
                     if event.source ~= "canvas" then
                         stillExists = true
@@ -31,7 +30,7 @@ local function canvasImport(_, success)
                         end
                     end
                     if not stillExists then
-                        require('calendar').markDone(event.title)
+                        require("calendar").markDone(event.title)
                     end
                 end
 
@@ -45,7 +44,7 @@ local function canvasImport(_, success)
                         description = event.course or "",
                         source = "canvas",
                     }
-                    require('calendar').addAssignment(e)
+                    require("calendar").addAssignment(e)
                 end
                 output = ""
             end
@@ -65,8 +64,7 @@ local function waImport(_, success)
             success()
             -- end
         end,
-        on_stderr = function()
-        end,
+        on_stderr = function() end,
         on_stdout = function(e, d)
             for _, v in ipairs(d) do
                 output = output .. v
@@ -75,7 +73,7 @@ local function waImport(_, success)
                 -- print("found")
                 ---@type table<string, {name: string, due: integer, course: string}>
                 local data = vim.json.decode(output) or {}
-                for _, event in ipairs(require('calendar').readData().assignments) do
+                for _, event in ipairs(require("calendar").readData().assignments) do
                     local stillExists = false
                     if event.source ~= "webassign" then
                         stillExists = true
@@ -87,7 +85,7 @@ local function waImport(_, success)
                         end
                     end
                     if not stillExists then
-                        require('calendar').markDone(event.title)
+                        require("calendar").markDone(event.title)
                     end
                 end
 
@@ -101,7 +99,7 @@ local function waImport(_, success)
                         warnTime = "1d",
                         source = "webassign",
                     }
-                    require('calendar').addAssignment(e)
+                    require("calendar").addAssignment(e)
                 end
                 output = ""
             end
@@ -132,7 +130,7 @@ local function gsImport(_, success)
                 -- print("found")
                 ---@type table<string, {name: string, due: integer, course: string}>
                 local data = vim.json.decode(output) or {}
-                for _, event in ipairs(require('calendar').readData().assignments) do
+                for _, event in ipairs(require("calendar").readData().assignments) do
                     if event.done then
                         goto continue
                     end
@@ -147,7 +145,7 @@ local function gsImport(_, success)
                         end
                     end
                     if not stillExists then
-                        require('calendar').markDone(event.title)
+                        require("calendar").markDone(event.title)
                     end
                     ::continue::
                 end
@@ -162,7 +160,7 @@ local function gsImport(_, success)
                         description = event.course or "",
                         source = "gradescope",
                     }
-                    require('calendar').addAssignment(e)
+                    require("calendar").addAssignment(e)
                 end
                 output = ""
             end
@@ -171,13 +169,12 @@ local function gsImport(_, success)
 end
 
 local function calendarConfig()
-    require('calendar').setup({
+    require("calendar").setup({
         import = {
             {
                 id = "canvas",
                 runFrequency = "1h",
                 fn = canvasImport,
-
             },
             {
                 id = "webassign",
@@ -194,7 +191,7 @@ local function calendarConfig()
                 runFrequency = "365d",
                 fn = function(_, success)
                     print("Running test")
-                    require('calendar').addAssignment({
+                    require("calendar").addAssignment({
                         source = "test",
                         title = "Test " .. os.date("%A"),
                         due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
@@ -207,28 +204,11 @@ local function calendarConfig()
                 end,
             },
             {
-                id = "ti_thing",
-                runFrequency = "c0 0 * * * MON",
-                fn = function(_, success)
-                    require('calendar').addEvent({
-                        source = "ti_thing",
-                        title = "Ti_thing",
-                        startTime = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 18:00:00"),
-                        endTime = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 19:00:00"),
-                        warnTime = "1d",
-                        description = "Ti_thing",
-                        type = "event",
-                        location = "STA Classroom 6",
-                    })
-                    success()
-                end,
-            },
-            {
                 id = "pray",
-                runFrequency = "c0 0 * * * *",
+                runFrequency = "c0 0 0 * * *",
                 fn = function(_, success)
                     -- print("Running pray")
-                    require('calendar').addAssignment({
+                    require("calendar").addAssignment({
                         source = "pray",
                         title = "Pray " .. os.date("%A"),
                         due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
@@ -247,6 +227,7 @@ return {
     lazy = false,
     config = calendarConfig,
     dev = true,
+    build = "make",
     dependencies = {
         "CWood-sdf/cmdTree.nvim",
     },

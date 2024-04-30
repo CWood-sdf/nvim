@@ -1,4 +1,5 @@
 return {
+
     --trouble
     {
         "folke/trouble.nvim",
@@ -24,6 +25,10 @@ return {
         event = "BufReadPre *.*",
         config = function()
             local wk = require("stuff.wkutils")
+            wk.remapNoGroup("n", "<leader>vt", "[T]oggle trouble", function()
+                vim.cmd("TroubleToggle")
+            end)
+            wk.writeBuf()
 
             local configs = require('lspconfig.configs')
             if not configs.maple then
@@ -67,9 +72,6 @@ return {
                     end, opts)
                     remap("r", "[R]ename", function()
                         vim.lsp.buf.rename()
-                    end, opts)
-                    remap("t", "[T]oggle trouble", function()
-                        vim.cmd("TroubleToggle")
                     end, opts)
                     remap("S", "[S]top", function()
                         vim.cmd("LspStop")
@@ -176,10 +178,10 @@ return {
                 on_attach = onAttach,
                 cmd = {
                     os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
-                    "-clangd",
-                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
-                    "-fqbn",
-                    "arduino:avr:uno",
+                    -- "-clangd",
+                    -- os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
+                    -- "-fqbn",
+                    -- "arduino:avr:uno",
                     "-cli-config",
                     os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
                     "-log",

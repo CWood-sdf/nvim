@@ -10,7 +10,7 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
-vim.opt.rtp:prepend(os.getenv("HOME") .. "/projects/banana.nvim")
+-- vim.opt.rtp:prepend(os.getenv("HOME") .. "/projects/banana.nvim")
 
 vim.filetype.add({
 	extension = { "mpl", "maple" },
