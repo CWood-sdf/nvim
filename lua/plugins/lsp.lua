@@ -53,7 +53,7 @@ return {
                         vim.diagnostic.open_float()
                     end, opts)
                     remap("i", "[I]nlay hints", function()
-                        vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
+                        vim.lsp.inlay_hint.enable(nil)
                     end, opts)
                     remap("h", "[H]over (K)", function()
                         vim.lsp.buf.hover()

@@ -13,12 +13,17 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.opt.rtp:prepend(os.getenv("HOME") .. "/projects/banana.nvim")
 
 vim.filetype.add({
-	extension = { "mpl", "maple" },
+	extension = { mpl = "maple" },
 })
 
 vim.filetype.add({
 	extension = {
 		nml = "nml",
+	},
+})
+vim.filetype.add({
+	extension = {
+		ncss = "ncss",
 	},
 })
 

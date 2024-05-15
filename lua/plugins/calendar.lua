@@ -173,17 +173,17 @@ local function calendarConfig()
         import = {
             {
                 id = "canvas",
-                runFrequency = "1h",
+                runFrequency = "1d",
                 fn = canvasImport,
             },
             {
                 id = "webassign",
-                runFrequency = "1h",
+                runFrequency = "1d",
                 fn = waImport,
             },
             {
                 id = "gradescope",
-                runFrequency = "1h",
+                runFrequency = "1d",
                 fn = gsImport,
             },
             {

@@ -49,10 +49,31 @@ wk.makeGroup("n", "<leader>p", "[P]roject", function(remap)
     end)
 end)
 
+local function count()
+    if vim.v.count == 0 then
+        return 1
+    end
+    return vim.v.count
+end
+
+wk.makeGroup("n", "]", "Next", function(remap)
+    remap("t", "[T]abpage", function()
+        if vim.v.count == 0 then
+            vim.cmd("tabnext")
+        else
+            vim.cmd(count() .. "tabnext")
+        end
+    end)
+end)
+wk.makeGroup("n", "[", "Previous", function(remap)
+    remap("t", "[T]abpage", function() vim.cmd(count() .. "tabprev") end)
+end)
+
 -- copy (obv)
 wk.remapNoGroup("v", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-v>", "Paste", [["+p]], { noremap = true })
+wk.remapNoGroup("i", "<C-v>", "Paste", [[<Esc>"+p]], { noremap = true })
 
 -- save
 wk.remapNoGroup("i", "<C-s>", "Save file", function()

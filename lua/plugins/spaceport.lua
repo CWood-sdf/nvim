@@ -26,7 +26,6 @@ return {
             { "w", "calendarwebthing" },
             { "m", "cmdTree" },
             { "a", "lazyline.nvim" },
-            { "h", "hackproject" },
         },
         debug = true,
     },
