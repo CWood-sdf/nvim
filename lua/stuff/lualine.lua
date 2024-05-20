@@ -34,6 +34,7 @@ local function getModeColor()
         no = colors.red,
         s = colors.orange,
         S = colors.orange,
+        [''] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
@@ -45,7 +46,13 @@ local function getModeColor()
         ["!"] = colors.red,
         t = colors.green,
     }
-    return { bg = mode_color[vim.fn.mode()], fg = "#000000" }
+    if mode_color[vim.fn.mode()] == nil then
+        local mode = vim.fn.mode()
+        vim.defer_fn(function()
+            vim.notify(mode)
+        end, 3000)
+    end
+    return { bg = mode_color[vim.fn.mode()] or "#ff0000", fg = "#000000" }
 end
 
 local conditions = {

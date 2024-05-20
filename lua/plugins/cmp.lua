@@ -3,6 +3,7 @@ return {
     event = "InsertEnter",
     keys = { ":" },
     config = function()
+        local wk = require("stuff.wkutils")
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
         local cmp_mappings = {
@@ -87,6 +88,18 @@ return {
                 documentation = cmp.config.window.bordered(),
             },
         })
+        local ls = require('luasnip')
+        wk.remapNoGroup({ "i", "s" }, "<C-h>", "Snip left", function()
+            if ls.jumpable(-1) then
+                ls.jump(-1)
+            end
+        end)
+        wk.remapNoGroup({ "i", "s" }, "<C-l>", "Snip right", function()
+            if ls.expand_or_jumpable() then
+                ls.expand_or_jump()
+            end
+        end)
+        wk.writeBuf()
     end,
     dependencies = {
         { "hrsh7th/nvim-cmp" },     -- Required

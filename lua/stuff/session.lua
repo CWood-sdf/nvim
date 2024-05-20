@@ -6,6 +6,8 @@ local function dirToSessionName(str)
     -- s, _ = s:gsub('%\\.', '##')
     return s
 end
+
+vim.opt.ssop:append("globals")
 local session_ready = false
 vim.api.nvim_create_autocmd("User", {
     pattern = "SpaceportDone",
@@ -17,11 +19,14 @@ vim.api.nvim_create_autocmd("User", {
         if vim.fn.filereadable(session) ~= 0 then
             vim.defer_fn(function()
                 vim.cmd("so " .. session)
+                vim.defer_fn(function()
+                    vim.cmd("set signcolumn=yes")
+                    session_ready = true
+                end, 10)
             end, 10)
         else
             -- vim.cmd("mks " .. session)
         end
-        session_ready = true
     end
 })
 vim.api.nvim_create_autocmd({ "QuitPre", "ExitPre" }, {
