@@ -1,3 +1,4 @@
+ArId = nil
 return {
 
     --trouble
@@ -80,6 +81,7 @@ return {
                         vim.cmd("LspRestart")
                     end, opts)
                 end, opts)
+
                 wk.makeGroup("n", "<leader>vo", "G[o]to", function(remap)
                     remap("d", "[D]efinition (gd)", function()
                         vim.lsp.buf.definition()
@@ -147,6 +149,25 @@ return {
             -- })
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities.textDocument.completion.completionItem.snippetSupport = true
+            ArId = vim.lsp.start_client({
+                on_attach = onAttach,
+                capabilities = capabilities,
+                filetypes = { "ino", "arduino" },
+                root_dir = "/home/christopher-wood/projects/EgrThingThing",
+                cmd_cwd = "/home/christopher-wood/projects/EgrThingThing",
+                name = "arduino-language-server",
+                cmd = {
+                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
+                    -- "-clangd",
+                    -- os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
+                    "-fqbn",
+                    "arduino:avr:uno",
+                    "-cli-config",
+                    os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
+                    "-log",
+                    "true",
+                },
+            })
             require('lspconfig').html.setup({
                 on_attach = onAttach,
                 filetypes = { "html", "templ", "handlebars" },
@@ -163,7 +184,6 @@ return {
                 capabilities = capabilities,
             })
             -- require('lspconfig').ccls.setup({})
-            require("neodev").setup({})
             require("lspconfig").lua_ls.setup({
                 on_attach = onAttach,
                 settings = {
@@ -172,20 +192,6 @@ return {
                             enable = true,
                         },
                     },
-                },
-            })
-            require("lspconfig").arduino_language_server.setup({
-                on_attach = onAttach,
-                cmd = {
-                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
-                    -- "-clangd",
-                    -- os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
-                    -- "-fqbn",
-                    -- "arduino:avr:uno",
-                    "-cli-config",
-                    os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
-                    "-log",
-                    "true",
                 },
             })
             vim.diagnostic.config({
@@ -211,11 +217,6 @@ return {
         end,
     },
     {
-        "folke/neodev.nvim",
-        event = "BufReadPre *.lua",
-        opts = {},
-    },
-    {
         "j-hui/fidget.nvim",
         tag = "legacy",
         event = "LspAttach",
@@ -231,4 +232,17 @@ return {
         opts = {},
         event = "BufReadPre",
     },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                "luvit-meta/library", -- see below
+                -- You can also add plugins you always want to have loaded.
+                -- Useful if the plugin has globals or types you want to use
+                -- vim.env.LAZY .. "/LazyVim", -- see below
+            },
+        },
+    },
+    { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 }

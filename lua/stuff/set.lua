@@ -8,6 +8,7 @@ vim.opt.tabstop = 4;
 vim.opt.softtabstop = 4;
 vim.opt.shiftwidth = 4;
 vim.opt.expandtab = true
+vim.opt.signcolumn = "yes"
 
 vim.opt.smartindent = true;
 
@@ -26,7 +27,6 @@ vim.opt.incsearch = true
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
@@ -46,7 +46,6 @@ local mouse = vim.opt.mouse
 vim.opt.mouse = ""
 conf.addFlag("values.nomouse")
 conf.addCallback("values.nomouse", function(v)
-    print(v)
     if not v then
         vim.opt.mouse = mouse
     else

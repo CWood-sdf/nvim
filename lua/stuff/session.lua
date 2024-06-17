@@ -16,12 +16,12 @@ vim.api.nvim_create_autocmd("User", {
         local session = dirToSessionName(dir)
         session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
         -- print(vim.fn.filereadable(session))
+        session_ready = true
         if vim.fn.filereadable(session) ~= 0 then
             vim.defer_fn(function()
                 vim.cmd("so " .. session)
                 vim.defer_fn(function()
                     vim.cmd("set signcolumn=yes")
-                    session_ready = true
                 end, 10)
             end, 10)
         else
@@ -29,12 +29,24 @@ vim.api.nvim_create_autocmd("User", {
         end
     end
 })
-vim.api.nvim_create_autocmd({ "QuitPre", "ExitPre" }, {
+vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre" }, {
     callback = function()
         if not session_ready then return end
         local dir = vim.fn.getcwd()
         local session = dirToSessionName(dir)
         session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
         vim.cmd("mks! " .. session)
+    end
+})
+
+vim.api.nvim_create_autocmd({ "SessionLoadPost" }, {
+    callback = function()
+        vim.defer_fn(function()
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                vim.api.nvim_set_option_value("signcolumn", "yes", {
+                    win = win
+                })
+            end
+        end, 100)
     end
 })

@@ -2,6 +2,7 @@ return {
     "mbbill/undotree",
     cmd = { "UndotreeToggle", "UndotreeShow" },
     init = function()
+        vim.g.undotree_DiffAutoOpen = 0
         local wk = require("stuff.wkutils")
         wk.remapNoGroup("n", "<leader>u", "Toggle Undotree", function()
             vim.cmd.UndotreeToggle()

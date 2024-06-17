@@ -2,7 +2,7 @@ return {
     "David-Kunz/gen.nvim",
     config = function()
         require('gen').setup({
-            model = "mistral",
+            model = "codellama:7b",
         })
         require('gen').prompts["ScreenReader"] = {
             prompt =

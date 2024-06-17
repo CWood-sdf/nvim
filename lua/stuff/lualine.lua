@@ -20,39 +20,47 @@ local colors = {
     magenta  = '#c678dd',
     blue     = '#51afef',
     red      = '#ec5f67',
+    redDim   = '#cc373f',
 }
 local function getModeColor()
     -- auto change color according to neovims mode
     local mode_color = {
         n = colors.red,
+        nt = colors.red,
+        niI = colors.red,
+        niR = colors.red,
         i = colors.green,
         v = colors.blue,
         [""] = colors.blue,
         V = colors.blue,
         [""] = colors.blue,
         c = colors.magenta,
-        no = colors.red,
+        no = colors.magenta,
+        nov = colors.magenta,
+        noV = colors.magenta,
+        ["no"] = colors.magenta,
+        o = colors.magenta,
         s = colors.orange,
         S = colors.orange,
         [''] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
-        cv = colors.red,
-        ce = colors.red,
+        cv = colors.magenta,
+        ce = colors.magenta,
         r = colors.cyan,
         rm = colors.cyan,
         ["r?"] = colors.cyan,
-        ["!"] = colors.red,
+        ["!"] = colors.magenta,
         t = colors.green,
     }
-    if mode_color[vim.fn.mode()] == nil then
-        local mode = vim.fn.mode()
+    local mode = vim.fn.mode(10)
+    if mode_color[mode] == nil then
         vim.defer_fn(function()
             vim.notify(mode)
         end, 3000)
     end
-    return { bg = mode_color[vim.fn.mode()] or "#ff0000", fg = "#000000" }
+    return { bg = mode_color[mode] or "#ff0000", fg = "#000000" }
 end
 
 local conditions = {
@@ -67,7 +75,6 @@ local conditions = {
         local filepath = vim.fn.expand("%:p:h")
         local gitdir = vim.fn.finddir(".git", filepath .. ";")
         local time = vim.loop.hrtime() - start
-        print("Time to check git workspace: " .. time / 1e6 .. "ms")
         return gitdir and #gitdir > 0 and #gitdir < #filepath
     end,
 }
@@ -358,7 +365,7 @@ ins_right({
             end,
         },
     },
-    color = { fg = "#9e9eeb" },
+    color = { fg = "#5EE4FF" },
     cond = function()
         return prayFlag() and #require("calendar").getAssignmentsToWorryAbout() > 0
     end,
@@ -452,7 +459,6 @@ ins_right({
                                                 return
                                             end
                                             local out = s[1]:match("(%d+)")
-                                            -- print(str[1])
                                             changes.out = out * 1
                                             changes.in_ = 0
                                         end,

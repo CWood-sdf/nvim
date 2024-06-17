@@ -47,22 +47,18 @@ return {
                     require('osv').launch({ port = 8086 })
                 end)
                 remap('y', 'Banana debug', function()
+                    -- require('banana').spam()
+                    vim.cmd("Pineapple2")
+                end)
+                remap('Y', 'Banana debug', function()
                     require('banana').yeet()
+                    -- vim.cmd("Pineapple2")
                 end)
                 -- remap('i', 'Conditional bp', function()
                 --     require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')
                 -- end)
                 remap("c", "[C]ontinue (<F5>)", function()
                     vim.cmd.DapContinue()
-                end)
-                remap("C", "[C]alendar debug", function()
-                    local parsed = require('calendar.cron').parse("*/4 * * * *")
-                    if parsed == nil then
-                        print("Failed to parse")
-                    else
-                        ---@cast parsed Calendar.Cron
-                        print(vim.fn.strftime("%D %H %M", parsed:nextOccurence()))
-                    end
                 end)
             end)
             wk.writeBuf()

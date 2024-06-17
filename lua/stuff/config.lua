@@ -39,7 +39,6 @@ local cmdTree = {
                     str = str .. "."
                 end
                 str = str:sub(1, #str - 1)
-                print(str)
                 M.set(str, args.params[2] == "true")
             end,
             getFlag,

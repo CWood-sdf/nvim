@@ -63,7 +63,7 @@ return {
                 {
                     name = 'cmdline',
                     option = {
-                        ignore_cmds = { 'lua', 'Man', '!' }
+                        ignore_cmds = { 'Man', '!' }
                     }
                 }
             })

@@ -3,19 +3,20 @@ return {
     version = "*",
     opts = {
         default_mappings = {
-            ours = "<leader>gco",
-            theirs = "<leader>gct",
-            both = "<leader>gcb",
-            none = "<leader>gc0",
-            next = "<leader>gcn",
-            prev = "<leader>gcp",
+            ours = "<leader>gCo",
+            theirs = "<leader>gCt",
+            both = "<leader>gCb",
+            none = "<leader>gC0",
+            next = "<leader>gCn",
+            prev = "<leader>gCp",
         },
     },
+    event = "VeryLazy",
     cmd = {
         "GitConflictListQf",
         "GitConflictNextConflict",
         "GitConflictPrevConflict",
     },
-    keys = { "<leader>gc" },
+    keys = { "<leader>gC" },
     dev = true,
 }

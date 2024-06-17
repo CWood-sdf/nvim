@@ -1,7 +1,7 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	-- event = { "BufReadPre *.*", "User SpaceportDone" },
-	event = { "VeryLazy" },
+	event = { "BufReadPre *.*", "User SpaceportDone" },
+	-- event = { "VeryLazy" },
 	cmd = { "TSInstall", "TSUpdate", "TSUninstall" },
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter-textobjects",
@@ -9,7 +9,7 @@ return {
 	},
 	-- tag = "v0.9.2",
 	config = function()
-		require("nvim-treesitter.install").compilers = { "zig", "clang" }
+		require("nvim-treesitter.install").compilers = { "clang", "zig" }
 
 		local selectTextObjects = {}
 		local function addTextObject(key, query, desc, around, inner)
@@ -167,7 +167,7 @@ return {
 		})
 		local wkutils = require("stuff.wkutils")
 		wkutils.useGroup("n", "[", function(remap)
-			remap("C", "ts context", function()
+			remap("e", "ts context", function()
 				require("treesitter-context").go_to_context()
 			end)
 		end)

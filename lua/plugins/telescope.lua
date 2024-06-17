@@ -8,6 +8,7 @@ return {
         dependencies = { { "nvim-lua/plenary.nvim" } },
         init = function()
             local wk = require('stuff.wkutils')
+            local nerdyLoaded = false
             wk.makeGroup("n", "<leader>f", "[F]ind", function(remap)
                 remap("f", "[F]iles", function()
                     require("telescope.builtin").find_files()
@@ -50,14 +51,12 @@ return {
                     require("telescope").load_extension("pineapple")
                     require("telescope").extensions.pineapple.colorschemes()
                 end)
-
-                remap("b", "[B]rowse", function()
-                    require("telescope").load_extension("file_browser")
-                    require("telescope").extensions.file_browser.file_browser()
-                end)
                 remap("N", "[N]erd fonts", function()
-                    require("telescope").load_extension("nerdy")
-                    require("telescope").extensions.nerdy.nerdy()
+                    if not nerdyLoaded then
+                        require("telescope").load_extension("nerdy")
+                        nerdyLoaded = true
+                    end
+                    vim.cmd("Telescope nerdy")
                 end)
             end)
             wk.writeBuf()

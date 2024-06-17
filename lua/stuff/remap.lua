@@ -35,10 +35,15 @@ wk.remapNoGroup("t", "<C-j>", "Down arrow", "<Down>", { noremap = true })
 wk.remapNoGroup("t", "<C-e>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
 wk.remapNoGroup("i", "<C-e>", "Exit insert mode", "<Esc>", { noremap = true })
 
--- buffer stuff idrk y this is here but ok
 wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)
     remap("n", "[N]umber", function()
-        print(vim.api.nvim_get_current_buf())
+        vim.notify(vim.api.nvim_get_current_buf() .. "")
+    end)
+    remap("p", "[P]ath", function()
+        vim.notify(vim.fn.expand("%"))
+    end)
+    remap("d", "[D]elete hidden", function()
+        vim.cmd("DeleteHiddenBuffers")
     end)
 end)
 
@@ -93,25 +98,25 @@ end)
 
 -- move stuff up and down
 wk.remapNoGroup("v", "<leader>k", "Move selected up", function()
-    local count = 0
+    local count_ = 0
     if vim.v.count ~= nil then
-        count = vim.v.count
+        count_ = vim.v.count
     end
     if vim.v.count == 0 then
-        count = 1
+        count_ = 1
     end
-    count = count + 1
-    wk.feedKeys(":m '>-" .. count .. "<CR>", "v")
+    count_ = count_ + 1
+    wk.feedKeys(":m '>-" .. count_ .. "<CR>", "v")
 end)
 wk.remapNoGroup("v", "<leader>j", "Move selected down", function()
-    local count = 0
+    local count_ = 0
     if vim.v.count ~= nil then
-        count = vim.v.count
+        count_ = vim.v.count
     end
     if vim.v.count == 0 then
-        count = 1
+        count_ = 1
     end
-    wk.feedKeys(":m '>+" .. count .. "<CR>", "v")
+    wk.feedKeys(":m '>+" .. count_ .. "<CR>", "v")
 end)
 
 -- useful visual mode stuff

@@ -22,6 +22,10 @@ return {
         'tpope/vim-sleuth',
         event = "BufReadPre",
     },
+    {
+        "arithran/vim-delete-hidden-buffers",
+        cmd = "DeleteHiddenBuffers",
+    },
     -- {
     --     "folke/noice.nvim",
     --     opts = {},

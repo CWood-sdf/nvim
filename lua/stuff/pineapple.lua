@@ -7,4 +7,5 @@ return {
     "cocopon/iceberg.vim",
     "colepeters/spacemacs-theme.vim",
     "tiagovla/tokyodark.nvim",
+    "marko-cerovac/material.nvim",
 }

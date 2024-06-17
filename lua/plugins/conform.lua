@@ -8,6 +8,9 @@ return {
             if not Config.get("plugins.conform.autoformat") then
                 return
             end
+            -- if vim.bo.filetype == "zig" then
+            --     return
+            -- end
             return {
                 lsp_fallback = true,
                 timeout_ms = 1000,
@@ -23,6 +26,7 @@ return {
             typescriptreact = { "prettier" },
             json = { "prettier" },
             html = { "prettier" },
+            nml = { "prettier" },
             css = { "prettier" },
             markdown = { "prettier" },
             yaml = { "prettier" },
