@@ -20,9 +20,9 @@ vim.api.nvim_create_autocmd("User", {
         if vim.fn.filereadable(session) ~= 0 then
             vim.defer_fn(function()
                 vim.cmd("so " .. session)
-                vim.defer_fn(function()
-                    vim.cmd("set signcolumn=yes")
-                end, 10)
+                -- vim.defer_fn(function()
+                --     vim.cmd("set signcolumn=yes")
+                -- end, 10)
             end, 10)
         else
             -- vim.cmd("mks " .. session)
