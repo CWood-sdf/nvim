@@ -50,3 +50,13 @@ vim.api.nvim_create_autocmd({ "SessionLoadPost" }, {
         end, 100)
     end
 })
+
+vim.api.nvim_create_user_command("SessionWipe", function()
+    local dir = vim.fn.getcwd()
+    local session = dirToSessionName(dir)
+    session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
+    os.remove(session)
+    session_ready = false
+end, {
+
+})
