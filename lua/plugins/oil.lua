@@ -20,5 +20,4 @@ return {
         },
     },
     cmd = "Oil",
-    dev = true,
 }

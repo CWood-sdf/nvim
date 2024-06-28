@@ -1,5 +1,5 @@
 return {
-    'CWood-sdf/git-conflict.nvim',
+    'akinsho/git-conflict.nvim',
     version = "*",
     opts = {
         default_mappings = {
@@ -18,5 +18,4 @@ return {
         "GitConflictPrevConflict",
     },
     keys = { "<leader>gC" },
-    dev = true,
 }

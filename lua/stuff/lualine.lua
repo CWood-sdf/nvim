@@ -1,6 +1,5 @@
 -- Eviline config for lualine
--- Author: shadmansaleh
--- Credit: glepnir
+-- Author: shadmansaleh Credit: glepnir
 -- CWood-sdf additions: lotsa stuff
 local branch = ""
 --needed bc lualine with bold in gui is rlly ugly
@@ -505,13 +504,13 @@ local hasChecked = false
 ins_right({
     function()
         -- only check at start of program
-        if not hasChecked then
-            require("lazy.manage.checker").check()
-            hasChecked = true
-        end
-        if require("lazy.status").has_updates() then
-            return require("lazy.status").updates()
-        end
+        -- if not hasChecked then
+        --     require("lazy.manage.checker").check()
+        --     hasChecked = true
+        -- end
+        -- if require("lazy.status").has_updates() then
+        --     return require("lazy.status").updates()
+        -- end
         return ""
     end,
     events = { "User LazyCheck", "User LazySync" },

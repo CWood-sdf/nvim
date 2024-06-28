@@ -18,7 +18,7 @@ return require("lazy").setup("plugins", {
     -- 	-- missing = false,
     -- },
     checker = {
-        enabled = true,
+        enabled = false,
         frequency = 300,
         notify = false,
     },

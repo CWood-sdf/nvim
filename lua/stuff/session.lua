@@ -39,17 +39,17 @@ vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre" }, {
     end
 })
 
-vim.api.nvim_create_autocmd({ "SessionLoadPost" }, {
-    callback = function()
-        vim.defer_fn(function()
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-                vim.api.nvim_set_option_value("signcolumn", "yes", {
-                    win = win
-                })
-            end
-        end, 100)
-    end
-})
+-- vim.api.nvim_create_autocmd({ "SessionLoadPost" }, {
+--     callback = function()
+--         vim.defer_fn(function()
+--             for _, win in ipairs(vim.api.nvim_list_wins()) do
+--                 vim.api.nvim_set_option_value("signcolumn", "yes", {
+--                     win = win
+--                 })
+--             end
+--         end, 100)
+--     end
+-- })
 
 vim.api.nvim_create_user_command("SessionWipe", function()
     local dir = vim.fn.getcwd()
