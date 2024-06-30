@@ -1,4 +1,8 @@
 return {
+    {
+        "folke/lazy.nvim",
+        dev = true,
+    },
 
     -- just fancy icons for dap
     {

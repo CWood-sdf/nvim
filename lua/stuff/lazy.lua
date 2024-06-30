@@ -14,11 +14,13 @@ return require("lazy").setup("plugins", {
     change_detection = {
         notify = false,
     },
+    concurrency = 10,
     -- install = {
     -- 	-- missing = false,
     -- },
     checker = {
-        enabled = false,
+        concurrency = 10,
+        enabled = true,
         frequency = 300,
         notify = false,
     },

@@ -508,9 +508,9 @@ ins_right({
         --     require("lazy.manage.checker").check()
         --     hasChecked = true
         -- end
-        -- if require("lazy.status").has_updates() then
-        --     return require("lazy.status").updates()
-        -- end
+        if require("lazy.status").has_updates() then
+            return require("lazy.status").updates()
+        end
         return ""
     end,
     events = { "User LazyCheck", "User LazySync" },
