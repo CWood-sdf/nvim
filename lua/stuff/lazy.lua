@@ -8,6 +8,9 @@ return require("lazy").setup("plugins", {
             return "~/projects/"
         end)(),
     },
+    rocks = {
+        root = "/usr/local/bin",
+    },
     ui = {
         backdrop = 60,
     },

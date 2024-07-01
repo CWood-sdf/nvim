@@ -51,7 +51,10 @@ return {
                     require('banana').yeet()
                 end)
                 remap('Y', 'Banana debug', function()
-                    vim.cmd("Pineapple2")
+                    local name = vim.fn.input("Path to nml: ")
+                    local inst = require("banana.render").newInstance(name, "asdf")
+                    inst.DEBUG = false
+                    inst:open()
                     -- vim.cmd("Pineapple2")
                 end)
                 -- remap('i', 'Conditional bp', function()
