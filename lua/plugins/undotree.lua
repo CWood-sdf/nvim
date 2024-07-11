@@ -20,10 +20,10 @@ return {
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "<C-r>", true, true, true), "n", false)
         end
         wk.remapNoGroup("n", "<C-z>", "Undo", function()
-            undo(vim.v.count)
+
         end)
-        wk.remapNoGroup("x", "<C-z>", "Undo", function()
-            wk.feedKeys("<Esc>", "x")
+        wk.remapNoGroup("v", "<C-z>", "Undo", function()
+            wk.feedKeys("<Esc>", "v")
             undo(vim.v.count)
         end)
 

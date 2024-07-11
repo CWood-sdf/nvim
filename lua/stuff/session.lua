@@ -25,6 +25,10 @@ vim.api.nvim_create_autocmd("User", {
                 -- end, 10)
             end, 10)
         else
+            print("No session found")
+            vim.defer_fn(function()
+                vim.cmd("Oil .")
+            end, 100)
             -- vim.cmd("mks " .. session)
         end
     end

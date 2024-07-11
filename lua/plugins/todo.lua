@@ -4,6 +4,7 @@ return {
     config = function()
         require('todo-comments').setup({
             signs = false,
+
         })
         local wk = require("stuff.wkutils")
         wk.useGroup("n", "]", function(remap)

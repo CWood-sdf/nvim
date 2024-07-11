@@ -1,5 +1,9 @@
 return {
     {
+        "nvim-neo-tree/neo-tree.nvim",
+        cmd = "Neotree"
+    },
+    {
         "folke/lazy.nvim",
         dev = true,
     },

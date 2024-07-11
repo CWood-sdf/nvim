@@ -14,11 +14,11 @@ return {
             ["<Down>"] = cmp.mapping.select_next_item(cmp_select),
             ["<Up>"] = cmp.mapping.select_prev_item(cmp_select),
             ["<C-y>"] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
+                behavior = cmp.ConfirmBehavior.Insert,
                 select = true,
             }),
             ["<C-Space>"] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
+                behavior = cmp.ConfirmBehavior.Insert,
                 select = true,
             }),
         }
