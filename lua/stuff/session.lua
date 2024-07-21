@@ -39,6 +39,7 @@ vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre" }, {
         local dir = vim.fn.getcwd()
         local session = dirToSessionName(dir)
         if #vim.api.nvim_list_wins() == 1 and #vim.api.nvim_list_tabpages() == 1 then
+            vim.cmd("SessionWipe")
             return
         end
         session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
