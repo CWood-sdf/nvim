@@ -2,6 +2,7 @@ local whichkey = require("which-key")
 
 local M = {}
 
+---@type [string][]
 M.remaps = {}
 
 local groupOpts = {}
@@ -16,9 +17,11 @@ local remap = function(key, desc, func, opts)
         end
     end
     local keys = currentGroup .. key
-    M.remaps[currentGroupMode][keys] = { func, desc }
+    table.insert(M.remaps, { keys, func, desc = desc, mode = currentGroupMode })
+    -- M.remaps[currentGroupMode][keys] = { func, desc }
     for k, v in pairs(opts) do
-        M.remaps[currentGroupMode][keys][k] = v
+        local len = #M.remaps
+        M.remaps[len][k] = v
     end
     -- if there's a '(...)' in the desc, then remap that key to the func too
     if desc:find("%(") ~= nil then
@@ -47,15 +50,17 @@ function M.makeGroup(mode, key, desc, makeRemaps, opts)
         end
         return
     end
-    if M.remaps[mode] == nil then
-        M.remaps[mode] = {}
-    end
-    M.remaps[mode][key] = {
-        name = desc,
-    }
+    -- if M.remaps[mode] == nil then
+    --     M.remaps[mode] = {}
+    -- end
+    table.insert(M.remaps, { key, mode = mode, group = desc })
+    -- M.remaps[mode][key] = {
+    --     name = desc,
+    -- }
     if opts ~= nil then
         for k, v in pairs(opts) do
-            M.remaps[mode][key][k] = v
+            local len = #M.remaps
+            M.remaps[len][k] = v
         end
         groupOpts = opts
     else
@@ -106,31 +111,33 @@ function M.remapNoGroup(mode, key, desc, func, opts)
         end
         return
     end
-    if M.remaps[mode] == nil then
-        M.remaps[mode] = {}
-    end
-    M.remaps[mode][key] = { func, desc }
+    -- if M.remaps[mode] == nil then
+    --     M.remaps[mode] = {}
+    -- end
+    table.insert(M.remaps, { key, func, desc = desc, mode = mode })
+    -- M.remaps[mode][key] = { func, desc }
     for k, v in pairs(opts) do
-        M.remaps[mode][key][k] = v
+        local len = #M.remaps
+        M.remaps[len][k] = v
     end
 end
 
 function M.writeBuf()
-    local newRemaps = {}
-    for k, v in pairs(M.remaps) do
-        if newRemaps[k] == nil then
-            newRemaps[k] = {}
-        end
-        for k2, v2 in pairs(v) do
-            if v2.name ~= nil then
-                newRemaps[k][k2] = v2
-            end
-        end
-        local opts = {}
-        opts.mode = k
-        whichkey.register(v, opts)
-    end
-    M.remaps = newRemaps
+    -- local newRemaps = {}
+    -- for k, v in pairs(M.remaps) do
+    --     -- if newRemaps[k] == nil then
+    --     --     newRemaps[k] = {}
+    --     -- end
+    --     -- for k2, v2 in pairs(v) do
+    --     --     if v2.name ~= nil then
+    --     --         newRemaps[k][k2] = v2
+    --     --     end
+    --     -- end
+    --     -- local opts = {}
+    --     -- opts.mode = k
+    whichkey.add(M.remaps)
+    -- end
+    M.remaps = {}
 end
 
 return M

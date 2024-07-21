@@ -5,7 +5,6 @@ return {
     },
     {
         "folke/lazy.nvim",
-        dev = true,
     },
 
     -- just fancy icons for dap
@@ -23,7 +22,7 @@ return {
         opts = {
             DEBUG = true,
         },
-        dev = true,
+        dev = require("stuff.isdev")("cmdTree.nvim"),
         lazy = false,
     },
     {

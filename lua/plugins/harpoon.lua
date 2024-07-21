@@ -38,7 +38,7 @@ return {
     dependencies = {
         {
             "CWood-sdf/harpoontabline",
-            dev = true,
+            dev = require("stuff.isdev")("harpoontabline"),
         },
     },
 }

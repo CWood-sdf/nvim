@@ -1,6 +1,6 @@
 return {
     "CWood-sdf/banana.nvim",
-    dev = true,
+    dev = require("stuff.isdev")("banana.nvim"),
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
     }

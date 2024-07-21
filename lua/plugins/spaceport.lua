@@ -29,5 +29,5 @@ return {
         },
         debug = true,
     },
-    dev = true,
+    dev = require("stuff.isdev")("spaceport.nvim"),
 }
