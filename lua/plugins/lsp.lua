@@ -23,7 +23,7 @@ return {
             -- Autocompletion
             -- { "folke/neodev.nvim" },
         },
-        event = "BufReadPre *.*",
+        event = "BufReadPre",
         config = function()
             local wk = require("stuff.wkutils")
             wk.remapNoGroup("n", "<leader>vt", "[T]oggle trouble", function()

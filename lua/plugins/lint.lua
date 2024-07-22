@@ -14,7 +14,7 @@ return {
 			end,
 		})
 	end,
-	event = "BufReadPre *.*",
+	event = "BufReadPre",
 	-- keys = { {
 	-- 	"<C-l>",
 	-- 	function()
