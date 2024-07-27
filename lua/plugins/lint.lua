@@ -6,7 +6,7 @@ return {
 			-- cpp = { 'clang-tidy' },
 			-- cmake = { 'cmakelint' },
 			make = { "checkmake" },
-			lua = { "selene" },
+			-- lua = { "selene" },
 		}
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
 			callback = function()

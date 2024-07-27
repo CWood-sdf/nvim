@@ -4,7 +4,7 @@ return {
         replaceDirs = { { "~/projects", "_" }, { "~/.local/share/nvim", "@" } },
         replaceHome = true,
         projectEntry = function()
-            -- vim.cmd("Oil .")
+            vim.cmd("Oil .")
             -- vim.schedule(function()
             --     vim.cmd("e")
             -- end)
