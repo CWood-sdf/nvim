@@ -7,7 +7,7 @@ local function dirToSessionName(str)
     return s
 end
 
-vim.opt.ssop:append("globals")
+-- vim.opt.ssop:append("globals")
 local session_ready = false
 vim.api.nvim_create_autocmd("User", {
     pattern = "SpaceportDone",
@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd("User", {
                 -- vim.defer_fn(function()
                 --     vim.cmd("set signcolumn=yes")
                 -- end, 10)
-            end, 10)
+            end, 100)
         else
             print("No session found")
             -- vim.defer_fn(function()

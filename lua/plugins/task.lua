@@ -29,7 +29,7 @@ local opts = {
 }
 
 return {
-    "CWood-sdf/do-the-needful.nvim",
+    "catgoose/do-the-needful.nvim",
     event = { "User SpaceportDone", "DirChangedPre" },
     keys = {
         { "<leader>;", [[<cmd>Telescope do-the-needful please<cr>]], "n" },
@@ -42,5 +42,5 @@ return {
         local telescope = require('telescope')
         telescope.load_extension("do-the-needful")
     end,
-    dev = true,
+    -- dev = true,
 }

@@ -6,6 +6,9 @@ vim.api.nvim_create_autocmd({ "User" }, {
         end
     end,
 })
+vim.api.nvim_create_user_command("BlockingDebugServer", function()
+    require('osv').launch({ port = 8086, blocking = true })
+end, {})
 return {
     {
         "jbyuki/one-small-step-for-vimkind",
@@ -46,9 +49,13 @@ return {
                 remap('v', 'Ser[v]er', function()
                     require('osv').launch({ port = 8086 })
                 end)
+                local inst = nil
                 remap('y', 'Banana debug', function()
+                    if inst == nil then
+                        inst = require('banana.instance').newInstance('test', '')
+                    end
+                    inst:open()
                     -- require('banana').spam()
-                    require('banana').yeet()
                 end)
                 remap('Y', 'Banana debug', function()
                     local name = vim.fn.input("Path to nml: ")
