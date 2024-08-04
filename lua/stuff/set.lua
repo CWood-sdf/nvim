@@ -1,18 +1,23 @@
-vim.opt.nu = true;
-vim.opt.relativenumber = true;
+vim.opt.nu = true
+vim.opt.relativenumber = true
 
 vim.cmd("set conceallevel=0")
 
 vim.opt.smartcase = true
 vim.opt.ignorecase = true
 vim.opt.autoindent = false
-vim.opt.tabstop = 4;
-vim.opt.softtabstop = 4;
-vim.opt.shiftwidth = 4;
+vim.api.nvim_create_autocmd("InsertEnter", {
+    callback = function()
+        vim.opt.autoindent = false
+    end
+})
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.signcolumn = "yes"
 
--- vim.opt.smartindent = true;
+vim.opt.smartindent = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
