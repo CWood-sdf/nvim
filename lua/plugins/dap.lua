@@ -51,10 +51,7 @@ return {
                 end)
                 local inst = nil
                 remap('y', 'Banana debug', function()
-                    if inst == nil then
-                        inst = require('banana.instance').newInstance('test', '')
-                    end
-                    inst:open()
+                    require('banana').test.grid()
                     -- require('banana').spam()
                 end)
                 remap('Y', 'Banana debug', function()
@@ -84,6 +81,47 @@ return {
             })
 
             local dap = require("dap")
+            dap.configurations.zig = {
+                {
+                    name = "Launch",
+                    type = "gdb",
+                    request = "launch",
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    end,
+                    cwd = "${workspaceFolder}",
+                    stopAtBeginningOfMainSubprogram = false,
+                },
+                {
+                    name = "Select and attach to process",
+                    type = "gdb",
+                    request = "attach",
+                    -- program = function()
+                    --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    -- end,
+                    pid = function()
+                        local name = vim.fn.input('Executable name (filter): ')
+                        return require("dap.utils").pick_process({ filter = name })
+                    end,
+                    -- cwd = '${workspaceFolder}'
+                },
+                {
+                    name = 'Attach to gdbserver :1234',
+                    type = 'gdb',
+                    request = 'attach',
+                    target = 'localhost:1234',
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    end,
+                    cwd = '${workspaceFolder}'
+                },
+                unpack(dap.configurations.zig),
+            }
+            dap.adapters.gdb = {
+                type = "executable",
+                command = "gdb",
+                args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+            }
             dap.configurations.cuda = dap.configurations.cpp
             dap.listeners.after.event_initialized["dapui_config"] = function()
                 -- require("lualine").hide({

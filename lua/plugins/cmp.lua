@@ -74,6 +74,7 @@ return {
             enabled = true,
             sources = cmp.config.sources({
                 { name = "neorg" },
+                { name = "git" },
                 { name = "nvim_lsp" },
                 { name = "luasnip" },
             }, { { name = "buffer" }, { name = "neorg" } }),
@@ -88,6 +89,7 @@ return {
                 documentation = cmp.config.window.bordered(),
             },
         })
+        require("cmp_git").setup()
         local ls = require('luasnip')
         wk.remapNoGroup({ "i", "s" }, "<C-h>", "Snip left", function()
             if ls.jumpable(-1) then
@@ -106,6 +108,7 @@ return {
         { "hrsh7th/cmp-nvim-lsp" }, -- Required
         { "hrsh7th/cmp-cmdline" },
         { "hrsh7th/cmp-buffer" },
+        { "petertriho/cmp-git" },
         { "hrsh7th/cmp-path" },
         { "L3MON4D3/LuaSnip" }, -- Required
         { "rafamadriz/friendly-snippets" },
