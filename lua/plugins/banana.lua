@@ -4,11 +4,12 @@ return {
         dev = require("stuff.isdev")("banana.nvim"),
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
-        }
+        },
+        -- build = "bash ./build"
     },
     {
         "CWood-sdf/banana-example",
-        dev = true,
+        dev = false,
         dependencies = { "CWood-sdf/banana.nvim" },
         opts = {}
     }

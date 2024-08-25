@@ -19,6 +19,7 @@ return {
         },
         shortcuts = {
             { "f", ".config/nvim" },
+            { "r", "sac_24%-25" },
             { "z", "nvim%-zig" },
             { "i", "pineapple" },
             { "s", "spaceport.nvim" },
@@ -26,7 +27,7 @@ return {
             { "b", "banana.nvim" },
             { "w", "calendarwebthing" },
             { "m", "cmdTree" },
-            { "a", "lazyline.nvim" },
+            -- { "a", "lazyline.nvim" },
             { "o", ".config/ghostty" },
         },
         debug = true,

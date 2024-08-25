@@ -205,13 +205,14 @@ local function calendarConfig()
             },
             {
                 id = "pray",
-                runFrequency = "c0 0 0 * * *",
+                runFrequency = "c0 0 4 * * *",
                 fn = function(_, success)
                     -- print("Running pray")
                     require("calendar").addAssignment({
                         source = "pray",
                         title = "Pray " .. os.date("%A"),
-                        due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
+                        due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00") +
+                            60 * 2 * 60,
                         warnTime = "1d",
                         description = "Pray " .. os.date("%A"),
                         type = "assignment",

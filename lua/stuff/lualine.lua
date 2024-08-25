@@ -513,7 +513,7 @@ ins_right({
         end
         return ""
     end,
-    events = { "User LazyCheck", "User LazySync" },
+    events = { "User LazyCheck", "User LazySync", "(100s)" },
     color = { fg = "#5EE4FF" },
     cond = Config.getFn("lualine.lazyStatus"),
 })

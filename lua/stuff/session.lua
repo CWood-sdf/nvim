@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd("User", {
         end
     end
 })
-vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre" }, {
+vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre", "BufEnter" }, {
     callback = function()
         if not session_ready then return end
         local dir = vim.fn.getcwd()

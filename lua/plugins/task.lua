@@ -1,5 +1,5 @@
 local opts = {
-    log_level = "trace",
+    -- log_level = "trace",
     tasks = {
     },
     edit_mode = "buffer",        -- buffer, tab, split, vsplit

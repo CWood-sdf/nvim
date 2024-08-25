@@ -122,6 +122,7 @@ return {
                 command = "gdb",
                 args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
             }
+            dap.configurations.c = dap.configurations.zig
             dap.configurations.cuda = dap.configurations.cpp
             dap.listeners.after.event_initialized["dapui_config"] = function()
                 -- require("lualine").hide({
