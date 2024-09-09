@@ -26,6 +26,7 @@ vim.api.nvim_create_autocmd("User", {
             end, 100)
         else
             print("No session found")
+            session_ready = true
             -- vim.defer_fn(function()
             --     vim.cmd("Oil .")
             -- end, 100)
@@ -40,6 +41,7 @@ vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre", "BufEnter" }, 
         local session = dirToSessionName(dir)
         if #vim.api.nvim_list_wins() == 1 and #vim.api.nvim_list_tabpages() == 1 then
             vim.cmd("SessionWipe")
+            session_ready = true
             return
         end
         session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"

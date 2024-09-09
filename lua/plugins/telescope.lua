@@ -59,6 +59,7 @@ return {
                 end)
                 remap("N", "[N]erd fonts", function()
                     if not nerdyLoaded then
+                        vim.cmd("Lazy! load nerdy.nvim")
                         require("telescope").load_extension("nerdy")
                         nerdyLoaded = true
                     end
@@ -71,7 +72,6 @@ return {
     {
         '2KAbhishek/nerdy.nvim',
         cmd = "Nerdy",
-        keys = "<leader>fN",
         depends = { "nvim-telescope/telescope.nvim" },
     },
 

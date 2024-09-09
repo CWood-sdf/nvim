@@ -127,6 +127,9 @@ return {
                     if server_name == "html" then
                         return
                     end
+                    if server_name == "tsserver" then
+                        server_name = "ts_ls"
+                    end
                     -- local f = io.open("skip.sdf", "r")
                     -- if f ~= nil and server_name == "clangd" then
                     --     f:close()

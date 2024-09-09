@@ -20,6 +20,7 @@ return {
             formatters_by_ft = {
                 -- lua = { "stylua" },
                 cpp = { "clang-format" },
+                java = { "clang-format" },
                 arduino = { "clang-format" },
                 asm = { "asmfmt" },
                 c = { "clang-format" },

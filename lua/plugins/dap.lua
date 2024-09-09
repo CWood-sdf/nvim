@@ -77,7 +77,6 @@ return {
                     "codelldb",
                 },
                 automatic_installation = false,
-                handlers = {}, -- sets up dap in the predefined manner
             })
 
             local dap = require("dap")
@@ -115,7 +114,7 @@ return {
                     end,
                     cwd = '${workspaceFolder}'
                 },
-                unpack(dap.configurations.zig),
+                unpack(dap.configurations.zig or dap.configurations.c or dap.configurations.cpp or {}),
             }
             dap.adapters.gdb = {
                 type = "executable",
