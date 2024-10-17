@@ -9,3 +9,4 @@ return {
     "tiagovla/tokyodark.nvim",
     "marko-cerovac/material.nvim",
 }
+

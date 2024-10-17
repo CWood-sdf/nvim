@@ -116,7 +116,7 @@ vim.keymap.set("i", "<CR>", function()
 end)
 
 -- move stuff up and down
-wk.remapNoGroup("v", "<leader>k", "Move selected up", function()
+wk.remapNoGroup("x", "<leader>k", "Move selected up", function()
     local count_ = 0
     if vim.v.count ~= nil then
         count_ = vim.v.count
@@ -127,7 +127,7 @@ wk.remapNoGroup("v", "<leader>k", "Move selected up", function()
     count_ = count_ + 1
     wk.feedKeys(":m '>-" .. count_ .. "<CR>", "v")
 end)
-wk.remapNoGroup("v", "<leader>j", "Move selected down", function()
+wk.remapNoGroup("x", "<leader>j", "Move selected down", function()
     local count_ = 0
     if vim.v.count ~= nil then
         count_ = vim.v.count
@@ -139,10 +139,10 @@ wk.remapNoGroup("v", "<leader>j", "Move selected down", function()
 end)
 
 -- useful visual mode stuff
-wk.remapNoGroup("v", "D", "Void delete", function()
+wk.remapNoGroup("x", "D", "Void delete", function()
     wk.feedKeys('"_d', "n")
 end)
-wk.remapNoGroup("v", "P", "Paste last copy", function()
+wk.remapNoGroup("x", "P", "Paste last copy", function()
     wk.feedKeys('"0p', "n")
 end)
 

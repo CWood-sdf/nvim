@@ -27,6 +27,9 @@ return {
 		addTextObject("l", "@loop", "Loop", true, true)
 		addTextObject("i", "@conditional", "Conditional", true, true)
 		require("nvim-treesitter.configs").setup({
+			disable = function(lang, bufnr) -- Disable in large C++ buffers
+				return vim.api.nvim_buf_line_count(bufnr) > 20000
+			end,
 			modules = {},
 
 			ignore_install = {},
@@ -54,6 +57,9 @@ return {
 			auto_install = true,
 
 			highlight = {
+				disable = function(lang, bufnr) -- Disable in large C++ buffers
+					return vim.api.nvim_buf_line_count(bufnr) > 20000
+				end,
 				enable = true,
 
 				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -63,7 +69,13 @@ return {
 				additional_vim_regex_highlighting = false,
 			},
 			textobjects = {
+				disable = function(lang, bufnr) -- Disable in large C++ buffers
+					return vim.api.nvim_buf_line_count(bufnr) > 20000
+				end,
 				select = {
+					disable = function(lang, bufnr) -- Disable in large C++ buffers
+						return vim.api.nvim_buf_line_count(bufnr) > 20000
+					end,
 					enable = true,
 
 					-- Automatically jump forward to textobj, similar to targets.vim
@@ -94,6 +106,9 @@ return {
 					-- include_surrounding_whitespace = true,
 				},
 				move = {
+					disable = function(lang, bufnr) -- Disable in large C++ buffers
+						return vim.api.nvim_buf_line_count(bufnr) > 20000
+					end,
 					enable = true,
 					goto_next_start = {
 						["]f"] = { query = "@function.outer", desc = "Next function" },
@@ -164,6 +179,9 @@ return {
 		vim.cmd("hi! link TreesitterContext Normal")
 		require("treesitter-context").setup({
 			seperator = true,
+			disable = function(lang, bufnr) -- Disable in large C++ buffers
+				return vim.api.nvim_buf_line_count(bufnr) > 20000
+			end,
 		})
 		local wkutils = require("stuff.wkutils")
 		wkutils.useGroup("n", "[", function(remap)

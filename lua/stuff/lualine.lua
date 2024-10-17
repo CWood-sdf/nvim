@@ -648,7 +648,7 @@ ins_right({
                     end,
                 })
             end,
-            events = { "DirChanged", "(10s)" },
+            events = { "DirChanged", "(3s)" },
         },
     },
 })

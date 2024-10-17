@@ -73,7 +73,7 @@ return {
         cmp.setup({
             enabled = true,
             sources = cmp.config.sources({
-                { name = "neorg" },
+                { name = "lsp" },
                 { name = "git" },
                 { name = "nvim_lsp" },
                 { name = "luasnip" },

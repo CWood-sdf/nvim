@@ -77,9 +77,11 @@ return {
                     "codelldb",
                 },
                 automatic_installation = false,
+                handlers = {},
             })
 
             local dap = require("dap")
+            print(vim.inspect(dap.adapters))
             dap.configurations.zig = {
                 {
                     name = "Launch",
@@ -114,7 +116,8 @@ return {
                     end,
                     cwd = '${workspaceFolder}'
                 },
-                unpack(dap.configurations.zig or dap.configurations.c or dap.configurations.cpp or {}),
+                unpack(dap.configurations.rust or dap.configurations.zig or dap.configurations.c or
+                    dap.configurations.cpp or {}),
             }
             dap.adapters.gdb = {
                 type = "executable",
@@ -122,7 +125,10 @@ return {
                 args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
             }
             dap.configurations.c = dap.configurations.zig
+            dap.configurations.asm = dap.configurations.zig
+            dap.configurations.cpp = dap.configurations.zig
             dap.configurations.cuda = dap.configurations.cpp
+            dap.configurations.rust = dap.configurations.c
             dap.listeners.after.event_initialized["dapui_config"] = function()
                 -- require("lualine").hide({
                 --     unhide = false,

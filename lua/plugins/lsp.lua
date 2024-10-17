@@ -106,13 +106,6 @@ return {
                 end, opts)
                 wk.writeBuf()
             end
-            require('mason').setup({
-                ensure_installed = {
-                    "clangd",
-                    "lua-language-server",
-                    "rust-analyzer",
-                },
-            });
             require('mason-lspconfig').setup({
                 automatic_installation = true,
             });
@@ -218,6 +211,16 @@ return {
                 texthl = "DiagnosticHint",
             })
         end,
+    },
+    {
+        "williamboman/mason.nvim",
+        opts = {
+            ensure_installed = {
+                "clangd",
+                "lua-language-server",
+                "rust-analyzer",
+            },
+        },
     },
     {
         "j-hui/fidget.nvim",

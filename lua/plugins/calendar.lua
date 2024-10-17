@@ -227,7 +227,7 @@ return {
     "CWood-sdf/calendar",
     lazy = false,
     config = calendarConfig,
-    dev = require("stuff.isdev")("cmdTree.nvim"),
+    dev = require("stuff.isdev")("calendar"),
     build = "make",
     dependencies = {
         "CWood-sdf/cmdTree.nvim",

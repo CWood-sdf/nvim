@@ -5,6 +5,9 @@ return {
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
         },
+        config = function()
+            require('banana').initTsParsers()
+        end,
         -- build = "bash ./build"
     },
     {

@@ -1,4 +1,8 @@
 return {
+    -- {
+    --     'spikedoanz/brainrot.nvim',
+    --     opts = {},
+    -- },
     {
         "seandewar/killersheep.nvim",
         opts = {},

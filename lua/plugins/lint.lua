@@ -5,7 +5,7 @@ return {
 			-- cpp = { 'cpplint' },
 			-- cpp = { 'clang-tidy' },
 			-- cmake = { 'cmakelint' },
-			make = { "checkmake" },
+			-- make = { "checkmake" },
 			-- lua = { "selene" },
 		}
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
