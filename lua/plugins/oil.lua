@@ -19,5 +19,5 @@ return {
             end,
         },
     },
-    cmd = "Oil",
+    -- cmd = "Oil",
 }
