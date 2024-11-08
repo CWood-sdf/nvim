@@ -17,7 +17,12 @@ return {
             ["<C-s>"] = function()
                 vim.cmd.w()
             end,
+            ["go"] = function()
+                local entry = require('oil').get_cursor_entry()
+                vim.cmd("!xdg-open \"" .. require('oil').get_current_dir() .. entry.name .. "\"")
+            end
         },
     },
-    -- cmd = "Oil",
+    -- event = "VimEnter",
+    cmd = "Oil",
 }

@@ -9,8 +9,11 @@ return {
                 if not Config.get("plugins.conform.autoformat") then
                     return
                 end
-                -- if vim.bo.filetype == "zig" then
-                --     return
+                -- if vim.bo.filetype == "python" then
+                --     return {
+                --         lsp_fallback = false,
+                --         timeout_ms = 1000,
+                --     }
                 -- end
                 return {
                     lsp_fallback = true,

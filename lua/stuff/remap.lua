@@ -46,6 +46,8 @@ wk.makeGroup("n", "<leader>t", "[T]erminal", function(remap)
     end)
     remap("r", "[R]epeat", ":winc l<CR>i<Up><CR><C-\\><C-n>:winc h<CR>", { noremap = true })
     remap("n", "Repeat [n]o leave", ":winc l<CR>i<Up><CR><C-\\><C-n>", { noremap = true })
+    remap("c", "[c]lear lines", "<cmd>set scrollback=1<CR>iclear<CR><C-\\><C-n><cmd>set scrollback=10000<CR>",
+        { noremap = true })
 end)
 
 -- wk.remapNoGroup("t", "<Esc>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
