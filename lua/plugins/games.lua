@@ -1,4 +1,9 @@
 return {
+    {
+        "marcussimonsen/let-it-snow.nvim",
+        opts = {},
+        cmd = "LetItSnow",
+    },
     -- {
     --     'spikedoanz/brainrot.nvim',
     --     opts = {},

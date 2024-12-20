@@ -3,9 +3,19 @@ return {
         "nvim-telescope/telescope.nvim",
         keys = "<leader>f",
         version = "0.1.3",
-        opts = {},
+        config = function()
+            require("telescope").setup({
+                extensions = {
+                    fzf = {},
+                },
+            })
+            require("telescope").load_extension("fzf")
+        end,
         -- or                            , branch = '0.1.x',
-        dependencies = { { "nvim-lua/plenary.nvim" } },
+        dependencies = { { "nvim-lua/plenary.nvim",
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
+
+        } },
         init = function()
             local wk = require('stuff.wkutils')
             local nerdyLoaded = false
@@ -32,7 +42,7 @@ return {
                     require("telescope.builtin").live_grep({ no_ignore = true, hidden = true })
                 end)
                 remap("s", "[S]tring", function()
-                    require("telescope.builtin").live_grep()
+                    require("stuff.multigrep")()
                 end)
                 remap("b", "[B]uffer", function()
                     require("telescope.builtin").buffers()

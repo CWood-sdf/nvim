@@ -48,7 +48,10 @@ wk.makeGroup("n", "<leader>t", "[T]erminal", function(remap)
     remap("n", "Repeat [n]o leave", ":winc l<CR>i<Up><CR><C-\\><C-n>", { noremap = true })
     remap("c", "[c]lear lines", "<cmd>set scrollback=1<CR>iclear<CR><C-\\><C-n><cmd>set scrollback=10000<CR>",
         { noremap = true })
+    remap("j", "Floaterminal", "<cmd>Floaterminal<CR>", { noremap = true })
 end)
+
+vim.keymap.set("t", "<leader>tj", "<C-\\><C-n><cmd>Floaterminal<CR>", {})
 
 -- wk.remapNoGroup("t", "<Esc>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
 wk.remapNoGroup("t", "<C-k>", "Up arrow", "<Up>", { noremap = true })

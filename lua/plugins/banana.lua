@@ -5,6 +5,7 @@ return {
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
         },
+        lazy = true,
         config = function()
             require('banana').initTsParsers()
         end,

@@ -1,4 +1,3 @@
-ArId = nil
 return {
 
     --trouble
@@ -145,25 +144,25 @@ return {
             -- })
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities.textDocument.completion.completionItem.snippetSupport = true
-            ArId = vim.lsp.start_client({
-                on_attach = onAttach,
-                capabilities = capabilities,
-                filetypes = { "ino", "arduino" },
-                root_dir = "/home/christopher-wood/projects/EgrThingThing",
-                cmd_cwd = "/home/christopher-wood/projects/EgrThingThing",
-                name = "arduino-language-server",
-                cmd = {
-                    os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
-                    -- "-clangd",
-                    -- os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
-                    "-fqbn",
-                    "arduino:avr:uno",
-                    "-cli-config",
-                    os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
-                    "-log",
-                    "true",
-                },
-            })
+            -- ArId = vim.lsp.start_client({
+            --     on_attach = onAttach,
+            --     capabilities = capabilities,
+            --     filetypes = { "ino", "arduino" },
+            --     root_dir = "/home/christopher-wood/projects/EgrThingThing",
+            --     cmd_cwd = "/home/christopher-wood/projects/EgrThingThing",
+            --     name = "arduino-language-server",
+            --     cmd = {
+            --         os.getenv("HOME") .. "/.local/share/nvim/mason/bin/arduino-language-server",
+            --         -- "-clangd",
+            --         -- os.getenv("HOME") .. "/.local/share/nvim/mason/bin/clangd",
+            --         "-fqbn",
+            --         "arduino:avr:uno",
+            --         "-cli-config",
+            --         os.getenv("HOME") .. "/snap/arduino-cli/45/.arduino15/arduino-cli.yaml",
+            --         "-log",
+            --         "true",
+            --     },
+            -- })
             require('lspconfig').html.setup({
                 on_attach = onAttach,
                 filetypes = { "html", "templ", "handlebars" },
@@ -182,8 +181,14 @@ return {
             -- require('lspconfig').ccls.setup({})
             require("lspconfig").lua_ls.setup({
                 on_attach = onAttach,
+                cmd = { "/home/christopher-wood/fun/lua-language-server/bin/lua-language-server" },
                 settings = {
                     Lua = {
+                        misc = {
+                            parameters = {
+                                "--dbgport=11428", "--develop=true", "--dbgwait=true"
+                            }
+                        },
                         hint = {
                             enable = true,
                         },

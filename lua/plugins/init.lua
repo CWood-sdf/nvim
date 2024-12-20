@@ -1,6 +1,12 @@
 return {
 
     {
+        "folke/zen-mode.nvim",
+        opts = {},
+        cmd = "ZenMode",
+    },
+
+    {
         'isakbm/gitgraph.nvim',
         opts = {
             symbols = {

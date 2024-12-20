@@ -17,12 +17,36 @@ return {
         },
         config = function()
             local dap = require("dap")
+            dap.adapters["local-lua"] = {
+                type = "executable",
+                command = "node",
+                args = {
+                    "/home/christopher-wood/fun/local-lua-debugger-vscode/extension/debugAdapter.js"
+                },
+                enrich_config = function(config, on_config)
+                    if not config["extensionPath"] then
+                        local c = vim.deepcopy(config)
+                        -- 💀 If this is missing or wrong you'll see
+                        -- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
+                        c.extensionPath = "/home/christopher-wood/fun/local-lua-debugger-vscode/"
+                        on_config(c)
+                    else
+                        on_config(config)
+                    end
+                end,
+            }
             dap.configurations.lua = {
                 {
                     type = 'nlua',
                     request = 'attach',
                     name = "Attach to running Neovim instance",
-                }
+                },
+                -- {
+                --     type = "local-lua",
+                --     request = "attach",
+                --     port = 11428,
+                --     name = "Attach to local lua",
+                -- }
             }
 
             dap.adapters.nlua = function(callback, config)
@@ -56,7 +80,7 @@ return {
                 end)
                 remap('Y', 'Banana debug', function()
                     local name = vim.fn.input("Path to nml: ")
-                    local inst = require("banana.render").newInstance(name, "asdf")
+                    local inst = require("banana.instance").newInstance(name, "asdf")
                     inst.DEBUG = false
                     inst:open()
                     -- vim.cmd("Pineapple2")
@@ -81,7 +105,6 @@ return {
             })
 
             local dap = require("dap")
-            print(vim.inspect(dap.adapters))
             dap.configurations.zig = {
                 {
                     name = "Launch",

@@ -3,6 +3,7 @@ return {
     opts = {
         replaceDirs = { { "~/projects", "_" }, { "~/.local/share/nvim", "@" } },
         replaceHome = true,
+        icons = false,
         projectEntry = function()
             vim.cmd("Oil .")
             -- vim.schedule(function()
@@ -12,7 +13,7 @@ return {
         maxRecentFiles = 18,
         sections = {
             "_global_remaps",
-            "name_blue_green",
+            { "name", config = { style = "lite", gradient = "blue_green" } },
             "remaps",
             "recents",
             "hacker_news",
@@ -26,7 +27,7 @@ return {
             { "b", "banana.nvim" },
             { "m", "cmdTree" },
             { "H", "hw" },
-            { "t", "thing" },
+            -- { "t", "thing" },
             -- { "a", "lazyline.nvim" },
             { "o", "notes" },
         },
