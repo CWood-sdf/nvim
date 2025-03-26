@@ -30,13 +30,12 @@ local opts = {
 
 return {
     "catgoose/do-the-needful.nvim",
-    event = { "User SpaceportDone", "DirChangedPre" },
     keys = {
         { "<leader>;", [[<cmd>Telescope do-the-needful please<cr>]], "n" },
         { "<leader>:", [[<cmd>Telescope do-the-needful<cr>]],        "n" },
     },
     dependencies = "nvim-lua/plenary.nvim",
-    init = function()
+    config = function()
         require("do-the-needful").setup(opts)
         -- require("do-the-needful.config").telescope_setup(opts)
         local telescope = require('telescope')

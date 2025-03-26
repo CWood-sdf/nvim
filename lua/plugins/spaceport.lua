@@ -1,11 +1,11 @@
 return {
     "CWood-sdf/spaceport.nvim",
     opts = {
-        replaceDirs = { { "~/projects", "_" }, { "~/.local/share/nvim", "@" } },
+        replaceDirs = { { "~/projects", "_" }, { "~/.local/share/nvim", "@" }, { "~/Documents/clubs", "C" } },
         replaceHome = true,
         icons = false,
         projectEntry = function()
-            vim.cmd("Oil .")
+            vim.cmd("SessionSource")
             -- vim.schedule(function()
             --     vim.cmd("e")
             -- end)
@@ -27,6 +27,7 @@ return {
             { "b", "banana.nvim" },
             { "m", "cmdTree" },
             { "H", "hw" },
+            { "e", "irec.*groundstation" },
             -- { "t", "thing" },
             -- { "a", "lazyline.nvim" },
             { "o", "notes" },

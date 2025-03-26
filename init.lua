@@ -14,16 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.filetype.add({
 	extension = { mpl = "maple" },
 })
-
 vim.filetype.add({
-	extension = {
-		nml = "nml",
-	},
-})
-vim.filetype.add({
-	extension = {
-		ncss = "ncss",
-	},
+	extension = { _pp = "pplang" },
 })
 
 require("stuff")

@@ -26,6 +26,9 @@ local getFlag = ct.repeatParams(function(args)
     for k, _ in pairs(t) do
         table.insert(ret, k)
     end
+    if #ret == 0 then
+        return nil
+    end
     return ret
 end)
 
@@ -275,9 +278,10 @@ function M.has(flag)
     return true
 end
 
-function M.getFn(flag)
+function M.getFn(flag, default)
     if not M.has(flag) then
         M.addFlag(flag)
+        M.set(flag, default or true)
     end
     local val = M.get(flag)
     M.addCallback(flag, function(newVal)

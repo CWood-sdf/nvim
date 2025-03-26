@@ -44,7 +44,9 @@ local function canvasImport(_, success)
                         description = event.course or "",
                         source = "canvas",
                     }
-                    require("calendar").addAssignment(e)
+                    pcall(function()
+                        require("calendar").addAssignment(e)
+                    end)
                 end
                 output = ""
             end

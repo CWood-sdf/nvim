@@ -1,5 +1,83 @@
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local wk = require('stuff.wkutils')
+        local opts = { buffer = bufnr, noremap = false }
+        wk.remapNoGroup("n", "K", "Hover", function()
+            vim.lsp.buf.hover()
+        end, opts)
+        wk.makeGroup("n", "<leader>v", "LSP", function(remap)
+            remap("d", "[D]iagnostic float", function()
+                vim.diagnostic.open_float()
+            end, opts)
+            remap("i", "[I]nlay hints", function()
+                vim.lsp.inlay_hint.enable(nil)
+            end, opts)
+            remap("h", "[H]over", function()
+                vim.lsp.buf.hover()
+            end, opts)
+            remap("a", "[A]ction", function()
+                vim.lsp.buf.code_action()
+            end, opts)
+            remap("n", "[N]ext diagnostic", function()
+                vim.diagnostic.goto_next()
+            end, opts)
+            remap("p", "[P]revious diagnostic", function()
+                vim.diagnostic.goto_prev()
+            end, opts)
+            remap("s", "[S]ignature help (<C-h>)", function()
+                vim.lsp.buf.signature_help()
+            end, opts)
+            remap("r", "[R]ename", function()
+                vim.lsp.buf.rename()
+            end, opts)
+            remap("S", "[S]top", function()
+                vim.cmd("LspStop")
+            end, opts)
+            remap("R", "[R]estart", function()
+                vim.cmd("LspRestart")
+            end, opts)
+        end, opts)
+
+        wk.makeGroup("n", "<leader>vo", "G[o]to", function(remap)
+            remap("d", "[D]efinition (gd)", function()
+                vim.lsp.buf.definition()
+            end, opts)
+            remap("i", "[I]mplementation (gI)", function()
+                vim.lsp.buf.implementation()
+            end, opts)
+            remap("t", "[T]ype definition (gy)", function()
+                vim.lsp.buf.type_definition()
+            end, opts)
+            remap("D", "[D]eclaration (gD)", function()
+                vim.lsp.buf.declaration()
+            end, opts)
+            remap("r", "[R]eferences", function()
+                vim.lsp.buf.references()
+            end, opts)
+        end, opts)
+        wk.makeGroup("n", "<leader>vw", "Workspace", function(remap)
+            remap("s", "[S]ymbols", function()
+                vim.lsp.buf.workspace_symbol()
+            end, opts)
+        end, opts)
+        wk.writeBuf()
+    end,
+})
 return {
 
+    -- {
+    --     "pmizio/typescript-tools.nvim",
+    --     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    --     opts = {
+    --         settings = {
+    --             code_lens = "none",
+    --             disable_member_code_lens = false,
+    --             hover = true,
+    --         },
+    --     },
+    --     ft = { "javascript", "typescript" },
+    -- },
     --trouble
     {
         "folke/trouble.nvim",
@@ -44,66 +122,6 @@ return {
             end
             ---@diagnostic disable-next-line: unused-local
             local onAttach = function(args, bufnr)
-                local opts = { buffer = bufnr, noremap = false }
-                wk.remapNoGroup("n", "K", "Hover", function()
-                    vim.lsp.buf.hover()
-                end, opts)
-                wk.makeGroup("n", "<leader>v", "LSP", function(remap)
-                    remap("d", "[D]iagnostic float", function()
-                        vim.diagnostic.open_float()
-                    end, opts)
-                    remap("i", "[I]nlay hints", function()
-                        vim.lsp.inlay_hint.enable(nil)
-                    end, opts)
-                    remap("h", "[H]over", function()
-                        vim.lsp.buf.hover()
-                    end, opts)
-                    remap("a", "[A]ction", function()
-                        vim.lsp.buf.code_action()
-                    end, opts)
-                    remap("n", "[N]ext diagnostic", function()
-                        vim.diagnostic.goto_next()
-                    end, opts)
-                    remap("p", "[P]revious diagnostic", function()
-                        vim.diagnostic.goto_prev()
-                    end, opts)
-                    remap("s", "[S]ignature help (<C-h>)", function()
-                        vim.lsp.buf.signature_help()
-                    end, opts)
-                    remap("r", "[R]ename", function()
-                        vim.lsp.buf.rename()
-                    end, opts)
-                    remap("S", "[S]top", function()
-                        vim.cmd("LspStop")
-                    end, opts)
-                    remap("R", "[R]estart", function()
-                        vim.cmd("LspRestart")
-                    end, opts)
-                end, opts)
-
-                wk.makeGroup("n", "<leader>vo", "G[o]to", function(remap)
-                    remap("d", "[D]efinition (gd)", function()
-                        vim.lsp.buf.definition()
-                    end, opts)
-                    remap("i", "[I]mplementation (gI)", function()
-                        vim.lsp.buf.implementation()
-                    end, opts)
-                    remap("t", "[T]ype definition (gy)", function()
-                        vim.lsp.buf.type_definition()
-                    end, opts)
-                    remap("D", "[D]eclaration (gD)", function()
-                        vim.lsp.buf.declaration()
-                    end, opts)
-                    remap("r", "[R]eferences (gr)", function()
-                        vim.lsp.buf.references()
-                    end, opts)
-                end, opts)
-                wk.makeGroup("n", "<leader>vw", "Workspace", function(remap)
-                    remap("s", "[S]ymbols", function()
-                        vim.lsp.buf.workspace_symbol()
-                    end, opts)
-                end, opts)
-                wk.writeBuf()
             end
             require('mason-lspconfig').setup({
                 automatic_installation = true,
@@ -119,9 +137,9 @@ return {
                     if server_name == "html" then
                         return
                     end
-                    if server_name == "tsserver" then
-                        server_name = "ts_ls"
-                    end
+                    -- if server_name == "tsserver" or server_name == "ts_ls" then
+                    --     return
+                    -- end
                     -- local f = io.open("skip.sdf", "r")
                     -- if f ~= nil and server_name == "clangd" then
                     --     f:close()
@@ -165,19 +183,19 @@ return {
             -- })
             require('lspconfig').html.setup({
                 on_attach = onAttach,
-                filetypes = { "html", "templ", "handlebars" },
+                filetypes = { "html", "nml", "templ" },
                 capabilities = capabilities,
             })
-            require('lspconfig').tailwindcss.setup({
-                on_attach = onAttach,
-                filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "handlebars" },
-                capabilities = capabilities,
-            })
-            require('lspconfig').htmx.setup({
-                on_attach = onAttach,
-                filetypes = { "html", "javascriptreact", "templ", "typescriptreact", "handlebars" },
-                capabilities = capabilities,
-            })
+            -- require('lspconfig').tailwindcss.setup({
+            --     on_attach = onAttach,
+            --     filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "handlebars" },
+            --     capabilities = capabilities,
+            -- })
+            -- require('lspconfig').htmx.setup({
+            --     on_attach = onAttach,
+            --     filetypes = { "html", "javascriptreact", "templ", "typescriptreact", "handlebars" },
+            --     capabilities = capabilities,
+            -- })
             -- require('lspconfig').ccls.setup({})
             require("lspconfig").lua_ls.setup({
                 on_attach = onAttach,

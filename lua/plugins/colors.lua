@@ -15,6 +15,7 @@ return {
                 markdown = { names = false },
             })
         end,
+        dev = true
     },
     {
         "ziontee113/color-picker.nvim",

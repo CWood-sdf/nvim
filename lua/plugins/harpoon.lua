@@ -18,20 +18,23 @@ return {
                 harpoon:list():remove()
             end
         end, {})
-        wk.writeBuf()
 
-        wk.remapNoGroup("n", "<C-e>", "Harpoon quick menu", function()
-            harpoon.ui:toggle_quick_menu(harpoon:list())
-        end, {})
-        wk.writeBuf()
-        wk.remapNoGroup("n", "<leader>h", "{count}[H]arpoon nav", function()
-            if vim.v.count == nil or vim.v.count == 0 then
-                print("No count provided for epic harpoon nav")
-            elseif vim.v.count > harpoon:list():length() then
-                print("Count provided is too large for epic harpoon nav")
-            else
-                harpoon:list():select(vim.v.count)
-            end
+        wk.makeGroup("n", "<leader>h", "Harpoon", function(remap)
+            remap("o", "Open", function()
+                harpoon.ui:toggle_quick_menu(harpoon:list())
+            end)
+            remap("n", "1 (<C-n>)", function()
+                harpoon:list():select(1)
+            end)
+            remap("e", "2 (<C-e>)", function()
+                harpoon:list():select(2)
+            end, {})
+            remap("p", "3 (<C-p>)", function()
+                harpoon:list():select(3)
+            end, {})
+            remap("y", "4 (<C-y>)", function()
+                harpoon:list():select(4)
+            end, {})
         end)
         wk.writeBuf()
     end,

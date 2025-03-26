@@ -501,6 +501,8 @@ ins_right({
 })
 -- Lazy sync status
 local hasChecked = false
+Config.addFlag("lualine.lazyStatus")
+Config.set("lualine.lazyStatus", false)
 ins_right({
     function()
         -- only check at start of program
@@ -515,7 +517,7 @@ ins_right({
     end,
     events = { "User LazyCheck", "User LazySync", "(100s)" },
     color = { fg = "#5EE4FF" },
-    cond = Config.getFn("lualine.lazyStatus"),
+    cond = Config.getFn("lualine.lazyStatus", false),
 })
 
 -- local startTime = nil

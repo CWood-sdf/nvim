@@ -20,6 +20,7 @@ return {
 				selectTextObjects["i" .. key] = { query = query .. ".inner", desc = desc }
 			end
 		end
+		require("banana").initTsParsers()
 		addTextObject("f", "@function", "Function", true, true)
 		addTextObject("c", "@class", "Class", true, true)
 		addTextObject("s", "@scope", "Scope", true, true)
@@ -69,6 +70,15 @@ return {
 				additional_vim_regex_highlighting = false,
 			},
 			textobjects = {
+				swap = {
+					enable = true,
+					swap_next = {
+						["<leader>sj"] = "@parameter.inner",
+					},
+					swap_previous = {
+						["<leader>sk"] = "@parameter.inner",
+					},
+				},
 				disable = function(lang, bufnr) -- Disable in large C++ buffers
 					return vim.api.nvim_buf_line_count(bufnr) > 20000
 				end,
@@ -201,6 +211,19 @@ return {
 				requires_generate_from_grammar = true,              -- if folder contains pre-generated src/parser.c
 			},
 			filetype = "maple",                                     -- if filetype does not match the parser name
+		}
+		vim.treesitter.language.register("pplang", "pplang")
+		---@diagnostic disable-next-line: inject-field
+		parser_config.pplang = {
+			install_info = {
+				url = os.getenv("HOME") .. "/projects/pplang/tree-sitter-pplang", -- local path or git repo
+				files = { "src/parser.c" },                           -- note that some parsers also require src/scanner.c or src/scanner.cc
+				-- optional entries:
+				branch = "main",                                      -- default branch in case of git repo if different from master
+				generate_requires_npm = false,                        -- if stand-alone parser without npm dependencies
+				requires_generate_from_grammar = true,                -- if folder contains pre-generated src/parser.c
+			},
+			filetype = "pplang",                                      -- if filetype does not match the parser name
 		}
 	end,
 }

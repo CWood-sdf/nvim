@@ -1,7 +1,7 @@
 return {
     "jbyuki/venn.nvim",
     config = function()
-        require("venn").setup()
+        -- require("venn").setup()
     end,
     cmd = "VBox",
 }

@@ -5,17 +5,18 @@ return {
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
         },
+        opts = {
+            setupTs = false,
+        },
         lazy = true,
-        config = function()
-            require('banana').initTsParsers()
-        end,
         -- build = "bash ./build"
     },
     {
         "CWood-sdf/banana-example",
         dev = false,
         dependencies = { "CWood-sdf/banana.nvim" },
-        opts = {}
+        opts = {},
+        cmd = "InstallThings",
     }
     -- enabled = false,
 }

@@ -1,6 +1,6 @@
 -- taken from folke's dotfiles
 return {
-    { "nvim-neotest/neotest-plenary" },
+    { "nvim-neotest/neotest-plenary", lazy = true },
     {
         "nvim-neotest/neotest",
         opts = {
@@ -10,5 +10,6 @@ return {
                 },
             }
         },
+        lazy = true,
     },
 }

@@ -48,10 +48,46 @@ wk.makeGroup("n", "<leader>t", "[T]erminal", function(remap)
     remap("n", "Repeat [n]o leave", ":winc l<CR>i<Up><CR><C-\\><C-n>", { noremap = true })
     remap("c", "[c]lear lines", "<cmd>set scrollback=1<CR>iclear<CR><C-\\><C-n><cmd>set scrollback=10000<CR>",
         { noremap = true })
-    remap("j", "Floaterminal", "<cmd>Floaterminal<CR>", { noremap = true })
 end)
 
-vim.keymap.set("t", "<leader>tj", "<C-\\><C-n><cmd>Floaterminal<CR>", {})
+wk.makeGroup({ "t", "n" }, "<leader>t", "terminal", function(remap)
+    remap("j", "Floaterminal", function()
+        vim.cmd.stopinsert()
+        if vim.v.count ~= 0 then
+            vim.cmd("Floaterminal toggle " .. vim.v.count)
+        else
+            vim.cmd("Floaterminal toggle")
+        end
+    end, { noremap = true })
+    remap("k", "Floaterminal next", function()
+        vim.cmd.stopinsert()
+        vim.cmd("Floaterminal next")
+    end, { noremap = true })
+    remap("J", "Floaterminal prev", function()
+        vim.cmd.stopinsert()
+        vim.cmd("Floaterminal prev")
+    end, { noremap = true })
+    remap("l", "Floaterminal rename", function()
+        vim.cmd.stopinsert()
+        local name = vim.fn.input("new name: ")
+        if vim.v.count ~= 0 then
+            vim.cmd("Floaterminal rename " .. vim.v.count .. ' "' .. name .. '"')
+        else
+            vim.cmd("Floaterminal rename " .. Floaterminal.index .. ' "' .. name .. '"')
+        end
+    end, { noremap = true })
+    remap("d", "Floaterminal delete", function()
+        vim.cmd.stopinsert()
+        if vim.v.count ~= 0 then
+            vim.cmd("Floaterminal remove " .. vim.v.count)
+        else
+            vim.cmd("Floaterminal remove " .. Floaterminal.index)
+        end
+    end, { noremap = true })
+end)
+-- vim.keymap.set("t", "<leader>tj", function()
+--     vim.cmd.stopinsert()
+-- end, {})
 
 -- wk.remapNoGroup("t", "<Esc>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
 wk.remapNoGroup("t", "<C-k>", "Up arrow", "<Up>", { noremap = true })
@@ -75,6 +111,9 @@ end)
 wk.makeGroup("n", "<leader>p", "[P]roject", function(remap)
     remap("v", "[V]iew", function()
         vim.cmd("Oil")
+    end)
+    remap("r", "[R]oot", function()
+        vim.cmd("Oil " .. vim.fn.getcwd())
     end)
 end)
 

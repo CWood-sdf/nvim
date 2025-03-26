@@ -37,15 +37,6 @@ return {
         },
     },
     {
-        "nosduco/remote-sshfs.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim" },
-        config = function()
-            require('remote-sshfs').setup({})
-            require('telescope').load_extension('remote-sshfs')
-        end,
-        cmd = "RemoteSSHFSConnect"
-    },
-    {
         "nvim-neo-tree/neo-tree.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },
         cmd = "Neotree"
@@ -63,6 +54,8 @@ return {
     { -- Optional
         "williamboman/mason.nvim",
         opts = {},
+        lazy = true,
+        cmd = "Mason",
     },
     {
         "CWood-sdf/cmdTree.nvim",
