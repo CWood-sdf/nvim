@@ -42,6 +42,15 @@ end
 ---@type CmdTree.CmdTree
 local tree = {
     Floaterminal = {
+        append = {
+            _callback = function()
+                for i = 1, Floaterminal.len + 1 do
+                    if Floaterminal.bufs[i] == nil then
+                        vim.cmd("Floaterminal newBufAt " .. i)
+                    end
+                end
+            end
+        },
         rename = {
             ct.positionalParam("index", true),
             ct.positionalParam("name", true),
@@ -124,10 +133,23 @@ local tree = {
                     vim.notify("Given bad index value in Floaterminal remove\n")
                     return
                 end
+                Floaterminal.bufs[index] = nil
                 if Floaterminal.bufs[index] ~= nil then
                     vim.cmd("bw! " .. Floaterminal.bufs[index])
                 end
-                Floaterminal.bufs[index] = nil
+                if index == Floaterminal.index then
+                    Floaterminal.index = Floaterminal.index + 1
+                    while Floaterminal.bufs[Floaterminal.index] == nil do
+                        if Floaterminal.index > Floaterminal.len then
+                            Floaterminal.index = 1
+                        else
+                            Floaterminal.index = Floaterminal.index + 1
+                        end
+                        if Floaterminal.index == index then
+                            break
+                        end
+                    end
+                end
                 updateWinline(Floaterminal.win)
             end,
         },
@@ -177,3 +199,30 @@ local tree = {
 }
 
 ct.createCmd(tree)
+
+
+local group = vim.api.nvim_create_augroup("Floaterminal", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufDelete" }, {
+    group = group,
+    callback = function(args)
+        local buf = args.buf
+        for i, v in ipairs(Floaterminal.bufs) do
+            if v == buf then
+                Floaterminal.bufs[i] = nil
+                if Floaterminal.index == i then
+                    Floaterminal.index = Floaterminal.index + 1
+                    while Floaterminal.bufs[Floaterminal.index] == nil do
+                        if Floaterminal.index > Floaterminal.len then
+                            Floaterminal.index = 1
+                        end
+                        if Floaterminal.index == i then
+                            break
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+})
