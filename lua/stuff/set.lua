@@ -17,6 +17,8 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.signcolumn = "yes"
 
+vim.opt.sessionoptions:append("globals")
+
 -- vim.opt.smartindent = true
 
 vim.opt.swapfile = false

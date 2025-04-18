@@ -128,6 +128,33 @@ return {
             });
             require('mason-lspconfig').setup_handlers({
                 function(server_name)
+                    if server_name == "pylsp" then
+                        require('lspconfig')[server_name].setup({
+                            -- if server_name == "arduino
+                            on_attach = onAttach,
+                            settings = {
+                                pylsp = {
+                                    plugins = {
+                                        flake8 = {
+                                            enabled = false,
+                                            ignore = { 'E501', 'E231' },
+                                            maxLineLength = 88,
+                                        },
+                                        black = { enabled = true },
+                                        autopep8 = { enabled = false },
+                                        mccabe = { enabled = false },
+                                        pycodestyle = {
+                                            enabled = false,
+                                            ignore = { 'E501', 'E231' },
+                                            maxLineLength = 88,
+                                        },
+                                        pyflakes = { enabled = false },
+                                    }
+                                }
+                            },
+                        })
+                        return
+                    end
                     if server_name == "lua_ls" then
                         return
                     end

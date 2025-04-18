@@ -9,4 +9,5 @@ return {
     "tiagovla/tokyodark.nvim",
     "marko-cerovac/material.nvim",
     "bluz71/vim-moonfly-colors",
+    "altercation/vim-colors-solarized",
 }

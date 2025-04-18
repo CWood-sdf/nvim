@@ -144,7 +144,6 @@ end)
 wk.remapNoGroup("v", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-c>", "Copy", [["+y]], { noremap = true })
 wk.remapNoGroup("n", "<C-v>", "Paste", [["+p]], { noremap = true })
-wk.remapNoGroup("i", "<C-v>", "Paste", [[<Esc>"+p]], { noremap = true })
 
 -- save
 wk.remapNoGroup("i", "<C-s>", "Save file", function()

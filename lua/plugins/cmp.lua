@@ -30,6 +30,12 @@ return {
         --
         -- cmp_mappings["<C-d>"] = cmp_action.luasnip_jump_forward()
 
+        cmp.setup.filetype({ "sql" }, {
+            sources = {
+                { name = "vim-dadbod-completion" },
+                { name = "buffer" },
+            },
+        })
         cmp.setup.cmdline(':', {
             mapping = cmp.mapping.preset.cmdline(
                 {
