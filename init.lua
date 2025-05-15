@@ -19,3 +19,5 @@ vim.filetype.add({
 })
 
 require("stuff")
+--
+-- vim.lsp.set_log_level(vim.lsp.log_levels.TRACE)

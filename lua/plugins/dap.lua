@@ -16,6 +16,9 @@ vim.api.nvim_create_autocmd({ "User" }, {
 vim.api.nvim_create_user_command("BlockingDebugServer", function()
     require('osv').launch({ port = 8086, blocking = true })
 end, {})
+vim.api.nvim_create_user_command("DebugServer", function()
+    require('osv').launch({ port = 8086, blocking = true })
+end, {})
 return {
     {
         "jbyuki/one-small-step-for-vimkind",
@@ -42,23 +45,22 @@ return {
                     end
                 end,
             }
+            dap.adapters.nlua = function(callback, config)
+                callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+            end
             dap.configurations.lua = {
                 {
                     type = 'nlua',
                     request = 'attach',
                     name = "Attach to running Neovim instance",
                 },
-                {
-                    type = "local-lua",
-                    request = "attach",
-                    port = 11428,
-                    name = "Attach to local lua",
-                }
+                -- {
+                --     type = "local-lua",
+                --     request = "attach",
+                --     port = 11428,
+                --     name = "Attach to local lua",
+                -- }
             }
-
-            dap.adapters.nlua = function(callback, config)
-                callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
-            end
         end,
         event = "User LoadNvimLuaDap",
 
