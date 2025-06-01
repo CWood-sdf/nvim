@@ -108,6 +108,9 @@ wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)
     remap("d", "[D]elete hidden", function()
         vim.cmd("DeleteHiddenBuffers")
     end)
+    remap("D", "Force [D]elete hidden", function()
+        vim.cmd("DeleteHiddenBuffers!")
+    end)
 end)
 
 -- window stuff

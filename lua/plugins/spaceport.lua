@@ -25,6 +25,7 @@ return {
             { "s", "spaceport.nvim" },
             { "c", "calendar" },
             { "b", "banana.nvim" },
+            { "z", "banana.nvim/zig" },
             { "m", "cmdTree" },
             { "H", "hw" },
             { "e", "irec.*groundstation" },

@@ -1,6 +1,16 @@
 return {
 	cmd = {
-		'/home/christopher-wood/fun/lua-language-server/bin/lua-language-server',
+		'/home/christopher-wood/projects/lua-language-server/bin/lua-language-server',
+	},
+	settings = {
+		Lua = {
+			misc = {
+				parameters = {
+					"--develop=true",
+					"--dbgport=11428",
+				}
+			}
+		},
 	},
 	filetypes = { 'lua' },
 	root_markers = {

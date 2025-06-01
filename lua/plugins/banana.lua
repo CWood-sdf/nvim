@@ -6,7 +6,7 @@ return {
             "nvim-treesitter/nvim-treesitter",
         },
         opts = {
-            setupTs = false,
+            setupTs = true,
         },
         lazy = true,
         -- build = "bash ./build"

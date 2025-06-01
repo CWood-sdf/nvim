@@ -11,7 +11,6 @@ return {
             prev = "<leader>gCp",
         },
     },
-    event = "VeryLazy",
     cmd = {
         "GitConflictListQf",
         "GitConflictNextConflict",

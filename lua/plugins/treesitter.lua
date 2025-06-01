@@ -1,5 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	lazy = false,
 	event = { "BufReadPre", "User SpaceportDone" },
 	-- event = { "VeryLazy" },
 	cmd = { "TSInstall", "TSUpdate", "TSUninstall" },
@@ -7,7 +8,9 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"nvim-treesitter/nvim-treesitter-context",
 	},
-	-- tag = "v0.9.2",
+	branch = 'master',
+	build = ':TSUpdate',
+	-- tag = "v0.9.3",
 	config = function()
 		require("nvim-treesitter.install").compilers = { "clang", "zig" }
 
@@ -20,17 +23,26 @@ return {
 				selectTextObjects["i" .. key] = { query = query .. ".inner", desc = desc }
 			end
 		end
-		require("banana").initTsParsers()
 		addTextObject("f", "@function", "Function", true, true)
 		addTextObject("c", "@class", "Class", true, true)
 		addTextObject("s", "@scope", "Scope", true, true)
 		addTextObject("a", "@parameter", "Parameter", true, true)
 		addTextObject("l", "@loop", "Loop", true, true)
 		addTextObject("i", "@conditional", "Conditional", true, true)
-		require("nvim-treesitter.configs").setup({
-			disable = function(lang, bufnr) -- Disable in large C++ buffers
-				return vim.api.nvim_buf_line_count(bufnr) > 20000
+
+		vim.api.nvim_create_autocmd('FileType', {
+			pattern = { '*' },
+			callback = function(ev)
+				if vim.api.nvim_buf_line_count(0) > 20000 then
+					return
+				end
+				pcall(function()
+					vim.treesitter.start()
+				end)
 			end,
+		})
+
+		require("nvim-treesitter.configs").setup({
 			modules = {},
 
 			ignore_install = {},
@@ -57,18 +69,6 @@ return {
 			-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
 			auto_install = true,
 
-			highlight = {
-				disable = function(lang, bufnr) -- Disable in large C++ buffers
-					return vim.api.nvim_buf_line_count(bufnr) > 20000
-				end,
-				enable = true,
-
-				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-				-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-				-- Using this option may slow down your editor, and you may see some duplicate highlights.
-				-- Instead of true it can also be a list of languages
-				additional_vim_regex_highlighting = false,
-			},
 			textobjects = {
 				swap = {
 					enable = true,
@@ -199,6 +199,7 @@ return {
 				require("treesitter-context").go_to_context()
 			end)
 		end)
+		require("banana").initTsParsers()
 		vim.treesitter.language.register("maple", "maple")
 		---@diagnostic disable-next-line: inject-field
 		parser_config.maple = {

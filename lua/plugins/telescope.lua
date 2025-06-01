@@ -2,7 +2,7 @@ return {
     {
         "nvim-telescope/telescope.nvim",
         keys = "<leader>f",
-        version = "0.1.3",
+        -- version = "0.1.3",
         config = function()
             require("telescope").setup({
                 extensions = {

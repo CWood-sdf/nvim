@@ -1,47 +1,6 @@
 return {
 
     {
-        "folke/zen-mode.nvim",
-        opts = {},
-        cmd = "ZenMode",
-    },
-
-    {
-        'isakbm/gitgraph.nvim',
-        opts = {
-            symbols = {
-                merge_commit = 'M',
-                commit = '*',
-            },
-            format = {
-                timestamp = '%H:%M:%S %d-%m-%Y',
-                fields = { 'hash', 'timestamp', 'author', 'branch_name', 'tag' },
-            },
-            hooks = {
-                on_select_commit = function(commit)
-                    print('selected commit:', commit.hash)
-                end,
-                on_select_range_commit = function(from, to)
-                    print('selected range:', from.hash, to.hash)
-                end,
-            },
-        },
-        keys = {
-            {
-                "<leader>gl",
-                function()
-                    require('gitgraph').draw({}, { all = true, max_count = 5000 })
-                end,
-                desc = "GitGraph - Draw",
-            },
-        },
-    },
-    {
-        "nvim-neo-tree/neo-tree.nvim",
-        dependencies = { "MunifTanjim/nui.nvim" },
-        cmd = "Neotree"
-    },
-    {
         "folke/lazy.nvim",
     },
 
@@ -70,18 +29,8 @@ return {
         event = "BufReadPre",
     },
     {
-        "arithran/vim-delete-hidden-buffers",
-        cmd = "DeleteHiddenBuffers",
+        'folke/noice.nvim',
+        opts = {},
+        enabled = false,
     },
-    -- {
-    --     "folke/noice.nvim",
-    --     opts = {},
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --         -- OPTIONAL:
-    --         --   `nvim-notify` is only needed, if you want to use the notification view.
-    --         --   If not available, we use `mini` as the fallback
-    --         "rcarriga/nvim-notify",
-    --     },
-    -- },
 }

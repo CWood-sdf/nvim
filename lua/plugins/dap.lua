@@ -45,6 +45,15 @@ return {
                     end
                 end,
             }
+
+            dap.adapters["lua-debug"] = {
+                type = "executable",
+                command = "/home/christopher-wood/projects/lua-debug/publish/runtime/linux-x64/lua-latest/lua",
+                args = {
+                    "/home/christopher-wood/projects/lua-debug/examples/attach/test.lua",
+                },
+                cwd = "/home/christopher-wood/projects/lua-debug/examples/attach",
+            }
             dap.adapters.nlua = function(callback, config)
                 callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
             end
@@ -54,6 +63,11 @@ return {
                     request = 'attach',
                     name = "Attach to running Neovim instance",
                 },
+                -- {
+                --     type = 'lua-debug',
+                --     request = 'attach',
+                --     name = "Attach to luals",
+                -- },
                 -- {
                 --     type = "local-lua",
                 --     request = "attach",

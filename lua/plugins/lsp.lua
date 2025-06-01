@@ -126,64 +126,36 @@ return {
             require('mason-lspconfig').setup({
                 automatic_installation = true,
             });
-            require('mason-lspconfig').setup_handlers({
-                function(server_name)
-                    if server_name == "pylsp" then
-                        require('lspconfig')[server_name].setup({
-                            -- if server_name == "arduino
-                            on_attach = onAttach,
-                            settings = {
-                                pylsp = {
-                                    plugins = {
-                                        flake8 = {
-                                            enabled = false,
-                                            ignore = { 'E501', 'E231' },
-                                            maxLineLength = 88,
-                                        },
-                                        black = { enabled = true },
-                                        autopep8 = { enabled = false },
-                                        mccabe = { enabled = false },
-                                        pycodestyle = {
-                                            enabled = false,
-                                            ignore = { 'E501', 'E231' },
-                                            maxLineLength = 88,
-                                        },
-                                        pyflakes = { enabled = false },
-                                    }
-                                }
+            require('lspconfig')["pylsp"].setup({
+                -- if server_name == "arduino
+                on_attach = onAttach,
+                settings = {
+                    pylsp = {
+                        plugins = {
+                            flake8 = {
+                                enabled = false,
+                                ignore = { 'E501', 'E231' },
+                                maxLineLength = 88,
                             },
-                        })
-                        return
-                    end
-                    if server_name == "lua_ls" then
-                        return
-                    end
-                    if server_name == "arduino_language_server" then
-                        return
-                    end
-                    if server_name == "html" then
-                        return
-                    end
-                    -- if server_name == "tsserver" or server_name == "ts_ls" then
-                    --     return
-                    -- end
-                    -- local f = io.open("skip.sdf", "r")
-                    -- if f ~= nil and server_name == "clangd" then
-                    --     f:close()
-                    --     return
-                    -- end
-                    require('lspconfig')[server_name].setup({
-                        -- if server_name == "arduino
-                        on_attach = onAttach,
-                    })
-                end,
+                            black = { enabled = true },
+                            autopep8 = { enabled = false },
+                            mccabe = { enabled = false },
+                            pycodestyle = {
+                                enabled = false,
+                                ignore = { 'E501', 'E231' },
+                                maxLineLength = 88,
+                            },
+                            pyflakes = { enabled = false },
+                        }
+                    }
+                },
             })
-            require('lspconfig').maple.setup({
-                on_attach = onAttach,
-            })
-            require('lspconfig').gleam.setup({
-                on_attach = onAttach,
-            })
+            -- require('lspconfig').maple.setup({
+            --     on_attach = onAttach,
+            -- })
+            -- require('lspconfig').gleam.setup({
+            --     on_attach = onAttach,
+            -- })
             -- require('lspconfig').glint.setup({
             --     on_attach = onAttach,
             -- })
@@ -226,7 +198,7 @@ return {
             -- require('lspconfig').ccls.setup({})
             require("lspconfig").lua_ls.setup({
                 on_attach = onAttach,
-                cmd = { "/home/christopher-wood/fun/lua-language-server/bin/lua-language-server" },
+                cmd = { "/home/christopher-wood/projects/lua-language-server/bin/lua-language-server" },
                 settings = {
                     Lua = {
                         misc = {
@@ -242,6 +214,15 @@ return {
             })
             vim.diagnostic.config({
                 virtual_text = true,
+                severity_sort = true,
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = "",
+                        [vim.diagnostic.severity.WARN] = "",
+                        [vim.diagnostic.severity.INFO] = "",
+                        [vim.diagnostic.severity.HINT] = "",
+                    }
+                },
             })
 
             vim.fn.sign_define("DiagnosticSignError", {

@@ -3,13 +3,15 @@ return {
     { "nvim-neotest/neotest-plenary", lazy = true },
     {
         "nvim-neotest/neotest",
-        opts = {
-            adapters = {
-                ["neotest-plenary"] = {
-                    min_init = "./tests/init.lua",
-                },
-            }
-        },
+        config = function()
+            require("neotest").setup({
+                adapters = {
+                    require("neotest-plenary")({
+                        min_init = "./tests/init.lua",
+                    }),
+                }
+            })
+        end,
         lazy = true,
     },
 }
