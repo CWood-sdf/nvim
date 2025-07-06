@@ -19,11 +19,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
             remap("a", "[A]ction", function()
                 vim.lsp.buf.code_action()
             end, opts)
+            remap("E", "Prev [E]rror ([e)", function()
+                vim.diagnostic.jump({
+                    count = -1,
+                    severity = vim.diagnostic.severity.ERROR
+                })
+            end, opts)
+            remap("e", "Next [e]rror (]e)", function()
+                vim.diagnostic.jump({
+                    count = 1,
+                    severity = vim.diagnostic.severity.ERROR
+                })
+            end, opts)
             remap("n", "[N]ext diagnostic", function()
-                vim.diagnostic.goto_next()
+                vim.diagnostic.jump({
+                    count = 1,
+                })
             end, opts)
             remap("p", "[P]revious diagnostic", function()
-                vim.diagnostic.goto_prev()
+                vim.diagnostic.jump({
+                    count = -1,
+                })
             end, opts)
             remap("s", "[S]ignature help (<C-h>)", function()
                 vim.lsp.buf.signature_help()
@@ -120,12 +136,26 @@ return {
                     },
                 }
             end
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+            capabilities.textDocument.completion.completionItem.snippetSupport = true
             ---@diagnostic disable-next-line: unused-local
             local onAttach = function(args, bufnr)
             end
             require('mason-lspconfig').setup({
                 automatic_installation = true,
             });
+            require("lspconfig").lua_ls.setup({
+                settings = {
+                    Lua = {
+                        completion = {
+                            callSnippet = 'Enable',
+                            keywordSnippet = 'Enable',
+                        },
+                    },
+                },
+                capabilities = capabilities
+            })
             require('lspconfig')["pylsp"].setup({
                 -- if server_name == "arduino
                 on_attach = onAttach,
@@ -159,8 +189,6 @@ return {
             -- require('lspconfig').glint.setup({
             --     on_attach = onAttach,
             -- })
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities.textDocument.completion.completionItem.snippetSupport = true
             -- ArId = vim.lsp.start_client({
             --     on_attach = onAttach,
             --     capabilities = capabilities,

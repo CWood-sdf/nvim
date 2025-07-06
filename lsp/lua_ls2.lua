@@ -4,6 +4,10 @@ return {
 	},
 	settings = {
 		Lua = {
+			completion = {
+				callSnippet = 'Enable',
+				keywordSnippet = 'Enable',
+			},
 			misc = {
 				parameters = {
 					"--develop=true",

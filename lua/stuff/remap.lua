@@ -93,9 +93,9 @@ end)
 -- end, {})
 
 -- wk.remapNoGroup("t", "<Esc>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
-wk.remapNoGroup("t", "<C-k>", "Up arrow", "<Up>", { noremap = true })
-wk.remapNoGroup("t", "<C-j>", "Down arrow", "<Down>", { noremap = true })
-wk.remapNoGroup("t", "<C-e>", "Exit terminal mode", "<C-\\><C-n>", { noremap = true })
+vim.keymap.set("t", "<C-k>", "<Up>")
+vim.keymap.set("t", "<C-j>", "<Down>")
+vim.keymap.set("t", "<C-e>", "<C-\\><C-n>")
 wk.remapNoGroup("i", "<C-e>", "Exit insert mode", "<Esc>", { noremap = true })
 
 wk.makeGroup("n", "<leader>b", "[B]uf", function(remap)

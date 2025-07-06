@@ -18,6 +18,15 @@ vim.filetype.add({
 	extension = { _pp = "pplang" },
 })
 
+vim.filetype.add({
+	pattern = {
+		['.*/Eigen/.*'] = 'cpp',
+	},
+})
+
 require("stuff")
+local thing = require("stuff.zig2")
+-- vim.notify(tostring(thing) .. "\n")
+thing.autocmd()
 --
 -- vim.lsp.set_log_level(vim.lsp.log_levels.TRACE)

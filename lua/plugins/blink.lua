@@ -1,9 +1,11 @@
 return {
+    enabled = true,
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
     dependencies = {
         { 'rafamadriz/friendly-snippets' },
         { "L3MON4D3/LuaSnip" },
+        { "folke/lazydev.nvim", },
     },
 
     version = '1.*',
@@ -26,17 +28,22 @@ return {
         keymap = {
             preset = 'default',
             ['<C-space>'] = { 'select_and_accept' },
+            ['<C-g>'] = { function(cmp) cmp.show({ providers = { 'snippets' } }) end },
             ['<C-j>'] = { 'select_next' },
             ['<C-k>'] = { 'select_prev' },
-            ['<C-h>'] = { 'show_signature' },
+            ['<C-l>'] = { 'snippet_forward' },
+            ['<C-h>'] = { 'snippet_backward' },
             ['<C-u>'] = { 'show_documentation' },
         },
 
         signature = {
             enabled = true,
+            window = {
+                direction_priority = { 's', 'n' },
+            },
         },
         term = {
-            enabled = true,
+            enabled = false,
             keymap = {
                 preset = 'inherit',
             },
@@ -62,12 +69,12 @@ return {
 
         -- (Default) Only show the documentation popup when manually triggered
         completion = {
-            draw = {
-                columns = {
-                    { "label",     "label_description", gap = 1 },
-                    { "kind_icon", "kind" }
-                },
-            },
+            -- draw = {
+            --     columns = {
+            --         { "label",     "label_description", gap = 1 },
+            --         { "kind_icon", "kind" }
+            --     },
+            -- },
             accept = {
                 auto_brackets = {
                     enabled = false
@@ -77,13 +84,18 @@ return {
         },
 
         snippets = {
-            preset = 'luasnip',
+            preset = 'default',
         },
 
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
             default = { 'lsp', 'path', 'snippets', 'buffer' },
+            per_filetype = {
+                sql = { 'dadbod', inherit_defaults = true },
+                -- optionally inherit from the `default` sources
+                -- lua = { inherit_defaults = true }
+            },
         },
 
         -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance

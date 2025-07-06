@@ -20,7 +20,7 @@ return {
         },
         shortcuts = {
             { "f", ".config/nvim" },
-            { "r", "sac_24%-25" },
+            { "r", "irec_25%-26" },
             { "i", "pineapple" },
             { "s", "spaceport.nvim" },
             { "c", "calendar" },
@@ -29,6 +29,7 @@ return {
             { "m", "cmdTree" },
             { "H", "hw" },
             { "e", "irec.*groundstation" },
+            { "u", "UV360" },
             -- { "t", "thing" },
             -- { "a", "lazyline.nvim" },
             { "o", "notes" },

@@ -23,7 +23,7 @@ return require("lazy").setup("plugins", {
     -- },
     checker = {
         concurrency = 10,
-        enabled = true,
+        enabled = false,
         frequency = 300,
         notify = false,
     },

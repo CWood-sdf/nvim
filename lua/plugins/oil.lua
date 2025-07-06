@@ -24,5 +24,5 @@ return {
         },
     },
     -- event = "VimEnter",
-    cmd = "Oil",
+    -- cmd = "Oil",
 }

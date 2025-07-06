@@ -15,8 +15,14 @@ vim.api.nvim_create_user_command("SessionSource", function()
     session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
     -- print(vim.fn.filereadable(session))
     session_ready = true
+    local oilStart = "oil://"
     local isfile = vim.fn.isdirectory(vim.fn.argv()[1] or "") == 0
-    if vim.fn.filereadable(session) ~= 0 and (not isfile or vim.fn.argc() == 0) then
+    local isOil = false
+    if string.sub(vim.fn.argv()[1] or "", 1, #oilStart) == oilStart then
+        isOil = true
+    end
+
+    if isOil or (vim.fn.filereadable(session) ~= 0 and (not isfile or vim.fn.argc() == 0)) then
         -- vim.defer_fn(function()
         vim.cmd("so " .. session)
         -- vim.defer_fn(function()
@@ -25,9 +31,7 @@ vim.api.nvim_create_user_command("SessionSource", function()
         -- end, 100)
     elseif (not isfile or vim.fn.argc() == 0) then
         session_ready = true
-        -- vim.defer_fn(function()
         vim.cmd("Oil .")
-        -- end, 100)
         -- vim.cmd("mks " .. session)
     else
         print("Skipping session because opened to file")

@@ -214,6 +214,7 @@ return {
                 command = "gdb",
                 args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
             }
+            dap.adapters["cppdbg"] = dap.adapters.gdb
             dap.configurations.c = dap.configurations.zig
             dap.configurations.asm = dap.configurations.zig
             dap.configurations.cpp = dap.configurations.zig
