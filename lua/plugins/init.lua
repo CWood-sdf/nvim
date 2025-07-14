@@ -4,6 +4,13 @@ return {
         "folke/lazy.nvim",
     },
 
+    {
+        "CWood-sdf/taiga.nvim",
+        dev = require("stuff.isdev")("taiga.nvim"),
+        opts = {},
+        cmd = "TaigaUi"
+    },
+
     -- just fancy icons for dap
     {
         "nvim-tree/nvim-web-devicons",

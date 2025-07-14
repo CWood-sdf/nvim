@@ -7,6 +7,8 @@ return {
         { "L3MON4D3/LuaSnip" },
         { "folke/lazydev.nvim", },
     },
+    event = "InsertEnter",
+    keys = { ":" },
 
     version = '1.*',
 

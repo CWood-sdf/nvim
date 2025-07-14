@@ -145,17 +145,17 @@ return {
             require('mason-lspconfig').setup({
                 automatic_installation = true,
             });
-            require("lspconfig").lua_ls.setup({
-                settings = {
-                    Lua = {
-                        completion = {
-                            callSnippet = 'Enable',
-                            keywordSnippet = 'Enable',
-                        },
-                    },
-                },
-                capabilities = capabilities
-            })
+            -- require("lspconfig").lua_ls.setup({
+            --     settings = {
+            --         Lua = {
+            --             completion = {
+            --                 callSnippet = 'Enable',
+            --                 keywordSnippet = 'Enable',
+            --             },
+            --         },
+            --     },
+            --     capabilities = capabilities
+            -- })
             require('lspconfig')["pylsp"].setup({
                 -- if server_name == "arduino
                 on_attach = onAttach,
@@ -224,22 +224,22 @@ return {
             --     capabilities = capabilities,
             -- })
             -- require('lspconfig').ccls.setup({})
-            require("lspconfig").lua_ls.setup({
-                on_attach = onAttach,
-                cmd = { "/home/christopher-wood/projects/lua-language-server/bin/lua-language-server" },
-                settings = {
-                    Lua = {
-                        misc = {
-                            parameters = {
-                                "--dbgport=11428", "--develop=true", "--dbgwait=true"
-                            }
-                        },
-                        hint = {
-                            enable = true,
-                        },
-                    },
-                },
-            })
+            -- require("lspconfig").lua_ls.setup({
+            --     on_attach = onAttach,
+            --     cmd = { "/home/christopher-wood/projects/lua-language-server/bin/lua-language-server" },
+            --     settings = {
+            --         Lua = {
+            --             misc = {
+            --                 parameters = {
+            --                     "--dbgport=11428", "--develop=true", "--dbgwait=true"
+            --                 }
+            --             },
+            --             hint = {
+            --                 enable = true,
+            --             },
+            --         },
+            --     },
+            -- })
             vim.diagnostic.config({
                 virtual_text = true,
                 severity_sort = true,
