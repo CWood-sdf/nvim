@@ -13,6 +13,7 @@ return {
     },
     {
         "CWood-sdf/banana-example",
+        lazy = true,
         dev = false,
         dependencies = { "CWood-sdf/banana.nvim" },
         opts = {},

@@ -5,6 +5,6 @@ require("stuff.remap")
 require("stuff.set")
 require("stuff.session")
 -- vim.lsp.enable("z2ls", false)
-vim.lsp.enable("lua_ls", true)
+-- vim.lsp.enable("lua_ls", true)
 --
-require("stuff.zig")
+-- require("stuff.zig")

@@ -3,43 +3,29 @@ return {
     cmd = { "UndotreeToggle", "UndotreeShow" },
     init = function()
         vim.g.undotree_DiffAutoOpen = 0
-        local wk = require("stuff.wkutils")
-        wk.remapNoGroup("n", "<leader>u", "Toggle Undotree", function()
+        -- local wk = require("stuff.wkutils")
+        vim.keymap.set("n", "<leader>u", function()
             vim.cmd.UndotreeToggle()
-        end)
+        end, { desc = "Toggle Undotree", })
         local undo = function(count)
             if count == nil then
                 count = 1
             end
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "u", true, true, true), "n", false)
         end
-        local redo = function(count)
-            if count == nil then
-                count = 1
-            end
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(count .. "<C-r>", true, true, true), "n", false)
-        end
-        wk.remapNoGroup("n", "<C-z>", "Undo", function()
+        vim.keymap.set("n", "<C-z>", function()
 
-        end)
-        wk.remapNoGroup("v", "<C-z>", "Undo", function()
+        end, { desc = "Undo", })
+        vim.keymap.set("v", "<C-z>", function()
+            local wk = require("stuff.wkutils")
             wk.feedKeys("<Esc>", "v")
             undo(vim.v.count)
-        end)
+        end, { desc = "Undo", })
 
-        wk.remapNoGroup("n", "<C-y>", "Redo", function()
-            redo(vim.v.count)
-        end)
 
-        wk.remapNoGroup("i", "<C-z>", "Undo", function()
+        vim.keymap.set("i", "<C-z>", function()
             vim.cmd("stopinsert")
             undo(1)
-        end)
-
-        wk.remapNoGroup("i", "<C-y>", "Redo", function()
-            vim.cmd("stopinsert")
-            redo(1)
-        end)
-        wk.writeBuf()
+        end, { desc = "Undo", })
     end
 }

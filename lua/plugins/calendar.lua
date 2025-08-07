@@ -227,8 +227,9 @@ local function calendarConfig()
 end
 return {
     "CWood-sdf/calendar",
-    lazy = false,
-    config = calendarConfig,
+    -- lazy = false,
+    setup = calendarConfig,
+    event = "VeryLazy",
     dev = require("stuff.isdev")("calendar"),
     build = "make",
     dependencies = {

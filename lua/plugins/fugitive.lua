@@ -1,7 +1,8 @@
 return {
     "tpope/vim-fugitive",
     cmd = "Git",
-    init = function()
+    event = { "User SpaceportDone" },
+    config = function()
         local wk = require("stuff.wkutils")
 
         wk.makeGroup("n", "<leader>g", "[G]it", function(remap)

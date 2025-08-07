@@ -106,8 +106,14 @@ return {
         -- branch = 'v2.x',
         dependencies = {
             -- LSP Support
-            { "williamboman/mason-lspconfig.nvim" }, -- Optional
-            { "williamboman/mason.nvim" },           -- Optional
+            {
+                "williamboman/mason-lspconfig.nvim",
+                branch = "perf/cached-specs",
+                opts = {
+                },
+                -- dev = true,
+            }, -- Optional
+            -- { "williamboman/mason.nvim" }, -- Optional
             -- {
             --     "kosayoda/nvim-lightbulb",
             --     opts = { autocmd = { enabled = true } }
@@ -124,27 +130,26 @@ return {
             end)
             wk.writeBuf()
 
-            local configs = require('lspconfig.configs')
-            if not configs.maple then
-                configs.maple = {
-                    default_config = {
-                        cmd = { os.getenv("HOME") .. "/projects/Maple/lsp/target/debug/maple-lsp" },
-                        filetypes = { "maple", "mpl" },
-                        root_dir = function()
-                            return vim.fn.getcwd()
-                        end,
-                    },
-                }
-            end
+            -- local configs = require('lspconfig.configs')
+            -- if not configs.maple then
+            --     configs.maple = {
+            --         default_config = {
+            --             cmd = { os.getenv("HOME") .. "/projects/Maple/lsp/target/debug/maple-lsp" },
+            --             filetypes = { "maple", "mpl" },
+            --             root_dir = function()
+            --                 return vim.fn.getcwd()
+            --             end,
+            --         },
+            --     }
+            -- end
             local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+            -- capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
             capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+
             ---@diagnostic disable-next-line: unused-local
-            local onAttach = function(args, bufnr)
-            end
-            require('mason-lspconfig').setup({
-                automatic_installation = true,
-            });
+            -- local onAttach = function(args, bufnr)
+            -- end
             -- require("lspconfig").lua_ls.setup({
             --     settings = {
             --         Lua = {
@@ -156,30 +161,30 @@ return {
             --     },
             --     capabilities = capabilities
             -- })
-            require('lspconfig')["pylsp"].setup({
-                -- if server_name == "arduino
-                on_attach = onAttach,
-                settings = {
-                    pylsp = {
-                        plugins = {
-                            flake8 = {
-                                enabled = false,
-                                ignore = { 'E501', 'E231' },
-                                maxLineLength = 88,
-                            },
-                            black = { enabled = true },
-                            autopep8 = { enabled = false },
-                            mccabe = { enabled = false },
-                            pycodestyle = {
-                                enabled = false,
-                                ignore = { 'E501', 'E231' },
-                                maxLineLength = 88,
-                            },
-                            pyflakes = { enabled = false },
-                        }
-                    }
-                },
-            })
+            -- require('lspconfig')["pylsp"].setup({
+            --     -- if server_name == "arduino
+            --     on_attach = onAttach,
+            --     settings = {
+            --         pylsp = {
+            --             plugins = {
+            --                 flake8 = {
+            --                     enabled = false,
+            --                     ignore = { 'E501', 'E231' },
+            --                     maxLineLength = 88,
+            --                 },
+            --                 black = { enabled = true },
+            --                 autopep8 = { enabled = false },
+            --                 mccabe = { enabled = false },
+            --                 pycodestyle = {
+            --                     enabled = false,
+            --                     ignore = { 'E501', 'E231' },
+            --                     maxLineLength = 88,
+            --                 },
+            --                 pyflakes = { enabled = false },
+            --             }
+            --         }
+            --     },
+            -- })
             -- require('lspconfig').maple.setup({
             --     on_attach = onAttach,
             -- })
@@ -208,11 +213,11 @@ return {
             --         "true",
             --     },
             -- })
-            require('lspconfig').html.setup({
-                on_attach = onAttach,
-                filetypes = { "html", "nml", "templ" },
-                capabilities = capabilities,
-            })
+            -- require('lspconfig').html.setup({
+            --     on_attach = onAttach,
+            --     filetypes = { "html", "nml", "templ" },
+            --     capabilities = capabilities,
+            -- })
             -- require('lspconfig').tailwindcss.setup({
             --     on_attach = onAttach,
             --     filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "handlebars" },

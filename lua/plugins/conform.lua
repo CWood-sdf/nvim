@@ -46,5 +46,5 @@ return {
             notify_on_error = true,
         })
     end,
-    event = "User SpaceportDone",
+    event = "BufWritePre",
 }

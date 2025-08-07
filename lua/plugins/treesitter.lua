@@ -1,6 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
+	-- lazy = false,
 	event = { "BufReadPre", "User SpaceportDone" },
 	-- event = { "VeryLazy" },
 	cmd = { "TSInstall", "TSUpdate", "TSUninstall" },

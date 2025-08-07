@@ -26,7 +26,7 @@ return {
 
     {
         "folke/tokyonight.nvim",
-        lazy = true,
+        -- lazy = true,
         opts = {
             on_highlights = function(colors)
                 -- vim.notify(vim.inspect(colors))

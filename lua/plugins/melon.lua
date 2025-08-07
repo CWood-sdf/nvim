@@ -1,5 +1,6 @@
 return {
     "CWood-sdf/melon.nvim",
+    event = "BufReadPre",
     opts = {
         signOpts = {
             texthl = "Comment",

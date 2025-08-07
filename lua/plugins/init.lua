@@ -29,7 +29,7 @@ return {
             DEBUG = true,
         },
         dev = require("stuff.isdev")("cmdTree.nvim"),
-        lazy = false,
+        lazy = true,
     },
     {
         'tpope/vim-sleuth',

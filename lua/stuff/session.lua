@@ -6,13 +6,16 @@ local function dirToSessionName(str)
     -- s, _ = s:gsub('%\\.', '##')
     return s
 end
+local saveDir = vim.fn.stdpath('data') .. "/nv_sessions/"
+
+vim.fn.mkdir(saveDir, "p")
 
 -- vim.opt.ssop:append("globals")
 local session_ready = false
 vim.api.nvim_create_user_command("SessionSource", function()
     local dir = vim.fn.getcwd()
     local session = dirToSessionName(dir)
-    session = vim.fn.stdpath('data') .. "/nv_sessions/" .. session .. ".vim"
+    session = saveDir .. session .. ".vim"
     -- print(vim.fn.filereadable(session))
     session_ready = true
     local oilStart = "oil://"
@@ -22,20 +25,27 @@ vim.api.nvim_create_user_command("SessionSource", function()
         isOil = true
     end
 
-    if isOil or (vim.fn.filereadable(session) ~= 0 and (not isfile or vim.fn.argc() == 0)) then
-        -- vim.defer_fn(function()
-        vim.cmd("so " .. session)
-        -- vim.defer_fn(function()
-        --     vim.cmd("set signcolumn=yes")
-        -- end, 10)
-        -- end, 100)
-    elseif (not isfile or vim.fn.argc() == 0) then
+    -- if isOil or (vim.fn.filereadable(session) ~= 0 and (not isfile or vim.fn.argc() == 0)) then
+    --     local start = vim.uv.hrtime()
+    --     -- vim.defer_fn(function()
+    --     vim.cmd("so " .. session)
+    --     local en = vim.uv.hrtime()
+    --     vim.print("Source took " .. (en - start) / 1e6 .. "ms")
+    --     -- vim.defer_fn(function()
+    --     --     vim.cmd("set signcolumn=yes")
+    --     -- end, 10)
+    --     -- end, 100)
+    if (not isfile or vim.fn.argc() == 0) then
         session_ready = true
+        local start = vim.uv.hrtime()
         vim.cmd("Oil .")
-        -- vim.cmd("mks " .. session)
-    else
-        print("Skipping session because opened to file")
+        local en = vim.uv.hrtime()
+        vim.print("Oil took " .. (en - start) / 1e6 .. "ms")
     end
+    -- vim.cmd("mks " .. session)
+    -- else
+    --     print("Skipping session because opened to file")
+    -- end
 end, {})
 vim.api.nvim_create_autocmd({ "DirChanged", "QuitPre", "ExitPre", "BufEnter" }, {
     callback = function()

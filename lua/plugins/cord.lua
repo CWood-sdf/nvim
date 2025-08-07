@@ -1,5 +1,5 @@
 return {
     "vyfor/cord.nvim",
     opts = {},
-    event = "VeryLazy",
+    event = "User SpaceportDone",
 }

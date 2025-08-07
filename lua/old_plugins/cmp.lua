@@ -2,7 +2,7 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     keys = { ":" },
-    config = function()
+    setup = function()
         local wk = require("stuff.wkutils")
         local cmp = require("cmp")
         local cmp_select = { behavior = cmp.SelectBehavior.Select }

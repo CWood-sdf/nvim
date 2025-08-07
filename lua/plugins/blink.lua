@@ -92,11 +92,18 @@ return {
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
-            default = { 'lsp', 'path', 'snippets', 'buffer' },
+            default = { 'lsp', 'path', 'snippets', 'buffer', "taiga", },
             per_filetype = {
                 sql = { 'dadbod', inherit_defaults = true },
                 -- optionally inherit from the `default` sources
                 -- lua = { inherit_defaults = true }
+            },
+            providers = {
+                taiga = {
+                    name = "Taiga",
+                    module = "taiga.blink",
+                    opts = {},
+                },
             },
         },
 
