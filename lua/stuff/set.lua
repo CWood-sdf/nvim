@@ -16,6 +16,7 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.signcolumn = "yes"
+vim.opt.exrc = true
 
 vim.opt.sessionoptions:append("globals")
 

@@ -14,10 +14,10 @@ vim.api.nvim_create_autocmd({ "User" }, {
     end,
 })
 vim.api.nvim_create_user_command("BlockingDebugServer", function()
-    require('osv').launch({ port = 8086, blocking = true })
+    require("osv").launch({ port = 8086, blocking = true })
 end, {})
 vim.api.nvim_create_user_command("DebugServer", function()
-    require('osv').launch({ port = 8086, blocking = true })
+    require("osv").launch({ port = 8086, blocking = true })
 end, {})
 return {
     {
@@ -31,7 +31,7 @@ return {
                 type = "executable",
                 command = "node",
                 args = {
-                    "/home/christopher-wood/fun/local-lua-debugger-vscode/extension/debugAdapter.js"
+                    "/home/christopher-wood/fun/local-lua-debugger-vscode/extension/debugAdapter.js",
                 },
                 enrich_config = function(config, on_config)
                     if not config["extensionPath"] then
@@ -55,12 +55,12 @@ return {
                 cwd = "/home/christopher-wood/projects/lua-debug/examples/attach",
             }
             dap.adapters.nlua = function(callback, config)
-                callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+                callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
             end
             dap.configurations.lua = {
                 {
-                    type = 'nlua',
-                    request = 'attach',
+                    type = "nlua",
+                    request = "attach",
                     name = "Attach to running Neovim instance",
                 },
                 -- {
@@ -77,7 +77,6 @@ return {
             }
         end,
         event = "User LoadNvimLuaDap",
-
     },
 
     -- Debugger stuff
@@ -85,48 +84,48 @@ return {
         "mfussenegger/nvim-dap",
         dependencies = {
             -- Install the vscode-js-debug adapter
-            {
-                "microsoft/vscode-js-debug",
-                -- After install, build it and rename the dist directory to out
-                build =
-                "npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out",
-                version = "1.*",
-            },
-            {
-                "mxsdev/nvim-dap-vscode-js",
-                config = function()
-                    ---@diagnostic disable-next-line: missing-fields
-                    require("dap-vscode-js").setup({
-                        -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-                        -- node_path = "node",
-
-                        -- Path to vscode-js-debug installation.
-                        debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
-
-                        -- Command to use to launch the debug server. Takes precedence over "node_path" and "debugger_path"
-                        -- debugger_cmd = { "js-debug-adapter" },
-
-                        -- which adapters to register in nvim-dap
-                        adapters = {
-                            "chrome",
-                            "pwa-node",
-                            "pwa-chrome",
-                            "pwa-msedge",
-                            "pwa-extensionHost",
-                            "node-terminal",
-                        },
-
-                        -- Path for file logging
-                        -- log_file_path = "(stdpath cache)/dap_vscode_js.log",
-
-                        -- Logging level for output to file. Set to false to disable logging.
-                        -- log_file_level = false,
-
-                        -- Logging level for output to console. Set to false to disable console output.
-                        -- log_console_level = vim.log.levels.ERROR,
-                    })
-                end,
-            },
+            -- {
+            --     "microsoft/vscode-js-debug",
+            --     -- After install, build it and rename the dist directory to out
+            --     build =
+            --     "npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out",
+            --     version = "1.*",
+            -- },
+            -- {
+            --     "mxsdev/nvim-dap-vscode-js",
+            --     config = function()
+            --         ---@diagnostic disable-next-line: missing-fields
+            --         require("dap-vscode-js").setup({
+            --             -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+            --             -- node_path = "node",
+            --
+            --             -- Path to vscode-js-debug installation.
+            --             debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
+            --
+            --             -- Command to use to launch the debug server. Takes precedence over "node_path" and "debugger_path"
+            --             -- debugger_cmd = { "js-debug-adapter" },
+            --
+            --             -- which adapters to register in nvim-dap
+            --             adapters = {
+            --                 "chrome",
+            --                 "pwa-node",
+            --                 "pwa-chrome",
+            --                 "pwa-msedge",
+            --                 "pwa-extensionHost",
+            --                 "node-terminal",
+            --             },
+            --
+            --             -- Path for file logging
+            --             -- log_file_path = "(stdpath cache)/dap_vscode_js.log",
+            --
+            --             -- Logging level for output to file. Set to false to disable logging.
+            --             -- log_file_level = false,
+            --
+            --             -- Logging level for output to console. Set to false to disable console output.
+            --             -- log_console_level = vim.log.levels.ERROR,
+            --         })
+            --     end,
+            -- },
             "rcarriga/nvim-dap-ui",
             "jay-babu/mason-nvim-dap.nvim",
             "williamboman/mason.nvim",
@@ -134,18 +133,18 @@ return {
             -- 'theHamsta/nvim-dap-virtual-text',
         },
         init = function()
-            local wk = require('stuff.wkutils')
+            local wk = require("stuff.wkutils")
             wk.makeGroup("n", "<leader>d", "[D]ebug", function(remap)
                 remap("b", "[B]reakpoint", vim.cmd.DapToggleBreakpoint)
-                remap('v', 'Ser[v]er', function()
-                    require('osv').launch({ port = 8086 })
+                remap("v", "Ser[v]er", function()
+                    require("osv").launch({ port = 8086 })
                 end)
                 local inst = nil
-                remap('y', 'Banana debug', function()
-                    require('banana').test.grid()
+                remap("y", "Banana debug", function()
+                    require("banana").test.grid()
                     -- require('banana').spam()
                 end)
-                remap('Y', 'Banana debug', function()
+                remap("Y", "Banana debug", function()
                     local name = vim.fn.input("Path to nml: ")
                     local inst = require("banana.instance").newInstance(name, "asdf")
                     inst.DEBUG = false
@@ -178,7 +177,7 @@ return {
                     type = "gdb",
                     request = "launch",
                     program = function()
-                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                     end,
                     cwd = "${workspaceFolder}",
                     stopAtBeginningOfMainSubprogram = false,
@@ -191,28 +190,69 @@ return {
                     --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
                     -- end,
                     pid = function()
-                        local name = vim.fn.input('Executable name (filter): ')
+                        local name = vim.fn.input("Executable name (filter): ")
                         return require("dap.utils").pick_process({ filter = name })
                     end,
                     -- cwd = '${workspaceFolder}'
                 },
                 {
-                    name = 'Attach to gdbserver :1234',
-                    type = 'gdb',
-                    request = 'attach',
-                    target = 'localhost:1234',
+                    name = "Attach to gdbserver :1234",
+                    type = "gdb",
+                    request = "attach",
+                    target = "localhost:1234",
                     program = function()
-                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
                     end,
-                    cwd = '${workspaceFolder}'
+                    cwd = "${workspaceFolder}",
                 },
-                unpack(dap.configurations.rust or dap.configurations.zig or dap.configurations.c or
-                    dap.configurations.cpp or {}),
+                unpack(
+                    dap.configurations.rust
+                    or dap.configurations.zig
+                    or dap.configurations.c
+                    or dap.configurations.cpp
+                    or {}
+                ),
+                -- {
+                --     name = 'Zig lldb',
+                --     type = 'lldeez',
+                --     request = 'attach',
+                --     program = function()
+                --         return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                --     end,
+                --     cwd = '${workspaceFolder}'
+                -- },
+                {
+                    name = "Zig lldb Launch",
+                    type = "lldeez",
+                    request = "launch",
+                    program = function()
+                        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+                    end,
+                    cwd = "${workspaceFolder}",
+                    port = 1234,
+                    stopOnEntry = false,
+                    args = {},
+                    console = "integratedTerminal",
+                },
             }
             dap.adapters.gdb = {
                 type = "executable",
                 command = "gdb",
-                args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+                args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
+            }
+            dap.adapters.lldeez = {
+                type = "server",
+                port = "${port}",
+                host = "127.0.0.1",
+                executable = {
+                    command = vim.fn.exepath("codelldb"),
+                    args = {
+                        "--liblldb",
+                        "/home/christopher-wood/fun/zigllvm/build/lib/liblldb.so",
+                        "--port",
+                        "${port}",
+                    },
+                },
             }
             dap.adapters["cppdbg"] = dap.adapters.gdb
             dap.configurations.c = dap.configurations.zig
@@ -221,18 +261,10 @@ return {
             dap.configurations.cuda = dap.configurations.cpp
             dap.configurations.rust = dap.configurations.c
             dap.listeners.after.event_initialized["dapui_config"] = function()
-                -- require("lualine").hide({
-                --     unhide = false,
-                --     place = { "statusline" },
-                -- })
                 dapui.open()
             end
             dap.listeners.before.event_terminated["dapui_config"] = function()
                 dapui.close()
-                -- require("lualine").hide({
-                --     unhide = true,
-                --     place = { "statusline" },
-                -- })
             end
             dap.listeners.before.event_exited["dapui_config"] = function()
                 dapui.close()
@@ -242,59 +274,56 @@ return {
                 -- })
             end
 
-
+            dap.adapters["pwa-node"] = {
+                id = "pwa-node",
+                type = "server",
+                host = "::1",
+                port = 43229,
+                options = {
+                    detached = false,
+                },
+                executable = {
+                    command = "node",
+                    args = {
+                        vim.fn.expand("~")
+                        .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+                        "43229",
+                    },
+                    -- command = "node",
+                    -- args = {
+                    --
+                    --     ".local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+                    -- command = vim.fn.exepath('js-debug-adapter'),
+                    -- args = {
+                    --     '${port}',
+                    -- },
+                },
+            }
+            dap.adapters["node"] = dap.adapters["pwa-node"]
 
             for _, language in ipairs(js_based_languages) do
                 dap.configurations[language] = {
                     unpack(dap.configurations[language] or {}),
-                    -- Debug single nodejs files
                     {
+                        name = "Launch file",
                         type = "pwa-node",
                         request = "launch",
-                        name = "Launch file",
-                        program = "${file}",
-                        cwd = vim.fn.getcwd(),
-                        sourceMaps = true,
+                        program = function()
+                            local currentFilePath = vim.fn.expand("%")
+
+                            return vim.fn.input("Path to executable: ", currentFilePath, "file")
+                        end,
+                        cwd = "${workspaceFolder}",
                     },
-                    -- Debug nodejs processes (make sure to add --inspect when you run the process)
                     {
+                        name = "Attach to process",
                         type = "pwa-node",
                         request = "attach",
-                        name = "Attach",
-                        processId = require("dap.utils").pick_process,
+                        port = 9229,
+                        restart = true,
                         cwd = vim.fn.getcwd(),
                         sourceMaps = true,
-                    },
-                    -- Debug web applications (client side)
-                    {
-                        type = "pwa-chrome",
-                        request = "launch",
-                        name = "Launch & Debug Chrome",
-                        url = function()
-                            local co = coroutine.running()
-                            return coroutine.create(function()
-                                vim.ui.input({
-                                    prompt = "Enter URL: ",
-                                    default = "http://localhost:3000",
-                                }, function(url)
-                                    if url == nil or url == "" then
-                                        return
-                                    else
-                                        coroutine.resume(co, url)
-                                    end
-                                end)
-                            end)
-                        end,
-                        webRoot = vim.fn.getcwd(),
                         protocol = "inspector",
-                        sourceMaps = true,
-                        userDataDir = false,
-                    },
-                    -- Divider for the launch.json derived configs
-                    {
-                        name = "----- ↓ launch.json configs ↓ -----",
-                        type = "",
-                        request = "launch",
                     },
                 }
             end
@@ -326,24 +355,22 @@ return {
                 end)
             end)
             wk.writeBuf()
-            vim.cmd('hi! DapBreakpoint guifg=#ff0000')
-            vim.cmd('hi! DapActive guifg=#eeeeee')
+            vim.cmd("hi! DapBreakpoint guifg=#ff0000")
+            vim.cmd("hi! DapActive guifg=#eeeeee")
             -- - `DapBreakpointCondition` for conditional breakpoints (default: `C`)
             -- - `DapLogPoint` for log points (default: `L`)
-            vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-            vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-            vim.fn.sign_define('DapBreakpointCondition',
-                { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
-            vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapActive', linehl = '', numhl = '' })
+            vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+            vim.fn.sign_define(
+                "DapBreakpointRejected",
+                { text = "", texthl = "DapBreakpoint", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define(
+                "DapBreakpointCondition",
+                { text = "", texthl = "DapBreakpoint", linehl = "", numhl = "" }
+            )
+            vim.fn.sign_define("DapStopped", { text = "", texthl = "DapActive", linehl = "", numhl = "" })
         end,
         cmd = { "DapContinue", "DapToggleBreakpoint" },
         keys = { "<leader>d" },
     },
-    -- {
-    --     'theHamsta/nvim-dap-virtual-text',
-    --     opts = {
-    --
-    --     },
-    --     lazy = true,
-    -- }
 }

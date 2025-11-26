@@ -5,6 +5,12 @@ return {
     },
 
     {
+        "CWood-sdf/when2meet.nvim",
+        dev = require("stuff.isdev")("when2meet.nvim"),
+        opts = {},
+    },
+
+    {
         "CWood-sdf/taiga.nvim",
         dev = require("stuff.isdev")("taiga.nvim"),
         opts = {},

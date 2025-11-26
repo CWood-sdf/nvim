@@ -11,4 +11,5 @@ return {
     "bluz71/vim-moonfly-colors",
     "fynnfluegge/monet.nvim",
     "deankinane/blaze.nvim",
+    "altercation/vim-colors-solarized",
 }

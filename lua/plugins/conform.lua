@@ -1,10 +1,10 @@
-local Config = require('stuff.config')
-Config.addFlag("plugins.conform.autoformat")
-Config.set("plugins.conform.autoformat", true)
 return {
     "stevearc/conform.nvim",
     config = function()
-        require('conform').setup({
+        local Config = require("stuff.config")
+        Config.addFlag("plugins.conform.autoformat")
+        Config.set("plugins.conform.autoformat", true)
+        require("conform").setup({
             format_on_save = function()
                 if not Config.get("plugins.conform.autoformat") then
                     return
