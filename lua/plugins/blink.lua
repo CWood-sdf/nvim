@@ -1,16 +1,16 @@
 return {
     enabled = true,
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     -- optional: provides snippets for the snippet source
     dependencies = {
-        { 'rafamadriz/friendly-snippets' },
+        { "rafamadriz/friendly-snippets" },
         { "L3MON4D3/LuaSnip" },
-        { "folke/lazydev.nvim", },
+        { "folke/lazydev.nvim" },
     },
     event = "InsertEnter",
     keys = { ":" },
 
-    version = '1.*',
+    version = "1.*",
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
@@ -28,26 +28,30 @@ return {
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
         keymap = {
-            preset = 'default',
-            ['<C-space>'] = { 'select_and_accept' },
-            ['<C-g>'] = { function(cmp) cmp.show({ providers = { 'snippets' } }) end },
-            ['<C-j>'] = { 'select_next' },
-            ['<C-k>'] = { 'select_prev' },
-            ['<C-l>'] = { 'snippet_forward' },
-            ['<C-h>'] = { 'snippet_backward' },
-            ['<C-u>'] = { 'show_documentation' },
+            preset = "default",
+            ["<C-space>"] = { "select_and_accept" },
+            ["<C-g>"] = {
+                function(cmp)
+                    cmp.show({ providers = { "snippets" } })
+                end,
+            },
+            ["<C-j>"] = { "select_next" },
+            ["<C-k>"] = { "select_prev" },
+            ["<C-l>"] = { "snippet_forward" },
+            ["<C-h>"] = { "snippet_backward" },
+            ["<C-u>"] = { "show_documentation" },
         },
 
         signature = {
             enabled = true,
             window = {
-                direction_priority = { 's', 'n' },
+                direction_priority = { "s", "n" },
             },
         },
         term = {
             enabled = false,
             keymap = {
-                preset = 'inherit',
+                preset = "inherit",
             },
         },
 
@@ -58,7 +62,7 @@ return {
                 },
             },
             keymap = {
-                preset = 'inherit',
+                preset = "inherit",
             },
             enabled = true,
         },
@@ -66,7 +70,7 @@ return {
         appearance = {
             -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
             -- Adjusts spacing to ensure icons are aligned
-            nerd_font_variant = 'mono'
+            nerd_font_variant = "mono",
         },
 
         -- (Default) Only show the documentation popup when manually triggered
@@ -79,22 +83,22 @@ return {
             -- },
             accept = {
                 auto_brackets = {
-                    enabled = false
+                    enabled = false,
                 },
             },
-            documentation = { auto_show = false }
+            documentation = { auto_show = false },
         },
 
         snippets = {
-            preset = 'default',
+            preset = "default",
         },
 
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
-            default = { 'lsp', 'path', 'snippets', 'buffer', "taiga", },
+            default = { "lsp", "path", "snippets", "buffer", "taiga" },
             per_filetype = {
-                sql = { 'dadbod', inherit_defaults = true },
+                sql = { "dadbod", inherit_defaults = true },
                 -- optionally inherit from the `default` sources
                 -- lua = { inherit_defaults = true }
             },
@@ -112,7 +116,7 @@ return {
         -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
         --
         -- See the fuzzy documentation for more information
-        fuzzy = { implementation = "prefer_rust_with_warning" }
+        fuzzy = { implementation = "prefer_rust_with_warning" },
     },
-    opts_extend = { "sources.default" }
+    opts_extend = { "sources.default" },
 }

@@ -206,22 +206,6 @@ local function calendarConfig()
 				end,
 			},
 			{
-				id = "foodpantry",
-				runFrequency = "c0 0 0 * * 1",
-				fn = function(_, success)
-					-- print("Running pray")
-					require("calendar").addAssignment({
-						source = "foodpantry",
-						title = "Food Pantry Form " .. os.date("%A"),
-						due = vim.fn.strptime("%Y-%m-%d %H:%M:%S", vim.fn.strftime("%Y-%m-%d") .. " 23:59:00"),
-						warnTime = "1d",
-						description = "Food pantry for the week",
-						type = "assignment",
-					})
-					success()
-				end,
-			},
-			{
 				id = "pray",
 				runFrequency = "c0 0 4 * * *",
 				fn = function(_, success)

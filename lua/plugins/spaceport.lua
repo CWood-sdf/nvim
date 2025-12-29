@@ -23,7 +23,7 @@ return {
             { "r", "irec_25%-26" },
             { "i", "pineapple" },
             { "s", "spaceport.nvim" },
-            { "c", "calendar" },
+            { "c", "chicot" },
             { "b", "banana.nvim" },
             { "z", "banana.nvim/zig" },
             { "m", "cmdTree" },

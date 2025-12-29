@@ -234,6 +234,19 @@ return {
                     args = {},
                     console = "integratedTerminal",
                 },
+                {
+                    name = "Zig Select and attach to process",
+                    type = "lldeez",
+                    request = "attach",
+                    -- program = function()
+                    --     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    -- end,
+                    pid = function()
+                        local name = vim.fn.input("Executable name (filter): ")
+                        return require("dap.utils").pick_process({ filter = name })
+                    end,
+                    -- cwd = '${workspaceFolder}'
+                },
             }
             dap.adapters.gdb = {
                 type = "executable",
