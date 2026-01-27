@@ -41,7 +41,7 @@ local function getModeColor()
         o = colors.magenta,
         s = colors.orange,
         S = colors.orange,
-        [''] = colors.orange,
+        [""] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
@@ -119,13 +119,6 @@ local function ins_right(component)
     table.insert(config.sections.lualine_x, component)
 end
 
--- ins_left({
---     function()
---         return "▊"
---     end,
---     color = getModeColor,
---     padding = { left = 0, right = 0 }, -- We don't need space before this
--- })
 local fname = Config.getFn("lualine.filename")
 ins_left({
     "filename",
@@ -136,6 +129,7 @@ ins_left({
     end,
     -- color = { fg = "#aaaaff", gui = boldSetting },
 })
+
 Config.addFlag("lualine.perf")
 Config.set("lualine.perf", false)
 ins_left({
@@ -203,6 +197,7 @@ ins_left({
         return "%="
     end,
 })
+
 local hasEnteredFile = false
 local auGroup = vim.api.nvim_create_augroup("Lualine", {})
 vim.api.nvim_create_autocmd({ "User" }, {
@@ -215,6 +210,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
         })
     end,
 })
+
 local dapSetup = false
 local dap_save_path = vim.fn.stdpath("data") .. "/dapft.txt"
 local lspFlag = Config.getFn("lualine.lsp")
@@ -235,6 +231,10 @@ ins_left({
             if clients[i].name == "null-ls" or clients[i].name == "copilot" then
                 table.remove(clients, i)
             end
+        end
+        local hasZigthing = require("zigthing.tracker").isActive(vim.api.nvim_buf_get_name(0))
+        if vim.bo.filetype ~= "zig" then
+            hasZigthing = false
         end
         if next(clients) == nil then
             hasLsp = false
@@ -303,9 +303,12 @@ ins_left({
             hasDbg = dapTable[vim.bo.filetype] == true
         end
         local ret = ""
+        if hasZigthing then
+            ret = ret .. " "
+        end
         -- just add the signs
         if hasLsp then
-            ret = " "
+            ret = ret .. " "
         end
         if hasFmt then
             ret = ret .. " "
@@ -315,7 +318,7 @@ ins_left({
         end
         return ret
     end,
-    events = { "BufEnter", "LspAttach", "LspDetach" },
+    events = { "BufEnter", "LspAttach", "LspDetach", "(1s)" },
     jobs = {
         {
             events = { "LspDetach" },
@@ -340,6 +343,7 @@ local changes = {
     out = 0,
     in_ = 0,
 }
+
 local prayFlag = Config.getFn("lualine.calendarPray")
 local lastPrayAssignments = 0
 ins_right({
@@ -354,9 +358,11 @@ ins_right({
         {
             events = { "(1s)" },
             function(render)
-                local old           = lastPrayAssignments
-                local assignments   = require("calendar").getAssignmentsToWorryAbout()
-                assignments         = vim.tbl_filter(function(v) return v.source == "pray" end, assignments)
+                local old = lastPrayAssignments
+                local assignments = require("calendar").getAssignmentsToWorryAbout()
+                assignments = vim.tbl_filter(function(v)
+                    return v.source == "pray"
+                end, assignments)
                 lastPrayAssignments = #assignments
                 if old ~= lastPrayAssignments then
                     render()
@@ -368,8 +374,11 @@ ins_right({
     cond = function()
         return prayFlag() and #require("calendar").getAssignmentsToWorryAbout() > 0
     end,
-    fmt = function(str) return str .. ' ' end,
+    fmt = function(str)
+        return str .. " "
+    end,
 })
+
 local assignmentsFlag = Config.getFn("lualine.calendarStatus")
 local lastAssignments = 0
 ins_right({
@@ -384,10 +393,12 @@ ins_right({
         {
             events = { "(1s)" },
             function(render)
-                local old         = lastAssignments
+                local old = lastAssignments
                 local assignments = require("calendar").getAssignmentsToWorryAbout()
-                assignments       = vim.tbl_filter(function(v) return v.source ~= "pray" end, assignments)
-                lastAssignments   = #assignments
+                assignments = vim.tbl_filter(function(v)
+                    return v.source ~= "pray"
+                end, assignments)
+                lastAssignments = #assignments
                 if old ~= lastAssignments then
                     render()
                 end
@@ -398,11 +409,16 @@ ins_right({
     cond = function()
         return assignmentsFlag() and #require("calendar").getAssignmentsToWorryAbout() > 0
     end,
-    fmt = function(str) return str .. ' ' end,
+    fmt = function(str)
+        return str .. " "
+    end,
 })
+
 local lastEvents = 0
 ins_right({
-    fmt = function(str) return str .. ' ' end,
+    fmt = function(str)
+        return str .. " "
+    end,
     function()
         local amount = lastEvents
         if amount == 0 then
@@ -425,6 +441,7 @@ ins_right({
     color = { fg = "#b880eb" },
     cond = Config.getFn("lualine.calendarEvents"),
 })
+
 local gitFlag = Config.getFn("lualine.gitStatus")
 ins_right({
     jobs = {
@@ -499,112 +516,7 @@ ins_right({
         return gitFlag()
     end,
 })
--- Lazy sync status
-local hasChecked = false
-Config.addFlag("lualine.lazyStatus")
-Config.set("lualine.lazyStatus", false)
-ins_right({
-    function()
-        -- only check at start of program
-        -- if not hasChecked then
-        --     require("lazy.manage.checker").check()
-        --     hasChecked = true
-        -- end
-        if require("lazy.status").has_updates() then
-            return require("lazy.status").updates()
-        end
-        return ""
-    end,
-    events = { "User LazyCheck", "User LazySync", "(100s)" },
-    color = { fg = "#5EE4FF" },
-    cond = Config.getFn("lualine.lazyStatus", false),
-})
 
--- local startTime = nil
--- -- Add components to right sections
--- local hasInternet = false
--- local lastInternetCheck = 0
--- local copilotSetup = false
--- local Copilot = {
--- 	startTime = nil,
--- 	hasInternet = false,
--- 	lastInternetCheck = 0,
--- 	copilotSetup = false,
--- 	cachedReturn = "",
--- }
--- ins_right({
--- 	function()
--- 		if not Copilot.hasInternet then
--- 			return "󰖪"
--- 		end
--- 		if hasEnteredFile == false then
--- 			return ""
--- 		elseif Copilot.startTime == nil then
--- 			Copilot.startTime = vim.loop.hrtime()
--- 			return ""
--- 		end
--- 		return Copilot.cachedReturn
--- 	end,
--- 	jobs = {
--- 		{
--- 			events = { "(1s)" },
--- 			function(render)
--- 				Copilot.lastInternetCheck = vim.loop.hrtime()
--- 				local ping = "ping google.com"
--- 				if jit.os:find("Windows") == nil then
--- 					ping = ping .. " -c"
--- 				else
--- 					ping = ping .. " -n"
--- 				end
--- 				ping = ping .. " 1"
--- 				local old = Copilot.hasInternet
--- 				vim.fn.jobstart(ping, {
--- 					on_exit = function(_, code)
--- 						if code == 0 then
--- 							Copilot.hasInternet = true
--- 						else
--- 							Copilot.hasInternet = false
--- 						end
--- 						if old ~= Copilot.hasInternet then
--- 							render()
--- 						end
--- 					end,
--- 				})
--- 			end,
--- 		},
--- 		{
--- 			events = { "(1s)", "BufEnter" },
--- 			function(render)
--- 				if not Copilot.hasInternet then
--- 					return
--- 				end
--- 				if not Copilot.copilotSetup then
--- 					vim.cmd("Copilot enable")
--- 					Copilot.copilotSetup = true
--- 				end
--- 				Copilot.startTime = vim.loop.hrtime()
--- 				local old = Copilot.cachedReturn
--- 				local output = vim.api.nvim_exec2("Copilot status", { output = true }).output
---
--- 				local ret = ""
--- 				if output:find("Not logged in") then
--- 					ret = ""
--- 				elseif output:find("Enabled") or output:find("Ready") then
--- 					ret = ""
--- 				elseif output:find("Disabled") then
--- 					ret = ""
--- 				else
--- 					ret = ""
--- 				end
--- 				Copilot.cachedReturn = ret
--- 				if old ~= ret then
--- 					render()
--- 				end
--- 			end,
--- 		},
--- 	},
--- 	cond = Config.getFn("lualine.copilot"),
--- })
 ins_right({
     "filetype",
     icon_only = false,

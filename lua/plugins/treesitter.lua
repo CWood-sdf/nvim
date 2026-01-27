@@ -8,8 +8,8 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"nvim-treesitter/nvim-treesitter-context",
 	},
-	branch = 'master',
-	build = ':TSUpdate',
+	branch = "master",
+	build = ":TSUpdate",
 	-- tag = "v0.9.3",
 	config = function()
 		require("nvim-treesitter.install").compilers = { "clang", "zig" }
@@ -30,8 +30,8 @@ return {
 		addTextObject("l", "@loop", "Loop", true, true)
 		addTextObject("i", "@conditional", "Conditional", true, true)
 
-		vim.api.nvim_create_autocmd('FileType', {
-			pattern = { '*' },
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = { "*" },
 			callback = function(ev)
 				if vim.api.nvim_buf_line_count(0) > 20000 then
 					return
@@ -102,7 +102,7 @@ return {
 					selection_modes = {
 						["@parameter.outer"] = "v", -- charwise
 						["@function.outer"] = "V", -- linewise
-						["@class.outer"] = "<c-v>", -- blockwise
+						["@class.outer"] = "V", -- blockwise
 					},
 					-- If you set this to `true` (default is `false`) then any textobject is
 					-- extended to include preceding or succeeding whitespace. Succeeding
@@ -186,6 +186,79 @@ return {
 		})
 
 		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+		parser_config.ziggy = {
+			install_info = {
+				url = "https://github.com/kristoff-it/ziggy",
+				includes = { "tree-sitter-ziggy/src" },
+				files = { "tree-sitter-ziggy/src/parser.c" },
+				branch = "main",
+				generate_requires_npm = false,
+				requires_generate_from_grammar = false,
+			},
+			filetype = "ziggy",
+		}
+		vim.treesitter.language.register("ziggy", "ziggy")
+
+		parser_config.ziggy_schema = {
+			install_info = {
+				url = "https://github.com/kristoff-it/ziggy",
+				files = { "tree-sitter-ziggy-schema/src/parser.c" },
+				branch = "main",
+				generate_requires_npm = false,
+				requires_generate_from_grammar = false,
+			},
+			filetype = "ziggy-schema",
+		}
+		vim.treesitter.language.register("ziggy_schema", "ziggy_schema")
+
+		parser_config.supermd = {
+			install_info = {
+				url = "https://github.com/kristoff-it/supermd",
+				includes = { "tree-sitter/supermd/src" },
+				files = {
+					"tree-sitter/supermd/src/parser.c",
+					"tree-sitter/supermd/src/scanner.c",
+				},
+				branch = "main",
+				generate_requires_npm = false,
+				requires_generate_from_grammar = false,
+			},
+			filetype = "supermd",
+		}
+		vim.treesitter.language.register("supermd", "supermd")
+
+		parser_config.supermd_inline = {
+			install_info = {
+				url = "https://github.com/kristoff-it/supermd",
+				includes = { "tree-sitter/supermd-inline/src" },
+				files = {
+					"tree-sitter/supermd-inline/src/parser.c",
+					"tree-sitter/supermd-inline/src/scanner.c",
+				},
+				branch = "main",
+				generate_requires_npm = false,
+				requires_generate_from_grammar = false,
+			},
+			filetype = "supermd_inline",
+		}
+		vim.treesitter.language.register("supermd_inline", "supermd_inline")
+
+		parser_config.superhtml = {
+			install_info = {
+				url = "https://github.com/kristoff-it/superhtml",
+				includes = { "tree-sitter-superhtml/src" },
+				files = {
+					"tree-sitter-superhtml/src/parser.c",
+					"tree-sitter-superhtml/src/scanner.c",
+				},
+				branch = "main",
+				generate_requires_npm = false,
+				requires_generate_from_grammar = false,
+			},
+			filetype = "superhtml",
+		}
+		vim.treesitter.language.register("superhtml", "superhtml")
+
 		vim.cmd("hi! link TreesitterContext Normal")
 		require("treesitter-context").setup({
 			seperator = true,

@@ -54,6 +54,61 @@ local function canvasImport(_, success)
 	})
 end
 
+local function webworkImport(_, success)
+	local output = ""
+	vim.fn.jobstart({ "node", os.getenv("HOME") .. "/webwork-api/index.js" }, {
+		cwd = os.getenv("HOME") .. "/webwork-api",
+		on_exit = function()
+			-- print(vim.inspect(code))
+			-- if code ~= 0 then
+			--     fail()
+			-- else
+			success()
+			-- end
+		end,
+		on_stderr = function() end,
+		on_stdout = function(e, d)
+			for _, v in ipairs(d) do
+				output = output .. v
+			end
+			if string.find(output, "]") then
+				-- print("found")
+				---@type table<string, {name: string, due: integer, course: string}>
+				local data = vim.json.decode(output) or {}
+				for _, event in ipairs(require("calendar").readData().assignments) do
+					local stillExists = false
+					if event.source ~= "webwork" then
+						stillExists = true
+					end
+					for _, newEvent in ipairs(data) do
+						if newEvent.name == event.title then
+							stillExists = true
+							break
+						end
+					end
+					if not stillExists then
+						require("calendar").markDone(event.title)
+					end
+				end
+
+				for _, event in ipairs(data) do
+					---@type CalendarAssignment
+					e = {
+						type = "assignment",
+						title = event.name,
+						due = event.due,
+						description = event.course or "",
+						warnTime = "1d",
+						source = "webwork",
+					}
+					require("calendar").addAssignment(e)
+				end
+				output = ""
+			end
+		end,
+	})
+end
+
 local function waImport(_, success)
 	local output = ""
 	vim.fn.jobstart({ "node", os.getenv("HOME") .. "/webassign-api/index.js" }, {
@@ -182,6 +237,11 @@ local function calendarConfig()
 				id = "webassign",
 				runFrequency = "1h",
 				fn = waImport,
+			},
+			{
+				id = "webwork",
+				runFrequency = "1h",
+				fn = webworkImport,
 			},
 			{
 				id = "gradescope",

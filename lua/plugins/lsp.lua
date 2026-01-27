@@ -1,7 +1,7 @@
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function()
         local bufnr = vim.api.nvim_get_current_buf()
-        local wk = require('stuff.wkutils')
+        local wk = require("stuff.wkutils")
         local opts = { buffer = bufnr, noremap = false }
         wk.remapNoGroup("n", "K", "Hover", function()
             vim.lsp.buf.hover()
@@ -22,13 +22,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
             remap("E", "Prev [E]rror ([e)", function()
                 vim.diagnostic.jump({
                     count = -1,
-                    severity = vim.diagnostic.severity.ERROR
+                    severity = vim.diagnostic.severity.ERROR,
                 })
             end, opts)
             remap("e", "Next [e]rror (]e)", function()
                 vim.diagnostic.jump({
                     count = 1,
-                    severity = vim.diagnostic.severity.ERROR
+                    severity = vim.diagnostic.severity.ERROR,
                 })
             end, opts)
             remap("n", "[N]ext diagnostic", function()
@@ -109,8 +109,7 @@ return {
             {
                 "williamboman/mason-lspconfig.nvim",
                 branch = "perf/cached-specs",
-                opts = {
-                },
+                opts = {},
                 -- dev = true,
             }, -- Optional
             -- { "williamboman/mason.nvim" }, -- Optional
@@ -145,7 +144,6 @@ return {
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             -- capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
             capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 
             ---@diagnostic disable-next-line: unused-local
             -- local onAttach = function(args, bufnr)
@@ -254,7 +252,7 @@ return {
                         [vim.diagnostic.severity.WARN] = "",
                         [vim.diagnostic.severity.INFO] = "",
                         [vim.diagnostic.severity.HINT] = "",
-                    }
+                    },
                 },
             })
 

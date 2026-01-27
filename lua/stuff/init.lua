@@ -1,5 +1,6 @@
 vim.g.mapleader = " "
 require("stuff.lazy")
+require("stuff.zine")
 require("stuff.config").setup()
 require("stuff.remap")
 require("stuff.set")

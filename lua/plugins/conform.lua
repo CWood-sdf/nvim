@@ -5,6 +5,26 @@ return {
         Config.addFlag("plugins.conform.autoformat")
         Config.set("plugins.conform.autoformat", true)
         require("conform").setup({
+            formatters = {
+                superhtml = {
+                    inherit = false,
+                    command = "superhtml",
+                    stdin = true,
+                    args = { "fmt", "--stdin-super" },
+                },
+                ziggy = {
+                    inherit = false,
+                    command = "ziggy",
+                    stdin = true,
+                    args = { "fmt", "--stdin" },
+                },
+                ziggy_schema = {
+                    inherit = false,
+                    command = "ziggy",
+                    stdin = true,
+                    args = { "fmt", "--stdin-schema" },
+                },
+            },
             format_on_save = function()
                 if not Config.get("plugins.conform.autoformat") then
                     return
@@ -21,6 +41,9 @@ return {
                 }
             end,
             formatters_by_ft = {
+                shtml = { "superhtml" },
+                ziggy = { "ziggy" },
+                ziggy_schema = { "ziggy_schema" },
                 -- lua = { "stylua" },
                 -- cpp = { "clang-format" },
                 -- java = { "clang-format" },
@@ -34,7 +57,6 @@ return {
                 html = { "biome" },
                 nml = { "biome" },
                 css = { "biome" },
-                markdown = { "biome" },
                 yaml = { "biome" },
                 python = { "black" },
                 py = { "black" },

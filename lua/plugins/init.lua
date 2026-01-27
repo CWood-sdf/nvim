@@ -14,7 +14,7 @@ return {
         "CWood-sdf/taiga.nvim",
         dev = require("stuff.isdev")("taiga.nvim"),
         opts = {},
-        cmd = "TaigaUi"
+        cmd = "TaigaUi",
     },
 
     -- just fancy icons for dap
@@ -38,11 +38,19 @@ return {
         lazy = true,
     },
     {
-        'tpope/vim-sleuth',
+        "CWood-sdf/zigthing.nvim",
+        dev = require("stuff.isdev")("zigthing.nvim"),
+        opts = {
+            -- setQfList = true,
+            multiworkspace = true,
+        },
+    },
+    {
+        "tpope/vim-sleuth",
         event = "BufReadPre",
     },
     {
-        'folke/noice.nvim',
+        "folke/noice.nvim",
         opts = {},
         enabled = false,
     },

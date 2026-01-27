@@ -12,12 +12,17 @@ return {
             require("telescope").load_extension("fzf")
         end,
         -- or                            , branch = '0.1.x',
-        dependencies = { { "nvim-lua/plenary.nvim",
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
-
-        } },
+        dependencies = {
+            {
+                "nvim-lua/plenary.nvim",
+                {
+                    "nvim-telescope/telescope-fzf-native.nvim",
+                    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+                },
+            },
+        },
         init = function()
-            local wk = require('stuff.wkutils')
+            local wk = require("stuff.wkutils")
             local nerdyLoaded = false
             wk.makeGroup("n", "<leader>f", "[F]ind", function(remap)
                 remap("f", "[F]iles", function()
@@ -25,7 +30,7 @@ return {
                 end)
                 remap("x", "[F]iles", function()
                     require("telescope.builtin").find_files({
-                        cwd = vim.fn.stdpath('config')
+                        cwd = vim.fn.stdpath("config"),
                     })
                 end)
                 remap("F", "[F]iles no ignore", function()
@@ -67,11 +72,11 @@ return {
                 remap("g", "[G]it files", function()
                     require("telescope.builtin").git_files()
                 end)
-                remap('R', '[R]ef', function()
+                remap("R", "[R]ef", function()
                     require("telescope").load_extension("taiga")
                     require("telescope").extensions.taiga.refs()
                 end)
-                remap('e', 'Th[e]me', function()
+                remap("e", "Th[e]me", function()
                     vim.cmd("Lazy! load pineapple")
                     require("telescope").load_extension("pineapple")
                     require("telescope").extensions.pineapple.colorschemes()
@@ -89,9 +94,8 @@ return {
         end,
     },
     {
-        '2KAbhishek/nerdy.nvim',
+        "2KAbhishek/nerdy.nvim",
         cmd = "Nerdy",
         depends = { "nvim-telescope/telescope.nvim" },
     },
-
 }
