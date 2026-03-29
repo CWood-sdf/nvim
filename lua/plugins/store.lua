@@ -1,4 +1,4 @@
 return {
-    "alex-popov-tech/store.nvim",
-    cmd = "Store",
+	-- "alex-popov-tech/store.nvim",
+	-- cmd = "Store",
 }

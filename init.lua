@@ -21,7 +21,7 @@ vim.filetype.add({
 
 vim.filetype.add({
 	pattern = {
-		['.*/Eigen/.*'] = 'cpp',
+		[".*/Eigen/.*"] = "cpp",
 	},
 })
 

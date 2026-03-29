@@ -1,7 +1,7 @@
 local function canvasImport(_, success)
 	local output = ""
-	vim.fn.jobstart({ "node", os.getenv("HOME") .. "/canvas-api/index.js" }, {
-		cwd = os.getenv("HOME") .. "/canvas-api",
+	vim.fn.jobstart({ "node", os.getenv("HOME") .. "/canvas2-api/index.js" }, {
+		cwd = os.getenv("HOME") .. "/canvas2-api",
 		on_exit = function()
 			-- print(vim.inspect(code))
 			-- if code ~= 0 then
@@ -18,6 +18,10 @@ local function canvasImport(_, success)
 			if string.find(output, "]") then
 				---@type table<string, {name: string, due: integer, course: string}>
 				local data = vim.json.decode(output) or {}
+				local removes = true
+				if #data == 1 and data[1].name:sub(1, #"UPDATE") == "UPDATE" then
+					removes = false
+				end
 				for _, event in ipairs(require("calendar").readData().assignments) do
 					local stillExists = false
 					if event.source ~= "canvas" then
@@ -29,7 +33,7 @@ local function canvasImport(_, success)
 							break
 						end
 					end
-					if not stillExists then
+					if not stillExists and removes then
 						require("calendar").markDone(event.title)
 					end
 				end
@@ -91,7 +95,7 @@ local function webworkImport(_, success)
 					end
 				end
 
-				for _, event in ipairs(data) do
+				for i, event in ipairs(data) do
 					---@type CalendarAssignment
 					e = {
 						type = "assignment",
@@ -102,6 +106,17 @@ local function webworkImport(_, success)
 						source = "webwork",
 					}
 					require("calendar").addAssignment(e)
+					if i == #data then
+						e = {
+							type = "assignment",
+							title = "Run webwork",
+							due = event.due,
+							description = event.course or "",
+							warnTime = "1d",
+							source = "webwork-run",
+						}
+						require("calendar").addAssignment(e)
+					end
 				end
 				output = ""
 			end
@@ -226,21 +241,22 @@ local function gsImport(_, success)
 end
 
 local function calendarConfig()
+	---@diagnostic disable-next-line: missing-fields
 	require("calendar").setup({
 		import = {
 			{
 				id = "canvas",
-				runFrequency = "1h",
+				runFrequency = "6h",
 				fn = canvasImport,
 			},
 			{
 				id = "webassign",
-				runFrequency = "1h",
+				runFrequency = "365d",
 				fn = waImport,
 			},
 			{
 				id = "webwork",
-				runFrequency = "1h",
+				runFrequency = "2d",
 				fn = webworkImport,
 			},
 			{
