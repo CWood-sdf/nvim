@@ -246,7 +246,7 @@ local function calendarConfig()
 		import = {
 			{
 				id = "canvas",
-				runFrequency = "6h",
+				runFrequency = "365d",
 				fn = canvasImport,
 			},
 			{
@@ -256,12 +256,12 @@ local function calendarConfig()
 			},
 			{
 				id = "webwork",
-				runFrequency = "2d",
+				runFrequency = "365d",
 				fn = webworkImport,
 			},
 			{
 				id = "gradescope",
-				runFrequency = "1h",
+				runFrequency = "365d",
 				fn = gsImport,
 			},
 			{

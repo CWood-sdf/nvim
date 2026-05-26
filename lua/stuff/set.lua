@@ -18,6 +18,8 @@ vim.opt.expandtab = true
 vim.opt.signcolumn = "yes"
 vim.opt.exrc = true
 
+vim.opt.nrformats:append("alpha")
+
 vim.opt.sessionoptions:append("globals")
 
 -- vim.opt.smartindent = true
@@ -62,9 +64,9 @@ vim.opt.updatetime = 50
 --         vim.opt.mouse = ""
 --     end
 -- end)
-vim.api.nvim_create_autocmd('TextYankPost', {
-    desc = 'Highlight when yanking (copying) text',
-    group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
     callback = function()
         vim.highlight.on_yank()
     end,
